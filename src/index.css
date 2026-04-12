@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+/* ── PraShree Arts: Black & White Mandala Theme ── */
+
+@theme {
+  --color-primary: #000000;
+  --color-secondary: #1a1a1a;
+  --color-accent: #333333;
+  --color-muted: #666666;
+  --color-light: #e5e5e5;
+  --color-lighter: #f5f5f5;
+  --color-surface: #fafafa;
+  --color-border: #d4d4d4;
+
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ── Base styles ── */
+body {
+  font-family: var(--font-body);
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+/* ── Mandala decorative border pattern ── */
+.mandala-border {
+  border-image: repeating-linear-gradient(90deg,
+      #000 0px,
+      #000 4px,
+      transparent 4px,
+      transparent 8px,
+      #000 8px,
+      #000 10px,
+      transparent 10px,
+      transparent 16px) 10;
+  border-width: 2px;
+  border-style: solid;
+}
+
+/* ── Mandala-inspired section divider ── */
+.mandala-divider {
+  position: relative;
+  text-align: center;
+  overflow: visible;
+}
+
+.mandala-divider::before,
+.mandala-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: linear-gradient(to var(--dir, right), #000, transparent);
+}
+
+.mandala-divider::before {
+  left: 0;
+  --dir: right;
+}
+
+.mandala-divider::after {
+  right: 0;
+  --dir: left;
+}
+
+/* ── Smooth scroll ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Image grayscale hover ── */
+.grayscale-hover {
+  filter: grayscale(100%);
+  transition: filter 0.4s ease;
+}
+
+.grayscale-hover:hover {
+  filter: grayscale(0%);
+}
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* ── Loading skeleton ── */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
