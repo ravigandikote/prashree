@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { Menu, X, ShoppingBag } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { motion, AnimatePresence } from 'framer-motion'
+import logo from '../assets/logo.png'
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -22,12 +23,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 no-underline">
-            <span className="font-display text-2xl font-bold tracking-tight text-primary">
-              PraShree
-            </span>
-            <span className="font-display text-sm text-muted tracking-widest uppercase">
-              Arts
-            </span>
+            <img src={logo} alt="PraShree Arts" className="h-10 w-10 object-contain" />
+            <div className="flex flex-col leading-tight">
+              <span className="font-display text-xl font-bold tracking-tight text-primary">
+                PraShree
+              </span>
+              <span className="font-display text-[10px] text-muted tracking-[0.2em] uppercase -mt-0.5">
+                Arts
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

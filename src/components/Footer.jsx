@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin } from 'lucide-react'
+import logo from '../assets/logo.png'
 
 export default function Footer() {
   return (
@@ -11,9 +12,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="font-display text-2xl font-bold mb-4">
-              PraShree Arts
-            </h3>
+            <div className="flex items-center gap-3 mb-4">
+              <img src={logo} alt="PraShree Arts" className="h-12 w-12 object-contain invert brightness-200" />
+              <h3 className="font-display text-2xl font-bold">
+                PraShree Arts
+              </h3>
+            </div>
             <p className="text-white/60 text-sm leading-relaxed">
               Handcrafted art by Monica Prakash. Mandala Art Therapy, Janur Art,
               and bespoke creations that bring balance and calm.

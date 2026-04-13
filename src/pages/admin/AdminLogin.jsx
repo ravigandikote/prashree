@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { Navigate } from 'react-router-dom'
 import SEO from '../../components/SEO'
+import logo from '../../assets/logo.png'
 
 export default function AdminLogin() {
   const { user, signIn } = useAuth()
@@ -34,6 +35,7 @@ export default function AdminLogin() {
         <div className="w-full max-w-md mx-auto px-4">
           <div className="bg-white border border-border p-8">
             <div className="text-center mb-8">
+              <img src={logo} alt="PraShree Arts" className="w-16 h-16 object-contain mx-auto mb-3" />
               <h1 className="font-display text-2xl font-bold text-primary">
                 PraShree Arts
               </h1>

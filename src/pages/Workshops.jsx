@@ -65,9 +65,14 @@ export default function Workshops() {
       />
 
       {/* ── Hero ── */}
-      <section className="relative py-24 bg-primary text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <MandalaHeroBg />
+      <section className="relative py-24 text-white overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/images/artwork-1.jpg"
+            alt="Workshop at NeeRav Arts Village"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/65" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <motion.div

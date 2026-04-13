@@ -7,6 +7,7 @@ import { SectionHeading, MandalaHeroBg } from '../components/UI'
 import CategoryCard from '../components/CategoryCard'
 import ProductCard from '../components/ProductCard'
 import { getCategories, getProducts } from '../lib/supabase'
+import logo from '../assets/logo.png'
 
 /* ── Fallback data when Supabase is not yet configured ── */
 const FALLBACK_CATEGORIES = [
@@ -54,6 +55,11 @@ export default function Home() {
             <p className="text-muted text-sm tracking-[0.3em] uppercase mb-4">
               Art . Therapy . Balance
             </p>
+            <img
+              src={logo}
+              alt="PraShree Arts Logo"
+              className="w-32 h-32 md:w-40 md:h-40 object-contain mx-auto mb-4"
+            />
             <h1 className="font-display text-5xl md:text-7xl font-bold text-primary leading-tight">
               PraShree Arts
             </h1>
@@ -123,8 +129,8 @@ export default function Home() {
             >
               <div className="aspect-[3/4] bg-lighter rounded-sm overflow-hidden">
                 <img
-                  src="https://placehold.co/600x800/1a1a1a/ffffff?text=Monica+Prakash"
-                  alt="Monica Prakash – Founder of PraShree Arts"
+                  src="/images/artwork-2.jpg"
+                  alt="Monica Prakash drawing mandala art"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
@@ -195,9 +201,14 @@ export default function Home() {
       </section>
 
       {/* ── CTA: Workshops ── */}
-      <section className="py-20 bg-primary text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <MandalaHeroBg />
+      <section className="relative py-20 text-white overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/images/artwork-1.jpg"
+            alt="Workshop at NeeRav Arts Village"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
           <motion.div

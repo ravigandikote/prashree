@@ -43,7 +43,7 @@ export default function About() {
             >
               <div className="aspect-[3/4] bg-lighter rounded-sm overflow-hidden">
                 <img
-                  src="https://placehold.co/600x800/1a1a1a/ffffff?text=Monica+Prakash"
+                  src="/images/artwork-2.jpg"
                   alt="Monica Prakash – Mandala Art Therapist"
                   className="w-full h-full object-cover"
                 />
@@ -112,6 +112,22 @@ export default function About() {
               step toward calm."
             </blockquote>
             <p className="text-center text-muted mt-6">— Monica Prakash</p>
+          </motion.div>
+
+          {/* Mandala artwork close-up */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-12 aspect-[16/9] overflow-hidden rounded-sm"
+          >
+            <img
+              src="/images/artwork-3.jpg"
+              alt="Intricate mandala artwork in progress by Monica Prakash"
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
           </motion.div>
         </div>
       </section>
