@@ -10,6 +10,7 @@ const navLinks = [
   { to: '/about', label: 'About' },
   { to: '/categories', label: 'Art Categories' },
   { to: '/workshops', label: 'Workshops' },
+  { to: '/sacred-geometry', label: 'Sacred Geometry' },
   { to: '/contact', label: 'Contact' },
 ]
 
