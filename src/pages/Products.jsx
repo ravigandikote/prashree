@@ -39,7 +39,7 @@ function FacetSelect({ facet, items, filters, onChange, id }) {
         }))
   return (
     <div className="min-w-0">
-      <label htmlFor={id} className="block text-[10px] uppercase tracking-label text-graphite mb-1">
+      <label htmlFor={id} className="block text-[10px] uppercase tracking-label text-graphite mb-1 whitespace-nowrap">
         {facet.label}
       </label>
       <select
@@ -132,10 +132,10 @@ export default function Products() {
 
       {/* ── Sticky filter bar ── */}
       <div className="sticky top-20 z-40 bg-paper border-y border-mist">
-        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          {/* Desktop: all controls; mobile: search + sort + Filters button */}
-          <div className="flex flex-wrap items-end gap-3">
-            <div className="hidden md:grid grid-cols-5 gap-3 flex-1 min-w-0">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          {/* Desktop: facet row, then search/sort/reset/count row */}
+          <div className="hidden md:block space-y-3">
+            <div className="grid grid-cols-5 gap-4">
               {FACETS.map((f) => (
                 <FacetSelect
                   key={f.key}
@@ -147,59 +147,88 @@ export default function Products() {
                 />
               ))}
             </div>
-
-            <button
-              onClick={() => setSheetOpen(true)}
-              className="md:hidden inline-flex items-center gap-2 border border-mist bg-white px-3 py-2 text-small text-charcoal cursor-pointer"
-              aria-expanded={sheetOpen}
-            >
-              <SlidersHorizontal size={14} aria-hidden="true" />
-              Filters{activeFilterCount > 0 && ` (${activeFilterCount})`}
-            </button>
-
-            <div className="flex-1 md:flex-none md:w-48 min-w-[140px]">
-              <label htmlFor="catalog-q" className="block text-[10px] uppercase tracking-label text-graphite mb-1">
-                Search
-              </label>
-              <div className="relative">
+            <div className="flex items-center gap-4">
+              <div className="relative w-72">
+                <label htmlFor="catalog-q" className="sr-only">Search</label>
                 <Search size={13} className="absolute left-2 top-1/2 -translate-y-1/2 text-ash" aria-hidden="true" />
                 <input
                   id="catalog-q"
                   type="search"
                   value={qInput}
                   onChange={(e) => handleSearch(e.target.value)}
-                  placeholder="Name, intent…"
+                  placeholder="Search name, intent, series…"
+                  className="w-full bg-white border border-mist pl-7 pr-2 py-2 text-small text-charcoal focus:outline-none focus:border-ink"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <label htmlFor="catalog-sort" className="text-[10px] uppercase tracking-label text-graphite whitespace-nowrap">
+                  Sort
+                </label>
+                <select
+                  id="catalog-sort"
+                  value={filters.sort}
+                  onChange={(e) => applyFilters({ ...filters, sort: e.target.value })}
+                  className="w-44 bg-white border border-mist px-2 py-2 text-small text-charcoal focus:outline-none focus:border-ink cursor-pointer"
+                >
+                  {SORT_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+              <button
+                onClick={handleReset}
+                className="border border-mist bg-white px-4 py-2 text-small text-graphite hover:text-ink hover:border-ink transition-colors cursor-pointer"
+              >
+                Reset
+              </button>
+              <p className="ml-auto text-small text-graphite whitespace-nowrap" aria-live="polite">
+                {items ? `${filtered.length} of ${items.length} artworks` : '…'}
+              </p>
+            </div>
+          </div>
+
+          {/* Mobile: Filters button + search + sort */}
+          <div className="md:hidden space-y-3">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSheetOpen(true)}
+                className="inline-flex items-center gap-2 border border-mist bg-white px-3 py-2 text-small text-charcoal cursor-pointer whitespace-nowrap"
+                aria-expanded={sheetOpen}
+              >
+                <SlidersHorizontal size={14} aria-hidden="true" />
+                Filters{activeFilterCount > 0 && ` (${activeFilterCount})`}
+              </button>
+              <div className="relative flex-1 min-w-0">
+                <label htmlFor="catalog-q-m" className="sr-only">Search</label>
+                <Search size={13} className="absolute left-2 top-1/2 -translate-y-1/2 text-ash" aria-hidden="true" />
+                <input
+                  id="catalog-q-m"
+                  type="search"
+                  value={qInput}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder="Search…"
                   className="w-full bg-white border border-mist pl-7 pr-2 py-2 text-small text-charcoal focus:outline-none focus:border-ink"
                 />
               </div>
             </div>
-
-            <div className="w-40">
-              <label htmlFor="catalog-sort" className="block text-[10px] uppercase tracking-label text-graphite mb-1">
+            <div className="flex items-center gap-3">
+              <label htmlFor="catalog-sort-m" className="text-[10px] uppercase tracking-label text-graphite">
                 Sort
               </label>
               <select
-                id="catalog-sort"
+                id="catalog-sort-m"
                 value={filters.sort}
                 onChange={(e) => applyFilters({ ...filters, sort: e.target.value })}
-                className="w-full bg-white border border-mist px-2 py-2 text-small text-charcoal focus:outline-none focus:border-ink cursor-pointer"
+                className="flex-1 bg-white border border-mist px-2 py-2 text-small text-charcoal focus:outline-none focus:border-ink cursor-pointer"
               >
                 {SORT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
                 ))}
               </select>
+              <p className="text-small text-graphite whitespace-nowrap" aria-live="polite">
+                {items ? `${filtered.length} of ${items.length}` : '…'}
+              </p>
             </div>
-
-            <button
-              onClick={handleReset}
-              className="border border-mist bg-white px-3 py-2 text-small text-graphite hover:text-ink hover:border-ink transition-colors cursor-pointer"
-            >
-              Reset
-            </button>
-
-            <p className="ml-auto text-small text-graphite pb-2 whitespace-nowrap" aria-live="polite">
-              {items ? `${filtered.length} of ${items.length} artworks` : '…'}
-            </p>
           </div>
         </div>
       </div>
