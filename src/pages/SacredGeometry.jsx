@@ -22,13 +22,13 @@ export default function SacredGeometry() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <p className="text-muted text-sm tracking-[0.3em] uppercase mb-4">
+                        <p className="text-graphite text-sm tracking-[0.3em] uppercase mb-4">
                             Mandala Art Therapy
                         </p>
-                        <h1 className="font-display text-4xl md:text-5xl font-bold text-primary mb-6">
+                        <h1 className="font-display text-4xl md:text-5xl font-bold text-ink mb-6">
                             Sacred Geometry
                         </h1>
-                        <p className="text-secondary leading-relaxed max-w-xl mx-auto">
+                        <p className="text-charcoal leading-relaxed max-w-xl mx-auto">
                             Discover how ancient geometric patterns cultivate stillness,
                             focus, and emotional balance — then create your own mandala
                             using sacred proportions.
@@ -52,10 +52,10 @@ export default function SacredGeometry() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h2 className="font-display text-2xl font-bold text-primary mb-4">
+                        <h2 className="font-display text-2xl font-bold text-ink mb-4">
                             Continue Your Practice
                         </h2>
-                        <p className="text-muted leading-relaxed mb-6">
+                        <p className="text-graphite leading-relaxed mb-6">
                             Sacred geometry is not just art — it is a path to inner clarity.
                             Explore our mandala art collection or join a therapeutic workshop
                             to deepen your practice with guided instruction.
@@ -63,15 +63,15 @@ export default function SacredGeometry() {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <a
                                 href="/products"
-                                className="px-6 py-3 bg-primary text-white font-medium tracking-wide rounded-sm
-                           hover:bg-secondary transition-colors no-underline"
+                                className="px-6 py-3 bg-ink text-white font-medium tracking-wide rounded-sm
+                           hover:bg-charcoal transition-colors no-underline"
                             >
                                 Browse Mandala Art
                             </a>
                             <a
                                 href="/learn"
-                                className="px-6 py-3 border border-primary text-primary font-medium tracking-wide
-                           rounded-sm hover:bg-primary hover:text-white transition-colors no-underline"
+                                className="px-6 py-3 border border-ink text-ink font-medium tracking-wide
+                           rounded-sm hover:bg-ink hover:text-white transition-colors no-underline"
                             >
                                 View Workshops
                             </a>

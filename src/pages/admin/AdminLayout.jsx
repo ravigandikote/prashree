@@ -22,15 +22,15 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen bg-paper flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-border shrink-0 hidden lg:block">
+      <aside className="w-64 bg-white border-r border-mist shrink-0 hidden lg:block">
         <div className="sticky top-0">
-          <div className="p-6 border-b border-border">
+          <div className="p-6 border-b border-mist">
             <Link to="/admin" className="no-underline">
-              <h2 className="font-display text-xl font-bold text-primary">
+              <h2 className="font-display text-xl font-bold text-ink">
                 PraShree Admin
               </h2>
             </Link>
-            <p className="text-xs text-muted mt-1">{user.email}</p>
+            <p className="text-xs text-graphite mt-1">{user.email}</p>
           </div>
 
           <nav className="p-4 space-y-1">
@@ -45,7 +45,7 @@ export default function AdminLayout() {
                   to={link.to}
                   className={`
                     flex items-center gap-3 px-3 py-2.5 text-sm rounded-sm no-underline transition-colors
-                    ${isActive ? 'bg-primary text-white' : 'text-muted hover:text-primary hover:bg-lighter'}
+                    ${isActive ? 'bg-ink text-white' : 'text-graphite hover:text-ink hover:bg-paper'}
                   `}
                 >
                   <link.icon size={16} />
@@ -55,17 +55,17 @@ export default function AdminLayout() {
             })}
           </nav>
 
-          <div className="p-4 border-t border-border">
+          <div className="p-4 border-t border-mist">
             <button
               onClick={signOut}
-              className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted hover:text-ink transition-colors w-full cursor-pointer bg-transparent border-0"
+              className="flex items-center gap-3 px-3 py-2.5 text-sm text-graphite hover:text-ink transition-colors w-full cursor-pointer bg-transparent border-0"
             >
               <LogOut size={16} />
               Sign Out
             </button>
             <Link
               to="/"
-              className="flex items-center gap-3 px-3 py-2.5 text-sm text-muted hover:text-primary transition-colors no-underline mt-1"
+              className="flex items-center gap-3 px-3 py-2.5 text-sm text-graphite hover:text-ink transition-colors no-underline mt-1"
             >
               View Site
             </Link>
@@ -76,14 +76,14 @@ export default function AdminLayout() {
       {/* Main Content */}
       <div className="flex-1 min-w-0">
         {/* Mobile top nav */}
-        <div className="lg:hidden bg-white border-b border-border sticky top-0 z-40">
+        <div className="lg:hidden bg-white border-b border-mist sticky top-0 z-40">
           <div className="flex items-center justify-between px-4 py-3">
-            <Link to="/admin" className="no-underline font-display text-lg text-primary">
+            <Link to="/admin" className="no-underline font-display text-lg text-ink">
               PraShree Admin
             </Link>
             <button
               onClick={signOut}
-              className="text-sm text-muted hover:text-ink cursor-pointer bg-transparent border-0 flex items-center gap-1.5"
+              className="text-sm text-graphite hover:text-ink cursor-pointer bg-transparent border-0 flex items-center gap-1.5"
             >
               <LogOut size={14} /> Sign out
             </button>
@@ -98,7 +98,7 @@ export default function AdminLayout() {
                   key={link.to}
                   to={link.to}
                   className={`px-3 py-1.5 text-sm whitespace-nowrap no-underline transition-colors ${
-                    isActive ? 'bg-primary text-white' : 'text-muted hover:text-primary'
+                    isActive ? 'bg-ink text-white' : 'text-graphite hover:text-ink'
                   }`}
                 >
                   {link.label}

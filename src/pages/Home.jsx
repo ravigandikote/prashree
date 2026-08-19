@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
@@ -5,6 +6,8 @@ import SEO from '../components/SEO'
 import { SectionHeading } from '../components/UI'
 import Button from '../components/Button'
 import Photo from '../components/Photo'
+import { getPublishedPosts } from '../lib/supabase'
+import { formatDate } from '../lib/format'
 import logo from '../assets/logo.png'
 
 const fadeUp = {
@@ -15,6 +18,14 @@ const fadeUp = {
 }
 
 export default function Home() {
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    getPublishedPosts({ limit: 3 })
+      .then((data) => setPosts(data || []))
+      .catch(() => {})
+  }, [])
+
   return (
     <>
       <SEO />
@@ -270,6 +281,46 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Latest from the blog (hidden until posts exist) ── */}
+      {posts.length > 0 && (
+        <section className="bg-paper border-t border-mist py-20 md:py-28">
+          <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeading
+              eyebrow="Blog"
+              title="Notes from the studio"
+            />
+            <div className="grid md:grid-cols-3 gap-10">
+              {posts.map((post) => (
+                <Link key={post.id} to={`/blog/${post.slug}`} className="no-underline group">
+                  {post.cover_image && (
+                    <div className="aspect-[3/2] overflow-hidden bg-white mb-4">
+                      <img
+                        src={post.cover_image}
+                        alt=""
+                        loading="lazy"
+                        className="w-full h-full object-cover treat-grayscale"
+                      />
+                    </div>
+                  )}
+                  <p className="text-small text-ash">{formatDate(post.published_at)}</p>
+                  <h3 className="font-display text-h3 text-ink mt-1 group-hover:underline decoration-1 underline-offset-4">
+                    {post.title}
+                  </h3>
+                  {post.excerpt && (
+                    <p className="text-graphite text-small mt-2">{post.excerpt}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-12">
+              <Button to="/blog" variant="link">
+                All posts <ArrowRight size={14} />
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── Enquiry CTA ── */}
       <section className="bg-ink text-white py-20">

@@ -56,7 +56,7 @@ export default function MandalaCanvas({
     return (
         <svg
             viewBox={`0 0 ${size} ${size}`}
-            className="w-full h-full text-primary"
+            className="w-full h-full text-ink"
             fill="none"
             role="img"
             aria-label={`Mandala pattern with ${circleCount} circles and ${symmetry}-fold symmetry`}

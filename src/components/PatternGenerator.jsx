@@ -36,7 +36,7 @@ export default function PatternGenerator() {
         parseInt(inputValue, 10) <= MAX_CIRCLES
 
     return (
-        <section className="py-20 bg-surface">
+        <section className="py-20 bg-paper">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* ── Heading ── */}
                 <motion.div
@@ -46,13 +46,13 @@ export default function PatternGenerator() {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-12"
                 >
-                    <p className="text-muted text-sm tracking-[0.3em] uppercase mb-3">
+                    <p className="text-graphite text-sm tracking-[0.3em] uppercase mb-3">
                         Create Your Own
                     </p>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold text-primary mb-4">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold text-ink mb-4">
                         Mandala Pattern Generator
                     </h2>
-                    <p className="text-muted max-w-xl mx-auto">
+                    <p className="text-graphite max-w-xl mx-auto">
                         Enter the number of concentric circles and choose a symmetry fold.
                         Watch sacred geometry come to life in real time.
                     </p>
@@ -70,10 +70,10 @@ export default function PatternGenerator() {
                     <div className="mb-6">
                         <label
                             htmlFor="circle-count"
-                            className="block text-sm font-medium text-secondary mb-2"
+                            className="block text-sm font-medium text-charcoal mb-2"
                         >
                             Number of Circles
-                            <span className="text-muted ml-1 font-normal">
+                            <span className="text-graphite ml-1 font-normal">
                                 ({MIN_CIRCLES}–{MAX_CIRCLES})
                             </span>
                         </label>
@@ -85,12 +85,12 @@ export default function PatternGenerator() {
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            className="w-full px-4 py-3 border border-border rounded-sm bg-white text-primary
-                         font-body text-base focus:outline-none focus:border-primary transition-colors"
+                            className="w-full px-4 py-3 border border-mist rounded-sm bg-white text-ink
+                         font-body text-base focus:outline-none focus:border-ink transition-colors"
                             placeholder="e.g. 5"
                         />
                         {inputValue && !isValid && (
-                            <p className="text-sm text-muted mt-1">
+                            <p className="text-sm text-graphite mt-1">
                                 Please enter a number between {MIN_CIRCLES} and {MAX_CIRCLES}.
                             </p>
                         )}
@@ -98,7 +98,7 @@ export default function PatternGenerator() {
 
                     {/* Symmetry selector */}
                     <div className="mb-8">
-                        <label className="block text-sm font-medium text-secondary mb-2">
+                        <label className="block text-sm font-medium text-charcoal mb-2">
                             Symmetry Fold
                         </label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -108,8 +108,8 @@ export default function PatternGenerator() {
                                     onClick={() => setSymmetry(opt.value)}
                                     className={`px-3 py-2 border rounded-sm text-sm transition-all duration-200
                     ${symmetry === opt.value
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-border bg-white text-secondary hover:border-accent'
+                                            ? 'border-ink bg-ink text-white'
+                                            : 'border-mist bg-white text-charcoal hover:border-graphite'
                                         }`}
                                 >
                                     <span className="font-medium">{opt.label}</span>
@@ -124,8 +124,8 @@ export default function PatternGenerator() {
                     <button
                         onClick={handleGenerate}
                         disabled={!isValid}
-                        className="w-full py-3 bg-primary text-white font-medium tracking-wide rounded-sm
-                       hover:bg-secondary transition-colors duration-200 disabled:opacity-40
+                        className="w-full py-3 bg-ink text-white font-medium tracking-wide rounded-sm
+                       hover:bg-charcoal transition-colors duration-200 disabled:opacity-40
                        disabled:cursor-not-allowed"
                     >
                         Generate Pattern
@@ -144,18 +144,18 @@ export default function PatternGenerator() {
                             className="max-w-lg mx-auto"
                         >
                             {/* Pattern card */}
-                            <div className="bg-white border border-border rounded-sm p-6 sm:p-8">
+                            <div className="bg-white border border-mist rounded-sm p-6 sm:p-8">
                                 <MandalaCanvas
                                     circleCount={generated.circleCount}
                                     symmetry={generated.symmetry}
                                 />
 
                                 {/* Pattern info */}
-                                <div className="mt-6 pt-4 border-t border-light text-center">
-                                    <p className="text-xs tracking-[0.15em] uppercase text-muted mb-1">
+                                <div className="mt-6 pt-4 border-t border-mist text-center">
+                                    <p className="text-xs tracking-[0.15em] uppercase text-graphite mb-1">
                                         Pattern Details
                                     </p>
-                                    <p className="text-sm text-secondary">
+                                    <p className="text-sm text-charcoal">
                                         {generated.circleCount} concentric ring
                                         {generated.circleCount !== 1 ? 's' : ''} &middot;{' '}
                                         {generated.symmetry}-fold radial symmetry &middot; Golden
@@ -165,7 +165,7 @@ export default function PatternGenerator() {
                             </div>
 
                             {/* Reflection prompt */}
-                            <p className="text-center text-muted text-sm mt-6 italic">
+                            <p className="text-center text-graphite text-sm mt-6 italic">
                                 "Observe the pattern. Let your eyes trace from the centre
                                 outward. Notice the rhythm. Breathe."
                             </p>

@@ -4,3 +4,11 @@ export function formatPrice(value) {
   if (!n) return 'Price on request'
   return `₹${n.toLocaleString('en-IN')}`
 }
+
+/** Long-form date for editorial contexts. */
+export function formatDate(iso) {
+  if (!iso) return ''
+  return new Date(iso).toLocaleDateString('en-IN', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  })
+}

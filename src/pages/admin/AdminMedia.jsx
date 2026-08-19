@@ -71,8 +71,8 @@ export default function AdminMedia() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl font-bold text-primary">Media Library</h1>
-        <label className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm hover:bg-secondary transition-colors cursor-pointer">
+        <h1 className="font-display text-2xl font-bold text-ink">Media Library</h1>
+        <label className="flex items-center gap-2 px-4 py-2 bg-ink text-white text-sm hover:bg-charcoal transition-colors cursor-pointer">
           <Upload size={14} />
           {uploading ? 'Uploading...' : 'Upload Files'}
           <input
@@ -90,7 +90,7 @@ export default function AdminMedia() {
       {files.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {files.map((file) => (
-            <div key={file.name} className="group relative bg-white border border-border overflow-hidden">
+            <div key={file.name} className="group relative bg-white border border-mist overflow-hidden">
               <div className="aspect-square">
                 <img
                   src={file.publicUrl}
@@ -102,7 +102,7 @@ export default function AdminMedia() {
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                 <button
                   onClick={() => copyUrl(file.publicUrl)}
-                  className="p-2 bg-white text-primary rounded-full hover:bg-lighter cursor-pointer border-0"
+                  className="p-2 bg-white text-ink rounded-full hover:bg-paper cursor-pointer border-0"
                   title="Copy URL"
                 >
                   <Copy size={14} />
@@ -116,16 +116,16 @@ export default function AdminMedia() {
                 </button>
               </div>
               <div className="p-2">
-                <p className="text-xs text-muted truncate">{file.name}</p>
+                <p className="text-xs text-graphite truncate">{file.name}</p>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="bg-white border border-border p-12 text-center">
-          <Upload size={32} className="mx-auto text-light" />
-          <p className="text-muted mt-4">No files uploaded yet.</p>
-          <p className="text-xs text-muted mt-1">
+        <div className="bg-white border border-mist p-12 text-center">
+          <Upload size={32} className="mx-auto text-mist" />
+          <p className="text-graphite mt-4">No files uploaded yet.</p>
+          <p className="text-xs text-graphite mt-1">
             Upload images to use in products and galleries.
           </p>
         </div>

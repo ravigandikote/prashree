@@ -1,176 +1,110 @@
 # PraShree Arts — Deployment Guide
 
 ## Prerequisites
-- Node.js >= 18 (use `nvm use 18` or `nvm use 24`)
+- Node.js >= 18
 - A [Supabase](https://supabase.com) project
-- A [Razorpay](https://razorpay.com) account
-- A [Vercel](https://vercel.com) account (for hosting)
+- A [Vercel](https://vercel.com) account (hosting)
 
 ---
 
 ## 1. Supabase Setup
 
 ### Create Project
-1. Go to [supabase.com](https://supabase.com) and create a new project
-2. Note your **Project URL** and **anon/public API key** from Settings > API
+1. Create a project at [supabase.com](https://supabase.com)
+2. Note your **Project URL** and **anon/public API key** (Settings > API)
 
 ### Run Database Schema
-1. Go to SQL Editor in your Supabase dashboard
-2. Copy the contents of `supabase/schema.sql`
-3. Run the entire SQL script — this creates tables, indexes, RLS policies, and seeds 20 art categories
+In the SQL Editor, run in order:
+1. `supabase/schema.sql` — core tables (categories/products/gallery/orders/media),
+   RLS, and the 20 seeded art categories
+2. `supabase/migrations/20260819_refactor.sql` — catalogue fields
+   (pdf_url/vastu_note), `interests`, `enquiries`, `posts`, `connections`,
+   RLS, and placeholder seeds
 
-### Create Storage Buckets
-1. Go to Storage in your Supabase dashboard
-2. Create a bucket named `artworks` (set to **Public**)
-3. Create a bucket named `products` (set to **Public**)
+Existing databases that already ran `schema.sql` only need step 2.
+
+### Create Storage Buckets (Storage > New bucket, both **Public**)
+- `artworks` — media library, category images, blog covers
+- `products` — product photos
 
 ### Enable Authentication
-1. Go to Authentication > Providers
-2. Ensure **Email** provider is enabled
-3. Create an admin user via Authentication > Users > "Add User"
-   - Email: `admin@prashreearts.com`
-   - Password: your chosen password
+1. Authentication > Providers → ensure **Email** is enabled
+2. Authentication > Users > "Add User" → create Monica's admin login
+   (e.g. `admin@prashreearts.com` + a strong password). Any authenticated
+   user has full admin access via RLS, so create only this one user.
 
 ---
 
-## 2. Razorpay Setup
+## 2. Environment Variables
 
-### Test Mode
-1. Sign up at [razorpay.com](https://razorpay.com)
-2. Go to Settings > API Keys
-3. Generate a **Test** key pair
-4. Note the **Key ID** (starts with `rzp_test_`)
-
-### Production Server Endpoint
-For production payments, you need a server endpoint to create Razorpay orders:
-
-**Option A: Supabase Edge Function**
-Create a Supabase Edge Function at `supabase/functions/create-razorpay-order/index.ts`:
-
-```typescript
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-
-const RAZORPAY_KEY_ID = Deno.env.get('RAZORPAY_KEY_ID')!
-const RAZORPAY_KEY_SECRET = Deno.env.get('RAZORPAY_KEY_SECRET')!
-
-serve(async (req) => {
-  const { amount, currency, receipt } = await req.json()
-
-  const response = await fetch('https://api.razorpay.com/v1/orders', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Basic ${btoa(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`)}`,
-    },
-    body: JSON.stringify({ amount, currency: currency || 'INR', receipt }),
-  })
-
-  const order = await response.json()
-  return new Response(JSON.stringify(order), {
-    headers: { 'Content-Type': 'application/json' },
-  })
-})
-```
-
-Deploy with: `supabase functions deploy create-razorpay-order`
-
-**Option B: Vercel API Route**
-Create `api/create-razorpay-order.js` for a Vercel serverless function.
-
----
-
-## 3. Environment Variables
-
-Create `.env` in the project root:
+Create `.env` in the project root (see `.env.example`):
 
 ```env
 VITE_SUPABASE_URL=https://your-project-id.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJ...your-anon-key
-VITE_RAZORPAY_KEY_ID=rzp_test_XXXXXXXXXX
 ```
 
 ---
 
-## 4. Local Development
+## 3. Local Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
-npm run dev
-# → Opens at http://localhost:3000
+npm run dev        # http://localhost:3000
+npm run build      # production build → dist/
+npm run lint
+npm run images     # regenerate optimized photos from images-src/ (needs originals)
 ```
+
+If a fresh `npm install` breaks `vite build` with "Cannot find native binding",
+run `npm install --no-save @rolldown/binding-linux-x64-gnu` (npm optional-deps bug).
+
+---
+
+## 4. Content
+
+- **Products**: add via `/admin/products` (photos upload to the `products`
+  bucket). Catalogue PDFs go in `public/pdfs/` (reference as `/pdfs/name.pdf`)
+  or any public URL in the product's "Catalogue PDF URL" field.
+- **Blog**: write via `/admin/posts` (Markdown body, cover uploads to `artworks`).
+- **Connections**: rows in the `connections` table (SQL editor) — the page
+  falls back to `src/data/connections.js` when the table is empty.
+- **Interest requests & enquiries** arrive in `/admin` and `/admin/enquiries`.
+- Placeholder copy across site and seeds is wrapped in `[[ ]]` — search and replace.
 
 ---
 
 ## 5. Deploy to Vercel
 
-### Via CLI
-```bash
-npm install -g vercel
-vercel login
-vercel
-```
+1. Push to GitHub and import at [vercel.com/new](https://vercel.com/new)
+2. Framework preset: **Vite**
+3. Add env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+4. `vercel.json` already rewrites all non-`/api` routes to `index.html` (SPA)
 
-### Via GitHub
-1. Push your code to a GitHub repository
-2. Go to [vercel.com/new](https://vercel.com/new) and import the repo
-3. Set **Framework Preset** to `Vite`
-4. Add environment variables:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-   - `VITE_RAZORPAY_KEY_ID`
-5. Deploy
-
-### SPA Routing Fix
-Create `vercel.json` in the project root:
-
-```json
-{
-  "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
-  ]
-}
-```
+### Custom Domain
+Project Settings > Domains → add `prashreearts.com`; follow DNS instructions.
 
 ---
 
-## 6. Custom Domain
+## 6. Post-Deployment Checklist
 
-1. In Vercel, go to Project Settings > Domains
-2. Add `prashreearts.com`
-3. Update DNS records as instructed by Vercel
-4. SSL is automatically provisioned
-
----
-
-## 7. Post-Deployment Checklist
-
-- [ ] Verify all pages load correctly
-- [ ] Test Razorpay payment flow (use test card: 4111 1111 1111 1111)
-- [ ] Upload artwork images via Admin > Media
-- [ ] Add products via Admin > Products
-- [ ] Verify category pages display correctly
-- [ ] Test mobile responsiveness
-- [ ] Set up Razorpay webhook for payment confirmations
-- [ ] Switch Razorpay to **Live** mode when ready
-- [ ] Update `VITE_RAZORPAY_KEY_ID` to live key
+- [ ] All pages load at 375px and 1440px
+- [ ] Admin login works; interests/enquiries appear after a test submission
+- [ ] Replace `[[ ]]` placeholder copy (site + product/connection seeds)
+- [ ] Upload real product photos and PDFs
+- [ ] Set the Instagram URL in `src/pages/Contact.jsx`
+- [ ] Supply clean (un-watermarked) originals to re-run `npm run images` without crops
 
 ---
 
 ## Tech Stack Summary
 
-| Layer    | Technology           |
-| -------- | -------------------- |
-| Frontend | React 18 + Vite      |
-| Styling  | TailwindCSS v4       |
-| Backend  | Supabase             |
-| Auth     | Supabase Auth        |
-| Database | Supabase PostgreSQL  |
-| Storage  | Supabase Storage     |
-| Payments | Razorpay             |
-| Hosting  | Vercel               |
-| Fonts    | Google Fonts         |
-| Icons    | Lucide React         |
-| Animate  | Framer Motion        |
+| Layer    | Technology                       |
+| -------- | -------------------------------- |
+| Frontend | React 19 + Vite                  |
+| Styling  | Tailwind CSS v4 (monochrome design system) |
+| Backend  | Supabase (Postgres/Auth/Storage) |
+| Hosting  | Vercel (static SPA)              |
+| Fonts    | Cormorant Garamond + Karla (Google Fonts) |
+| Icons    | Lucide React                     |
+| Motion   | Framer Motion                    |

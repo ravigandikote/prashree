@@ -37,6 +37,7 @@ export default function Footer() {
                 { to: '/products', label: 'Artworks & Products' },
                 { to: '/learn', label: 'Learn with Monica' },
                 { to: '/connections', label: 'Connections' },
+                { to: '/blog', label: 'Blog' },
                 { to: '/contact', label: 'Contact' },
               ].map((link) => (
                 <li key={link.to}>

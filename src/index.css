@@ -15,17 +15,6 @@
   --color-mist: #e6e6e6;
   --color-paper: #f7f6f3; /* warm off-white */
 
-  /* Legacy aliases → remapped onto the new palette so unmigrated pages
-     stay monochrome. Remove after the final audit. */
-  --color-primary: #0a0a0a;
-  --color-secondary: #1f1f1f;
-  --color-accent: #4a4a4a;
-  --color-muted: #4a4a4a;
-  --color-light: #e6e6e6;
-  --color-lighter: #f0efec;
-  --color-surface: #f7f6f3;
-  --color-border: #e6e6e6;
-
   /* ── Typography ── */
   --font-display: "Cormorant Garamond", "Georgia", serif;
   --font-body: "Karla", "Segoe UI", system-ui, sans-serif;
@@ -86,6 +75,40 @@
 }
 
 @layer components {
+  /* ── Blog post reading body: serif, generous rhythm ── */
+  .prose-post {
+    font-family: var(--font-display);
+    font-size: 1.1875rem; /* 19px */
+    line-height: 1.75;
+    color: var(--color-charcoal);
+  }
+  .prose-post p, .prose-post ul, .prose-post ol, .prose-post blockquote {
+    margin-bottom: 1.25em;
+  }
+  .prose-post h2, .prose-post h3 {
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+    color: var(--color-ink);
+  }
+  .prose-post h2 { font-size: var(--text-h2); }
+  .prose-post h3 { font-size: var(--text-h3); }
+  .prose-post a { color: var(--color-ink); text-underline-offset: 4px; }
+  .prose-post blockquote {
+    border-left: 2px solid var(--color-ink);
+    padding-left: 1.25rem;
+    font-style: italic;
+  }
+  .prose-post img { max-width: 100%; height: auto; }
+  .prose-post hr { border: 0; height: 1px; background: var(--color-mist); margin: 2em 0; }
+  .prose-post ul { list-style: disc; padding-left: 1.25em; }
+  .prose-post ol { list-style: decimal; padding-left: 1.25em; }
+  .prose-post code {
+    font-family: ui-monospace, monospace;
+    font-size: 0.85em;
+    background: var(--color-paper);
+    padding: 0.1em 0.35em;
+  }
+
   /* ── Hairline divider ── */
   .hairline {
     height: 1px;

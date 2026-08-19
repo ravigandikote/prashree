@@ -62,7 +62,9 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 | `/connections` | `pages/Connections.jsx` — **new Phase 5**: editorial ledger of community roles; data from Supabase `connections`, falling back to `src/data/connections.js`; logo/photo slot renders a mandala-ornament placeholder until images arrive | `getConnections` |
 | `/workshops` | redirect → `/learn` | — |
 | `/sacred-geometry` | `pages/SacredGeometry.jsx` — educational sections + interactive SVG mandala generator (`PatternGenerator` + `MandalaCanvas`, golden-ratio math) | static |
-| `/contact` | `pages/Contact.jsx` — info + form that **fakes success** (setTimeout, message discarded) — Phase 6 wires it to `createEnquiry` | none |
+| `/blog` | `pages/Blog.jsx` — **new Phase 6**: editorial list of published posts (cover, date, tags, excerpt); EmptyState until posts exist | `getPublishedPosts` |
+| `/blog/:slug` | `pages/BlogPost.jsx` — serif reading layout (`.prose-post`), markdown via `marked` + `DOMPurify`, keyed remount per slug | `getPostBySlug` |
+| `/contact` | `pages/Contact.jsx` — **rebuilt Phase 6**: 7387 portrait, tel/mailto/Instagram ([[INSTAGRAM_URL]] placeholder)/location, real `EnquiryForm` (kind=contact) → `enquiries` table | `createEnquiry` |
 | `/admin/login` | Supabase email/password sign-in (monochrome) | Supabase Auth |
 | `/admin/*` | **reworked Phase 4** — `AdminLayout` (auth-guarded, desktop sidebar + mobile top-nav) → index = `AdminInterests` (filters by product/status, tel:/mailto links, status New/Called/Follow-up/Closed, expandable notes), `AdminEnquiries`, `AdminProducts` (+pdf_url/vastu_note fields), `AdminPosts` (markdown body, cover upload, publish toggle), `AdminCategories`, `AdminMedia`. Dashboard & Orders pages deleted. Shared bits in `admin/adminUi.js` + `admin/StatusBadge.jsx` — all badges monochrome | `lib/supabase.js` helpers |
 
@@ -143,7 +145,7 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 
 ## Fragile / half-done / inconsistent
 
-1. Contact form fakes success and drops the message (Phase 6 fixes → `createEnquiry`).
+1. ~~Contact form fakes success~~ — fixed in Phase 6 (submits to `enquiries`).
 2. ~~Cart/Razorpay~~ — removed in Phase 3 (files deleted; `orders` table kept as history).
 3. ~~Fake product fabrication~~ — fixed in Phase 3 (honest 404s, no invented prices).
 4. ~~Fallback demo data on Home~~ — removed in Phase 2.
@@ -151,7 +153,11 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 6. `media` table unused; storage bucket naming inconsistent (see above).
 7. Old root CLAUDE.md claimed React 18; package.json is React 19. `.nvmrc`=18, env runs 24.
 8. `react-helmet-async@3` with React 19 — works but peer-dep pressure; consider replacing.
-9. No sitemap, no robots.txt, og:image = logo.png only.
+   Remaining placeholders to fill: [[INSTAGRAM_URL]]/handle in Contact, learn.js durations/
+   needs, connections descriptions, product seeds; missing photos DSC07336/IMG_5730/products.
+9. ~~SEO gaps~~ — Phase 6 added `public/sitemap.xml`, `public/robots.txt`, and a
+   1200×630 `public/images/og-image.jpg` (from 2208) wired into SEO.jsx + index.html.
+   Sitemap is static: add new public routes there by hand.
 10. New photos are unoptimized multi-MB originals; several carry a third-party watermark.
 11. npm optional-deps bug can break fresh builds (rolldown binding — fix above).
 
@@ -166,7 +172,11 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 4. **No Google Form / WhatsApp** — bookings + enquiries via the site's own Supabase-backed
    forms, surfaced in `/admin`.
 5. Phase plan: (1) design system+layout ✅, (2) Home+About, (3) Products+Interest,
-   (4) Admin ✅, (5) Learn+Connections ✅, (6) Blog+Contact+audit. Commit per phase.
+   (4) Admin ✅, (5) Learn+Connections ✅, (6) Blog+Contact+audit ✅ — refactor complete.
+   Legacy color-token aliases are gone; the palette is only ink/charcoal/graphite/ash/
+   mist/paper. All pages verified 0px horizontal overflow at 375px. Home's latest-blog
+   section renders only when published posts exist. `marked` + `dompurify` render blog
+   bodies (admin-authored, sanitized).
    Phases 2–3 ✅ likewise. Lint is fully clean as of Phase 4.
 
 Known remaining lint debt (pre-existing, resolved as phases touch them): react-refresh

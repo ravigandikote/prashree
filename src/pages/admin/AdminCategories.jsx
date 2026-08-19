@@ -96,15 +96,15 @@ export default function AdminCategories() {
   }
 
   const inputClasses =
-    'w-full px-3 py-2 bg-white border border-border text-secondary focus:outline-none focus:border-primary transition-colors text-sm'
+    'w-full px-3 py-2 bg-white border border-mist text-charcoal focus:outline-none focus:border-ink transition-colors text-sm'
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl font-bold text-primary">Categories</h1>
+        <h1 className="font-display text-2xl font-bold text-ink">Categories</h1>
         <button
           onClick={() => { resetForm(); setShowForm(true) }}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm hover:bg-secondary transition-colors cursor-pointer border-0"
+          className="flex items-center gap-2 px-4 py-2 bg-ink text-white text-sm hover:bg-charcoal transition-colors cursor-pointer border-0"
         >
           <Plus size={14} /> Add Category
         </button>
@@ -113,19 +113,19 @@ export default function AdminCategories() {
       {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center pt-20">
-          <div className="bg-white w-full max-w-lg mx-4 border border-border">
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-display text-lg font-semibold text-primary">
+          <div className="bg-white w-full max-w-lg mx-4 border border-mist">
+            <div className="flex items-center justify-between p-4 border-b border-mist">
+              <h2 className="font-display text-lg font-semibold text-ink">
                 {editing ? 'Edit Category' : 'Add Category'}
               </h2>
-              <button onClick={resetForm} className="text-muted hover:text-primary cursor-pointer bg-transparent border-0">
+              <button onClick={resetForm} className="text-graphite hover:text-ink cursor-pointer bg-transparent border-0">
                 <X size={18} />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-4 space-y-4">
               <div>
-                <label className="block text-xs text-muted mb-1">Name *</label>
+                <label className="block text-xs text-graphite mb-1">Name *</label>
                 <input
                   required
                   value={form.name}
@@ -134,27 +134,27 @@ export default function AdminCategories() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-muted mb-1">Slug</label>
+                <label className="block text-xs text-graphite mb-1">Slug</label>
                 <input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} className={inputClasses} />
               </div>
               <div>
-                <label className="block text-xs text-muted mb-1">Description</label>
+                <label className="block text-xs text-graphite mb-1">Description</label>
                 <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={`${inputClasses} resize-none`} />
               </div>
               <div>
-                <label className="block text-xs text-muted mb-1">Display Order</label>
+                <label className="block text-xs text-graphite mb-1">Display Order</label>
                 <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: e.target.value })} className={inputClasses} />
               </div>
               <div>
-                <label className="block text-xs text-muted mb-1">Image</label>
+                <label className="block text-xs text-graphite mb-1">Image</label>
                 <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} className="text-sm" />
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button type="submit" disabled={saving} className="px-6 py-2 bg-primary text-white text-sm hover:bg-secondary transition-colors disabled:opacity-50 cursor-pointer border-0">
+                <button type="submit" disabled={saving} className="px-6 py-2 bg-ink text-white text-sm hover:bg-charcoal transition-colors disabled:opacity-50 cursor-pointer border-0">
                   {saving ? 'Saving...' : editing ? 'Update' : 'Create'}
                 </button>
-                <button type="button" onClick={resetForm} className="px-6 py-2 border border-border text-muted text-sm hover:text-primary transition-colors cursor-pointer bg-transparent">
+                <button type="button" onClick={resetForm} className="px-6 py-2 border border-mist text-graphite text-sm hover:text-ink transition-colors cursor-pointer bg-transparent">
                   Cancel
                 </button>
               </div>
@@ -167,27 +167,27 @@ export default function AdminCategories() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {categories.length > 0 ? (
           categories.map((cat) => (
-            <div key={cat.id} className="bg-white border border-border p-4 flex items-start gap-4 hover:border-primary transition-colors">
+            <div key={cat.id} className="bg-white border border-mist p-4 flex items-start gap-4 hover:border-ink transition-colors">
               {cat.image_url && (
-                <img src={cat.image_url} alt="" className="w-16 h-16 object-cover bg-lighter shrink-0" />
+                <img src={cat.image_url} alt="" className="w-16 h-16 object-cover bg-paper shrink-0" />
               )}
               <div className="flex-1 min-w-0">
-                <h3 className="font-display font-semibold text-primary">{cat.name}</h3>
-                <p className="text-xs text-muted mt-1 line-clamp-2">{cat.description}</p>
-                <p className="text-xs text-muted mt-1">Order: {cat.display_order}</p>
+                <h3 className="font-display font-semibold text-ink">{cat.name}</h3>
+                <p className="text-xs text-graphite mt-1 line-clamp-2">{cat.description}</p>
+                <p className="text-xs text-graphite mt-1">Order: {cat.display_order}</p>
               </div>
               <div className="flex gap-1 shrink-0">
-                <button onClick={() => openEdit(cat)} className="p-1.5 text-muted hover:text-primary cursor-pointer bg-transparent border-0">
+                <button onClick={() => openEdit(cat)} className="p-1.5 text-graphite hover:text-ink cursor-pointer bg-transparent border-0">
                   <Pencil size={14} />
                 </button>
-                <button onClick={() => handleDelete(cat.id, cat.name)} className="p-1.5 text-muted hover:text-ink cursor-pointer bg-transparent border-0">
+                <button onClick={() => handleDelete(cat.id, cat.name)} className="p-1.5 text-graphite hover:text-ink cursor-pointer bg-transparent border-0">
                   <Trash2 size={14} />
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <div className="col-span-full p-8 text-center text-muted bg-white border border-border">
+          <div className="col-span-full p-8 text-center text-graphite bg-white border border-mist">
             No categories yet. Click "Add Category" to create one.
           </div>
         )}

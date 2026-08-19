@@ -116,15 +116,15 @@ export default function AdminProducts() {
   }
 
   const inputClasses =
-    'w-full px-3 py-2 bg-white border border-border text-secondary focus:outline-none focus:border-primary transition-colors text-sm'
+    'w-full px-3 py-2 bg-white border border-mist text-charcoal focus:outline-none focus:border-ink transition-colors text-sm'
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl font-bold text-primary">Products</h1>
+        <h1 className="font-display text-2xl font-bold text-ink">Products</h1>
         <button
           onClick={() => { resetForm(); setShowForm(true) }}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm hover:bg-secondary transition-colors cursor-pointer border-0"
+          className="flex items-center gap-2 px-4 py-2 bg-ink text-white text-sm hover:bg-charcoal transition-colors cursor-pointer border-0"
         >
           <Plus size={14} /> Add Product
         </button>
@@ -133,12 +133,12 @@ export default function AdminProducts() {
       {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center pt-12 overflow-y-auto">
-          <div className="bg-white w-full max-w-2xl mx-4 border border-border mb-12">
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-display text-lg font-semibold text-primary">
+          <div className="bg-white w-full max-w-2xl mx-4 border border-mist mb-12">
+            <div className="flex items-center justify-between p-4 border-b border-mist">
+              <h2 className="font-display text-lg font-semibold text-ink">
                 {editing ? 'Edit Product' : 'Add Product'}
               </h2>
-              <button onClick={resetForm} className="text-muted hover:text-primary cursor-pointer bg-transparent border-0">
+              <button onClick={resetForm} className="text-graphite hover:text-ink cursor-pointer bg-transparent border-0">
                 <X size={18} />
               </button>
             </div>
@@ -146,7 +146,7 @@ export default function AdminProducts() {
             <form onSubmit={handleSubmit} className="p-4 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-muted mb-1">Name *</label>
+                  <label className="block text-xs text-graphite mb-1">Name *</label>
                   <input
                     required
                     value={form.name}
@@ -155,13 +155,13 @@ export default function AdminProducts() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-muted mb-1">Slug</label>
+                  <label className="block text-xs text-graphite mb-1">Slug</label>
                   <input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} className={inputClasses} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs text-muted mb-1">Description</label>
+                <label className="block text-xs text-graphite mb-1">Description</label>
                 <textarea
                   rows={3}
                   value={form.description}
@@ -172,15 +172,15 @@ export default function AdminProducts() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs text-muted mb-1">Price (₹) *</label>
+                  <label className="block text-xs text-graphite mb-1">Price (₹) *</label>
                   <input type="number" required step="0.01" min="0" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className={inputClasses} />
                 </div>
                 <div>
-                  <label className="block text-xs text-muted mb-1">Sale Price (₹)</label>
+                  <label className="block text-xs text-graphite mb-1">Sale Price (₹)</label>
                   <input type="number" step="0.01" min="0" value={form.sale_price} onChange={(e) => setForm({ ...form, sale_price: e.target.value })} className={inputClasses} />
                 </div>
                 <div>
-                  <label className="block text-xs text-muted mb-1">Category</label>
+                  <label className="block text-xs text-graphite mb-1">Category</label>
                   <select value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })} className={inputClasses}>
                     <option value="">None</option>
                     {categories.map((c) => (
@@ -191,7 +191,7 @@ export default function AdminProducts() {
               </div>
 
               <div>
-                <label className="block text-xs text-muted mb-1">Catalogue PDF URL</label>
+                <label className="block text-xs text-graphite mb-1">Catalogue PDF URL</label>
                 <input
                   value={form.pdf_url}
                   onChange={(e) => setForm({ ...form, pdf_url: e.target.value })}
@@ -201,12 +201,12 @@ export default function AdminProducts() {
               </div>
 
               <div>
-                <label className="block text-xs text-muted mb-1">Vastu note (optional)</label>
+                <label className="block text-xs text-graphite mb-1">Vastu note (optional)</label>
                 <textarea rows={2} value={form.vastu_note} onChange={(e) => setForm({ ...form, vastu_note: e.target.value })} className={`${inputClasses} resize-none`} />
               </div>
 
               <div>
-                <label className="block text-xs text-muted mb-1">Image</label>
+                <label className="block text-xs text-graphite mb-1">Image</label>
                 <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} className="text-sm" />
               </div>
 
@@ -222,10 +222,10 @@ export default function AdminProducts() {
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button type="submit" disabled={saving} className="px-6 py-2 bg-primary text-white text-sm hover:bg-secondary transition-colors disabled:opacity-50 cursor-pointer border-0">
+                <button type="submit" disabled={saving} className="px-6 py-2 bg-ink text-white text-sm hover:bg-charcoal transition-colors disabled:opacity-50 cursor-pointer border-0">
                   {saving ? 'Saving...' : editing ? 'Update' : 'Create'}
                 </button>
-                <button type="button" onClick={resetForm} className="px-6 py-2 border border-border text-muted text-sm hover:text-primary transition-colors cursor-pointer bg-transparent">
+                <button type="button" onClick={resetForm} className="px-6 py-2 border border-mist text-graphite text-sm hover:text-ink transition-colors cursor-pointer bg-transparent">
                   Cancel
                 </button>
               </div>
@@ -235,36 +235,36 @@ export default function AdminProducts() {
       )}
 
       {/* Products Table */}
-      <div className="bg-white border border-border overflow-x-auto">
+      <div className="bg-white border border-mist overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border">
-              <th className="text-left p-3 text-muted font-medium">Product</th>
-              <th className="text-left p-3 text-muted font-medium">Category</th>
-              <th className="text-left p-3 text-muted font-medium">Price</th>
-              <th className="text-left p-3 text-muted font-medium">Status</th>
-              <th className="text-right p-3 text-muted font-medium">Actions</th>
+            <tr className="border-b border-mist">
+              <th className="text-left p-3 text-graphite font-medium">Product</th>
+              <th className="text-left p-3 text-graphite font-medium">Category</th>
+              <th className="text-left p-3 text-graphite font-medium">Price</th>
+              <th className="text-left p-3 text-graphite font-medium">Status</th>
+              <th className="text-right p-3 text-graphite font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.length > 0 ? (
               products.map((p) => (
-                <tr key={p.id} className="border-b border-border last:border-0 hover:bg-lighter/50">
+                <tr key={p.id} className="border-b border-mist last:border-0 hover:bg-paper/50">
                   <td className="p-3">
                     <div className="flex items-center gap-3">
                       {p.images?.[0] && (
-                        <img src={p.images[0]} alt="" className="w-10 h-10 object-cover bg-lighter" />
+                        <img src={p.images[0]} alt="" className="w-10 h-10 object-cover bg-paper" />
                       )}
                       <div>
-                        <p className="font-medium text-primary">{p.name}</p>
-                        <p className="text-xs text-muted">{p.slug}</p>
+                        <p className="font-medium text-ink">{p.name}</p>
+                        <p className="text-xs text-graphite">{p.slug}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="p-3 text-muted">{p.categories?.name || '—'}</td>
+                  <td className="p-3 text-graphite">{p.categories?.name || '—'}</td>
                   <td className="p-3">
                     {p.sale_price ? (
-                      <span>₹{p.sale_price} <span className="line-through text-muted">₹{p.price}</span></span>
+                      <span>₹{p.sale_price} <span className="line-through text-graphite">₹{p.price}</span></span>
                     ) : (
                       <span>₹{p.price}</span>
                     )}
@@ -276,10 +276,10 @@ export default function AdminProducts() {
                     {p.is_featured && <span className="ml-2 px-2 py-0.5 text-xs uppercase tracking-wider border border-graphite text-charcoal">Featured</span>}
                   </td>
                   <td className="p-3 text-right">
-                    <button onClick={() => openEdit(p)} className="p-1.5 text-muted hover:text-primary cursor-pointer bg-transparent border-0" aria-label="Edit">
+                    <button onClick={() => openEdit(p)} className="p-1.5 text-graphite hover:text-ink cursor-pointer bg-transparent border-0" aria-label="Edit">
                       <Pencil size={14} />
                     </button>
-                    <button onClick={() => handleDelete(p.id, p.name)} className="p-1.5 text-muted hover:text-ink cursor-pointer bg-transparent border-0 ml-1" aria-label="Delete">
+                    <button onClick={() => handleDelete(p.id, p.name)} className="p-1.5 text-graphite hover:text-ink cursor-pointer bg-transparent border-0 ml-1" aria-label="Delete">
                       <Trash2 size={14} />
                     </button>
                   </td>
@@ -287,7 +287,7 @@ export default function AdminProducts() {
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-muted">
+                <td colSpan={5} className="p-8 text-center text-graphite">
                   No products yet. Click "Add Product" to create one.
                 </td>
               </tr>

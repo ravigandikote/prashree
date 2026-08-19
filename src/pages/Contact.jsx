@@ -1,184 +1,115 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, Send } from 'lucide-react'
+import { Phone, Mail, MapPin, AtSign } from 'lucide-react'
 import SEO from '../components/SEO'
 import { SectionHeading } from '../components/UI'
-import toast from 'react-hot-toast'
+import Photo from '../components/Photo'
+import EnquiryForm from '../components/EnquiryForm'
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
-  const [submitting, setSubmitting] = useState(false)
-
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setSubmitting(true)
-
-    // In production, send to Supabase or an external email service
-    try {
-      await new Promise((r) => setTimeout(r, 1000)) // simulate
-      toast.success('Message sent! We will get back to you soon.')
-      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
-    } catch {
-      toast.error('Failed to send message. Please try again.')
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  const inputClasses = `
-    w-full px-4 py-3 bg-white border border-border text-secondary
-    focus:outline-none focus:border-primary transition-colors
-    placeholder:text-muted/50 font-body text-sm
-  `
-
   return (
     <>
       <SEO
         title="Contact"
-        description="Get in touch with PraShree Arts. Enquire about artworks, workshops, custom orders, or event decorations by Monica Prakash."
+        description="Get in touch with PraShree Arts — enquire about artworks, classes, custom orders, or event décor by Monica Prakash. Bengaluru."
         path="/contact"
       />
 
       {/* ── Header ── */}
-      <section className="py-16 bg-surface border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white pt-16 md:pt-24 pb-12">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="Get in Touch"
-            subtitle="Have a question about our art, workshops, or custom orders? We'd love to hear from you."
+            align="left"
+            eyebrow="Contact"
+            title="Write to the studio"
+            subtitle="A commission, a class, an occasion to dress — every message reaches Monica directly."
+            className="mb-0"
           />
         </div>
       </section>
 
-      {/* ── Contact Content ── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-5 gap-16">
-            {/* Info */}
+      {/* ── Content ── */}
+      <section className="bg-white pb-20 md:pb-28">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-12 gap-12 lg:gap-16">
+            {/* Info + portrait */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="md:col-span-2 space-y-8"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="md:col-span-5 space-y-8"
             >
-              <div>
-                <h3 className="font-display text-xl font-semibold text-primary">
-                  PraShree Arts
-                </h3>
-                <p className="text-muted text-sm mt-2 leading-relaxed">
-                  Handcrafted art and therapeutic workshops by Monica Prakash.
-                  Available for custom orders, events, and residential workshops
-                  at NeeRav Arts Village.
-                </p>
-              </div>
+              <Photo
+                base="/images/monica/portraits/20251227-IMG_7387"
+                alt="Monica Prakash seated before a wall with a faint mandala mural"
+                treatment="duotone"
+                aspect="aspect-[4/5]"
+                sizes="(min-width: 768px) 40vw, 100vw"
+                priority
+              />
 
-              <div className="space-y-4">
-                <a
-                  href="tel:9353464363"
-                  className="flex items-center gap-4 text-secondary hover:text-primary transition-colors no-underline group"
-                >
-                  <div className="w-10 h-10 border border-border group-hover:border-primary flex items-center justify-center transition-colors">
-                    <Phone size={16} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted uppercase tracking-wider">Phone</p>
-                    <p className="text-sm font-medium">+91 93534 64363</p>
-                  </div>
-                </a>
-
-                <a
-                  href="mailto:info@prashreearts.com"
-                  className="flex items-center gap-4 text-secondary hover:text-primary transition-colors no-underline group"
-                >
-                  <div className="w-10 h-10 border border-border group-hover:border-primary flex items-center justify-center transition-colors">
-                    <Mail size={16} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted uppercase tracking-wider">Email</p>
-                    <p className="text-sm font-medium">info@prashreearts.com</p>
-                  </div>
-                </a>
-
-                <div className="flex items-center gap-4 text-secondary">
-                  <div className="w-10 h-10 border border-border flex items-center justify-center">
-                    <MapPin size={16} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted uppercase tracking-wider">Location</p>
-                    <p className="text-sm font-medium">NeeRav Arts Village</p>
-                  </div>
-                </div>
-              </div>
+              <ul className="space-y-4 list-none p-0">
+                <li>
+                  <a
+                    href="tel:+919353464363"
+                    className="flex items-center gap-4 text-charcoal hover:text-ink transition-colors no-underline group"
+                  >
+                    <span className="w-10 h-10 border border-mist group-hover:border-ink flex items-center justify-center transition-colors">
+                      <Phone size={16} aria-hidden="true" />
+                    </span>
+                    <span>
+                      <span className="block text-small uppercase tracking-label text-ash">Phone</span>
+                      +91 93534 64363
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:info@prashreearts.com"
+                    className="flex items-center gap-4 text-charcoal hover:text-ink transition-colors no-underline group"
+                  >
+                    <span className="w-10 h-10 border border-mist group-hover:border-ink flex items-center justify-center transition-colors">
+                      <Mail size={16} aria-hidden="true" />
+                    </span>
+                    <span>
+                      <span className="block text-small uppercase tracking-label text-ash">Email</span>
+                      info@prashreearts.com
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="[[INSTAGRAM_URL]]"
+                    className="flex items-center gap-4 text-charcoal hover:text-ink transition-colors no-underline group"
+                  >
+                    <span className="w-10 h-10 border border-mist group-hover:border-ink flex items-center justify-center transition-colors">
+                      <AtSign size={16} aria-hidden="true" />
+                    </span>
+                    <span>
+                      <span className="block text-small uppercase tracking-label text-ash">Instagram</span>
+                      [[@instagram-handle]]
+                    </span>
+                  </a>
+                </li>
+                <li className="flex items-center gap-4 text-charcoal">
+                  <span className="w-10 h-10 border border-mist flex items-center justify-center">
+                    <MapPin size={16} aria-hidden="true" />
+                  </span>
+                  <span>
+                    <span className="block text-small uppercase tracking-label text-ash">Location</span>
+                    Bengaluru · NeeRav Arts Village
+                  </span>
+                </li>
+              </ul>
             </motion.div>
 
             {/* Form */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="md:col-span-3"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="md:col-span-7"
             >
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your Name *"
-                    required
-                    value={form.name}
-                    onChange={handleChange}
-                    className={inputClasses}
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address *"
-                    required
-                    value={form.email}
-                    onChange={handleChange}
-                    className={inputClasses}
-                  />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className={inputClasses}
-                  />
-                  <input
-                    type="text"
-                    name="subject"
-                    placeholder="Subject *"
-                    required
-                    value={form.subject}
-                    onChange={handleChange}
-                    className={inputClasses}
-                  />
-                </div>
-                <textarea
-                  name="message"
-                  placeholder="Your Message *"
-                  required
-                  rows={6}
-                  value={form.message}
-                  onChange={handleChange}
-                  className={`${inputClasses} resize-none`}
-                />
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white font-medium tracking-wide hover:bg-secondary transition-colors disabled:opacity-50 cursor-pointer border-0"
-                >
-                  <Send size={16} />
-                  {submitting ? 'Sending...' : 'Send Message'}
-                </button>
-              </form>
+              <EnquiryForm kind="contact" />
             </motion.div>
           </div>
         </div>

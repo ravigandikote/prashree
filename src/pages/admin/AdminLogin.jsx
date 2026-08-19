@@ -31,15 +31,15 @@ export default function AdminLogin() {
     <>
       <SEO title="Admin Login" path="/admin/login" />
 
-      <section className="min-h-[80vh] flex items-center justify-center bg-surface">
+      <section className="min-h-[80vh] flex items-center justify-center bg-paper">
         <div className="w-full max-w-md mx-auto px-4">
-          <div className="bg-white border border-border p-8">
+          <div className="bg-white border border-mist p-8">
             <div className="text-center mb-8">
               <img src={logo} alt="PraShree Arts" className="w-16 h-16 object-contain mx-auto mb-3" />
-              <h1 className="font-display text-2xl font-bold text-primary">
+              <h1 className="font-display text-2xl font-bold text-ink">
                 PraShree Arts
               </h1>
-              <p className="text-muted text-sm mt-2">Admin Dashboard</p>
+              <p className="text-graphite text-sm mt-2">Admin Dashboard</p>
             </div>
 
             {error && (
@@ -50,7 +50,7 @@ export default function AdminLogin() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary mb-1">
+                <label className="block text-sm font-medium text-charcoal mb-1">
                   Email
                 </label>
                 <input
@@ -58,12 +58,12 @@ export default function AdminLogin() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-white border border-border text-secondary focus:outline-none focus:border-primary transition-colors text-sm"
+                  className="w-full px-4 py-3 bg-white border border-mist text-charcoal focus:outline-none focus:border-ink transition-colors text-sm"
                   placeholder="admin@prashreearts.com"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary mb-1">
+                <label className="block text-sm font-medium text-charcoal mb-1">
                   Password
                 </label>
                 <input
@@ -71,14 +71,14 @@ export default function AdminLogin() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-white border border-border text-secondary focus:outline-none focus:border-primary transition-colors text-sm"
+                  className="w-full px-4 py-3 bg-white border border-mist text-charcoal focus:outline-none focus:border-ink transition-colors text-sm"
                   placeholder="Enter your password"
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-primary text-white font-medium tracking-wide hover:bg-secondary transition-colors disabled:opacity-50 cursor-pointer border-0"
+                className="w-full py-3 bg-ink text-white font-medium tracking-wide hover:bg-charcoal transition-colors disabled:opacity-50 cursor-pointer border-0"
               >
                 {loading ? 'Signing In...' : 'Sign In'}
               </button>

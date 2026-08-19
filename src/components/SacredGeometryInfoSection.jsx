@@ -69,13 +69,13 @@ export default function SacredGeometryInfoSection() {
                     transition={{ duration: 0.6 }}
                     className="max-w-3xl mx-auto text-center mb-16"
                 >
-                    <p className="text-muted text-sm tracking-[0.3em] uppercase mb-3">
+                    <p className="text-graphite text-sm tracking-[0.3em] uppercase mb-3">
                         The Art of Stillness
                     </p>
-                    <h2 className="font-display text-3xl md:text-4xl font-bold text-primary mb-6">
+                    <h2 className="font-display text-3xl md:text-4xl font-bold text-ink mb-6">
                         Sacred Geometry &amp; Mandala Practice
                     </h2>
-                    <p className="text-secondary leading-relaxed">
+                    <p className="text-charcoal leading-relaxed">
                         Sacred geometry is the study of patterns, shapes, and proportions that
                         recur throughout nature — from the spiral of a seashell to the
                         symmetry of a snowflake. For thousands of years, cultures across the
@@ -83,7 +83,7 @@ export default function SacredGeometryInfoSection() {
                         circular designs that serve as tools for meditation, healing, and
                         self-discovery.
                     </p>
-                    <p className="text-muted leading-relaxed mt-4">
+                    <p className="text-graphite leading-relaxed mt-4">
                         When we draw a mandala, we engage the mind in a gentle, repetitive
                         rhythm. Each circle, each line, each petal becomes an anchor — pulling
                         our attention away from scattered thoughts and into the present
@@ -94,7 +94,7 @@ export default function SacredGeometryInfoSection() {
                 {/* ── Mandala divider ── */}
                 <div className="flex items-center justify-center gap-3 mb-16">
                     <div className="h-px w-16 bg-gradient-to-r from-transparent to-accent" />
-                    <svg width="20" height="20" viewBox="0 0 20 20" className="text-primary">
+                    <svg width="20" height="20" viewBox="0 0 20 20" className="text-ink">
                         <circle cx="10" cy="10" r="2" stroke="currentColor" strokeWidth="1" fill="none" />
                         <circle cx="10" cy="10" r="5" stroke="currentColor" strokeWidth="0.5" fill="none" />
                         <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 2" fill="none" />
@@ -114,20 +114,20 @@ export default function SacredGeometryInfoSection() {
                         <motion.div
                             key={shape.name}
                             variants={itemVariants}
-                            className="group p-6 border border-border rounded-sm hover:border-primary transition-colors duration-300"
+                            className="group p-6 border border-mist rounded-sm hover:border-ink transition-colors duration-300"
                         >
                             <shape.icon
                                 size={28}
                                 strokeWidth={1.2}
-                                className="text-muted group-hover:text-primary transition-colors duration-300 mb-4"
+                                className="text-graphite group-hover:text-ink transition-colors duration-300 mb-4"
                             />
-                            <h3 className="font-display text-lg font-semibold text-primary mb-1">
+                            <h3 className="font-display text-lg font-semibold text-ink mb-1">
                                 {shape.name}
                             </h3>
-                            <p className="text-xs tracking-[0.15em] uppercase text-muted mb-3">
+                            <p className="text-xs tracking-[0.15em] uppercase text-graphite mb-3">
                                 {shape.meaning}
                             </p>
-                            <p className="text-sm text-secondary leading-relaxed">
+                            <p className="text-sm text-charcoal leading-relaxed">
                                 {shape.description}
                             </p>
                         </motion.div>
@@ -146,7 +146,7 @@ export default function SacredGeometryInfoSection() {
                     >
                         <svg
                             viewBox="0 0 400 400"
-                            className="w-full max-w-sm text-primary"
+                            className="w-full max-w-sm text-ink"
                             fill="none"
                         >
                             {/* Concentric circles using golden ratio scaling */}
@@ -209,21 +209,21 @@ export default function SacredGeometryInfoSection() {
 
                     {/* Text content */}
                     <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h3 className="font-display text-2xl font-bold text-primary mb-4">
+                        <h3 className="font-display text-2xl font-bold text-ink mb-4">
                             How Geometric Repetition Heals
                         </h3>
-                        <p className="text-secondary leading-relaxed mb-4">
+                        <p className="text-charcoal leading-relaxed mb-4">
                             Repeating geometric forms follows the same principle as a mantra in
                             meditation. The mind latches onto the rhythm of drawing identical
                             shapes — circle after circle, petal after petal — and gradually
                             releases its grip on worry and distraction.
                         </p>
-                        <p className="text-muted leading-relaxed mb-6">
+                        <p className="text-graphite leading-relaxed mb-6">
                             Sacred geometry ratios, like the Golden Ratio (φ ≈ 1.618), appear
                             throughout nature and inherently feel balanced to the human eye.
                             When these proportions guide a mandala's structure, the resulting
@@ -232,13 +232,13 @@ export default function SacredGeometryInfoSection() {
                         </p>
 
                         {/* Benefits list */}
-                        <h4 className="font-display text-sm tracking-[0.15em] uppercase text-muted mb-3">
+                        <h4 className="font-display text-sm tracking-[0.15em] uppercase text-graphite mb-3">
                             Benefits of Mandala Practice
                         </h4>
                         <ul className="space-y-2">
                             {benefits.map((benefit, i) => (
-                                <li key={i} className="flex items-start gap-2 text-sm text-secondary">
-                                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                                <li key={i} className="flex items-start gap-2 text-sm text-charcoal">
+                                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-graphite shrink-0" />
                                     {benefit}
                                 </li>
                             ))}
