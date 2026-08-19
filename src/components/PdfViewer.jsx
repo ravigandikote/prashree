@@ -1,12 +1,22 @@
 import { FileText, Download } from 'lucide-react'
+import { usePdfAvailable } from '../lib/usePdfAvailable'
 
 /**
  * Embedded PDF viewer with a download fallback. <object> renders inline where
  * the browser supports it (desktop); elsewhere (e.g. iOS Safari) the fallback
- * content inside the object is shown. The download link is always offered.
+ * content inside the object is shown. Renders a quiet note until the file
+ * really exists (see usePdfAvailable).
  */
 export default function PdfViewer({ url, title = 'Catalogue' }) {
-  if (!url) return null
+  const available = usePdfAvailable(url)
+  if (!url || available === null) return null
+  if (!available) {
+    return (
+      <p className="text-small text-ash border border-mist bg-paper px-4 py-3 inline-flex items-center gap-2">
+        <FileText size={14} aria-hidden="true" /> The catalogue PDF for this piece will be available soon.
+      </p>
+    )
+  }
   return (
     <div>
       <div className="flex items-center justify-between mb-3">

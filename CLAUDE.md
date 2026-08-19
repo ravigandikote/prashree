@@ -55,8 +55,8 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 |---|---|---|
 | `/` | `pages/Home.jsx` — **rebuilt Phase 2**: split hero (logo + 2199 portrait), statement band, Artworks/Learn/Décor/Founder/Community sections, enquiry CTA. All static; no Supabase fallbacks. Latest-blog section deferred to Phase 6. CTAs point at `/categories`+`/workshops` until Phases 3/5 rename them | static |
 | `/about` | `pages/About.jsx` — **rebuilt Phase 2**: 1984 hero, why-B&W + 1132 inset, credentials grid, teaching (7546), décor (4718), beyond-the-studio strip (0812/1516/1862), 20 art-form chips, NeeRav band | static |
-| `/products` | `pages/Products.jsx` — **new Phase 3**: header with 2208, category filter (only categories that have products), ProductCard grid, EmptyState when none | `getProducts`, `getCategories` |
-| `/products/:slug` | `pages/ProductDetail.jsx` — **rebuilt Phase 3**: gallery (plain treatment), price via `formatPrice` (0 → "Price on request"), vastu note, PdfViewer, Express-interest modal. keyed-remount per slug; honest 404 EmptyState | `getProductBySlug`, `createInterest` |
+| `/products` | `pages/Products.jsx` — **catalogue rebuilt 2026-08-19**: sticky filter bar (art form/series/size/price-band/Vastu direction selects with live `(n)` facet counts + disabled-at-0, 200 ms-debounced search over name+intent+pdf+series+form, sort Name/Price↑↓/Size, reset, "n of total" count), all state in the URL query (`useSearchParams`, replace, no scroll jump), mobile bottom-sheet for filters, load-more at 24. Data: `getProducts` filtered to rows with `form`; falls back to `src/data/artworks.js` (built from `PraShree-Products-Metadata/items.json`) when the DB is unreachable/unseeded. Pure logic in `src/lib/catalog.js` (Vitest-covered: `npm test`) | `getProducts` |
+| `/products/:slug` | `pages/ProductDetail.jsx` — framed image, intent, form/series/direction chips, pricing strip (original+range/USD/prints/size/hours), vastu note, availability-checked catalogue-PDF button+viewer (`usePdfAvailable` HEAD-checks content-type because the SPA rewrite 200s missing files), Express-interest modal, JSON-LD Product, per-artwork OG image, "You may also like" (same series → same form, 4). Fallback to local data by slug | `getProductBySlug`, `createInterest` |
 | `/categories`, `/categories/:slug`, `/cart` | redirects → `/products` (legacy shop-era URLs) | — |
 | `/learn` | `pages/Learn.jsx` — **new Phase 5**: 7529 hero, three offering cards (data in `src/data/learn.js`, [[ ]] for unknown durations/needs), 6 residential-workshop cards, community strip; every card opens `EnquiryModal` (kind=booking → `enquiries` table) | `createEnquiry` |
 | `/connections` | `pages/Connections.jsx` — **new Phase 5**: editorial ledger of community roles; data from Supabase `connections`, falling back to `src/data/connections.js`; logo/photo slot renders a mandala-ornament placeholder until images arrive | `getConnections` |
@@ -82,6 +82,22 @@ SVG placeholder, formatPrice), `PdfViewer` (object + download fallback), `Intere
 Contexts: `AuthContext` (Supabase session) — CartContext deleted with the shop flow.
 Libs: `lib/supabase.js` (client + query/CRUD helpers incl. interests/enquiries/posts/
 connections), `lib/format.js` (`formatPrice`). Razorpay is fully removed.
+
+## Artworks catalogue (2026-08-19)
+
+`PraShree-Products-Metadata/items.json` is the source of truth for the 27
+artworks (id/name/size/size_code/price/price_range/usd/prints/hours/series/
+form/intent/direction/pdf/thumb). `npm run artworks:sql` regenerates
+`supabase/migrations/20260820_artworks.sql` (ALTER products + idempotent
+upserts by slug; also deletes the old `sample-%` seeds). Thumbs are committed
+at `public/images/products/thumbs/<id>.jpg`; catalogue PDFs belong in
+`public/catalogues/` (**not yet supplied** — UI hides PDF links until a HEAD
+check sees a real PDF). Products table gained: size, size_code, price_range,
+usd, prints, hours, series, form, intent, direction (+ indexes on form/series/
+size_code/price). Filter reference behaviour ported from
+`PraShree-Products-Metadata/prashree-products-catalog.html`; decisions
+(2026-08-19): monochrome (no plum/gold), keep Vite+Supabase, keep site's own
+interest forms (no WhatsApp/Google Form).
 
 ## Data model (Supabase — `supabase/schema.sql`)
 

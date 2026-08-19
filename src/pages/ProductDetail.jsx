@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, Compass } from 'lucide-react'
+import { ArrowLeft, Compass, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { Helmet } from 'react-helmet-async'
 import SEO from '../components/SEO'
 import { LoadingSpinner, EmptyState } from '../components/UI'
 import Button from '../components/Button'
+import ProductCard from '../components/ProductCard'
 import PdfViewer from '../components/PdfViewer'
+import { usePdfAvailable } from '../lib/usePdfAvailable'
 import { InterestModal } from '../components/InterestForm'
-import { getProductBySlug } from '../lib/supabase'
+import { getProductBySlug, getProducts } from '../lib/supabase'
+import { fallbackArtworks } from '../data/artworks'
 import { formatPrice } from '../lib/format'
 
 export default function ProductDetail() {
@@ -18,6 +22,7 @@ export default function ProductDetail() {
 
 function ProductView({ slug }) {
   const [product, setProduct] = useState(null)
+  const [related, setRelated] = useState([])
   const [notFound, setNotFound] = useState(false)
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(0)
@@ -27,10 +32,40 @@ function ProductView({ slug }) {
     let cancelled = false
     getProductBySlug(slug)
       .then((data) => { if (!cancelled) setProduct(data) })
-      .catch(() => { if (!cancelled) setNotFound(true) })
+      .catch(() => {
+        // database unreachable → serve the bundled catalogue
+        const local = fallbackArtworks.find((a) => a.slug === slug)
+        if (!cancelled) {
+          if (local) setProduct(local)
+          else setNotFound(true)
+        }
+      })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [slug])
+
+  // "You may also like": same series first, then same form, excluding self
+  useEffect(() => {
+    if (!product) return
+    let cancelled = false
+    getProducts()
+      .then((data) => (data?.some((p) => p.form) ? data : fallbackArtworks))
+      .catch(() => fallbackArtworks)
+      .then((all) => {
+        if (cancelled) return
+        const pool = all.filter((a) => a.slug !== product.slug)
+        const same = [
+          ...pool.filter((a) => a.series && a.series === product.series),
+          ...pool.filter(
+            (a) => a.form && a.form === product.form && a.series !== product.series
+          ),
+        ]
+        setRelated(same.slice(0, 4))
+      })
+    return () => { cancelled = true }
+  }, [product])
+
+  const pdfAvailable = usePdfAvailable(product?.pdf_url)
 
   if (loading) return <LoadingSpinner />
   if (notFound || !product) {
@@ -55,9 +90,33 @@ function ProductView({ slug }) {
     <>
       <SEO
         title={product.name}
-        description={product.description || `${product.name} — handcrafted by Monica Prakash at PraShree Arts.`}
+        description={product.intent || product.description || `${product.name} — handcrafted by Monica Prakash at PraShree Arts.`}
         path={`/products/${slug}`}
+        image={product.images?.[0] || undefined}
       />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: product.name,
+            description: product.intent || product.description || undefined,
+            image: product.images?.[0]
+              ? `https://prashreearts.com${product.images[0]}`
+              : undefined,
+            url: `https://prashreearts.com/products/${slug}`,
+            brand: { '@type': 'Brand', name: 'PraShree Arts' },
+            offers: {
+              '@type': 'Offer',
+              priceCurrency: 'INR',
+              price: Number(product.sale_price || product.price) || undefined,
+              availability: product.is_available
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock',
+            },
+          })}
+        </script>
+      </Helmet>
 
       <section className="bg-white py-12 md:py-16">
         <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,25 +183,82 @@ function ProductView({ slug }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
-              {product.categories?.name && (
+              {(product.form || product.categories?.name) && (
                 <p className="text-small uppercase tracking-label text-ash">
-                  {product.categories.name}
+                  {product.form || product.categories?.name}
                 </p>
               )}
               <h1 className="font-display text-display-sm md:text-display text-ink mt-2">
                 {product.name}
               </h1>
+              {product.intent && (
+                <p className="font-display text-h3 text-graphite italic mt-2">
+                  {product.intent}
+                </p>
+              )}
 
-              <p className="text-h3 font-display text-charcoal mt-4">
-                {formatPrice(product.sale_price || product.price)}
-                {product.sale_price ? (
-                  <span className="text-ash text-body line-through ml-3">
-                    {formatPrice(product.price)}
-                  </span>
-                ) : null}
-              </p>
+              {/* Chips */}
+              {(product.form || product.series || product.direction) && (
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {product.form && (
+                    <span className="px-2 py-0.5 bg-ink text-white text-[10px] uppercase tracking-label">
+                      {product.form}
+                    </span>
+                  )}
+                  {product.series && (
+                    <span className="px-2 py-0.5 bg-paper border border-mist text-charcoal text-[10px] uppercase tracking-label">
+                      {product.series}
+                    </span>
+                  )}
+                  {product.direction && (
+                    <span className="px-2 py-0.5 bg-paper border border-mist text-charcoal text-[10px] uppercase tracking-label">
+                      {product.direction}
+                    </span>
+                  )}
+                </div>
+              )}
 
-              {product.description && (
+              {/* Pricing strip (mirrors the catalogue PDF) */}
+              <dl className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-mist border border-mist mt-6 text-center">
+                <div className="bg-white px-3 py-4 col-span-2 sm:col-span-1">
+                  <dt className="text-[10px] uppercase tracking-label text-graphite">Original</dt>
+                  <dd className="font-display text-h2 text-ink mt-1">
+                    {formatPrice(product.sale_price || product.price)}
+                  </dd>
+                  {product.price_range && (
+                    <dd className="text-[11px] text-graphite">{product.price_range}</dd>
+                  )}
+                </div>
+                {product.usd && (
+                  <div className="bg-white px-3 py-4">
+                    <dt className="text-[10px] uppercase tracking-label text-graphite">International</dt>
+                    <dd className="text-charcoal text-small mt-1">{product.usd}</dd>
+                  </div>
+                )}
+                {product.prints && (
+                  <div className="bg-white px-3 py-4">
+                    <dt className="text-[10px] uppercase tracking-label text-graphite">Fine-art prints</dt>
+                    <dd className="text-charcoal text-small mt-1">{product.prints}</dd>
+                    <dd className="text-[11px] text-ash">per print</dd>
+                  </div>
+                )}
+                {product.size && (
+                  <div className="bg-white px-3 py-4">
+                    <dt className="text-[10px] uppercase tracking-label text-graphite">Size</dt>
+                    <dd className="text-charcoal text-small mt-1">{product.size}</dd>
+                  </div>
+                )}
+                {product.hours && (
+                  <div className="bg-white px-3 py-4">
+                    <dt className="text-[10px] uppercase tracking-label text-graphite">Hand-drawn</dt>
+                    <dd className="text-charcoal text-small mt-1">{product.hours}</dd>
+                  </div>
+                )}
+                {/* filler keeps the 3-col grid rectangular on desktop */}
+                <div className="bg-white hidden sm:block" aria-hidden="true" />
+              </dl>
+
+              {product.description && product.description !== product.intent && (
                 <p className="mt-6 text-graphite">{product.description}</p>
               )}
 
@@ -155,9 +271,16 @@ function ProductView({ slug }) {
 
               <hr className="hairline my-8" />
 
-              <Button onClick={() => setShowInterest(true)}>
-                Express interest
-              </Button>
+              <div className="flex flex-wrap gap-3">
+                <Button onClick={() => setShowInterest(true)}>
+                  Express interest
+                </Button>
+                {pdfAvailable && (
+                  <Button variant="outline" href={product.pdf_url} download>
+                    <Download size={14} aria-hidden="true" /> Catalogue PDF
+                  </Button>
+                )}
+              </div>
               <p className="text-small text-ash mt-3">
                 No online payment — Monica will call you to discuss the piece,
                 customisation, and delivery.
@@ -174,6 +297,18 @@ function ProductView({ slug }) {
           {product.pdf_url && (
             <div className="mt-16 max-w-3xl">
               <PdfViewer url={product.pdf_url} title={`${product.name} catalogue`} />
+            </div>
+          )}
+
+          {/* You may also like */}
+          {related.length > 0 && (
+            <div className="mt-20">
+              <h2 className="font-display text-h2 text-ink mb-8">You may also like</h2>
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-[22px]">
+                {related.map((r) => (
+                  <ProductCard key={r.slug} product={r} />
+                ))}
+              </div>
             </div>
           )}
         </div>

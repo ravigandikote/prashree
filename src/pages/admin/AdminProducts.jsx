@@ -20,7 +20,9 @@ export default function AdminProducts() {
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({
-    name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '', is_featured: false, is_available: true,
+    name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '',
+    size: '', size_code: '', price_range: '', usd: '', prints: '', hours: '', series: '', form: '', intent: '', direction: '',
+    is_featured: false, is_available: true,
   })
   const [imageFile, setImageFile] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -37,7 +39,11 @@ export default function AdminProducts() {
   useEffect(() => { loadData() }, [])
 
   const resetForm = () => {
-    setForm({ name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '', is_featured: false, is_available: true })
+    setForm({
+      name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '',
+      size: '', size_code: '', price_range: '', usd: '', prints: '', hours: '', series: '', form: '', intent: '', direction: '',
+      is_featured: false, is_available: true,
+    })
     setImageFile(null)
     setEditing(null)
     setShowForm(false)
@@ -54,6 +60,16 @@ export default function AdminProducts() {
       category_id: product.category_id || '',
       pdf_url: product.pdf_url || '',
       vastu_note: product.vastu_note || '',
+      size: product.size || '',
+      size_code: product.size_code || '',
+      price_range: product.price_range || '',
+      usd: product.usd || '',
+      prints: product.prints || '',
+      hours: product.hours || '',
+      series: product.series || '',
+      form: product.form || '',
+      intent: product.intent || '',
+      direction: product.direction || '',
       is_featured: product.is_featured,
       is_available: product.is_available,
     })
@@ -82,6 +98,16 @@ export default function AdminProducts() {
         category_id: form.category_id || null,
         pdf_url: form.pdf_url || null,
         vastu_note: form.vastu_note || null,
+        size: form.size || null,
+        size_code: form.size_code || null,
+        price_range: form.price_range || null,
+        usd: form.usd || null,
+        prints: form.prints || null,
+        hours: form.hours || null,
+        series: form.series || null,
+        form: form.form || null,
+        intent: form.intent || null,
+        direction: form.direction || null,
         is_featured: form.is_featured,
         is_available: form.is_available,
         images,
