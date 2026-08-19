@@ -61,7 +61,7 @@ export default function Learn() {
                 base="/images/monica/teaching/20251227-IMG_7529"
                 alt="Monica demonstrating a mandala sketch to a seated workshop group under fairy lights, singing bowls on the table"
                 treatment="duotone"
-                aspect="aspect-[4/5]"
+                aspect="aspect-[3/4]"
                 sizes="(min-width: 768px) 50vw, 100vw"
                 priority
               />

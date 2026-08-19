@@ -13,12 +13,13 @@ const SRC = 'images-src'
 const OUT = 'public/images'
 const WIDTHS = [800, 1600, 2400]
 
-// original filename -> destination + fraction of height cropped from the top.
-// cropTop removes the "NeeRav Arts Village" watermark (verified per image;
-// it sits in the top-left or top-right corner) without touching faces.
-// Set cropTop: 0 for clean originals (DSC07336, IMG_5730).
+// original filename -> destination + watermark removal crop (verified per image).
+// cropTop removes a top-corner watermark without touching faces; cropLeft is
+// used instead where the watermark vertically overlaps Monica's head
+// (1958, 4718) but sits in the left ~16% of the frame.
+// Set both to 0 for clean originals (DSC07336, IMG_5730).
 const MAP = {
-  '20250620-IMG_1958.jpg': { dest: 'monica/portraits', cropTop: 0.235 },
+  '20250620-IMG_1958.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.18 },
   '20250620-IMG_1984.jpg': { dest: 'monica/portraits', cropTop: 0.185 },
   '20250620-IMG_1998.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
   '20250620-IMG_2199.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
@@ -30,12 +31,12 @@ const MAP = {
   '20251118-IMG_1862-2.jpg': { dest: 'monica/portraits', cropTop: 0.155 },
   '20251227-IMG_7529.jpg': { dest: 'monica/teaching', cropTop: 0.1 },
   '20251227-IMG_7546.jpg': { dest: 'monica/teaching', cropTop: 0.11 },
-  '20250828-IMG_4718.jpg': { dest: 'monica/decor', cropTop: 0.3 },
+  '20250828-IMG_4718.jpg': { dest: 'monica/decor', cropTop: 0, cropLeft: 0.16 },
   // future: 'DSC07336.jpeg': { dest: 'monica/portraits', cropTop: 0 },
   // future: 'IMG_5730.JPG': { dest: 'connections', cropTop: 0 },
 }
 
-for (const [file, { dest, cropTop = 0 }] of Object.entries(MAP)) {
+for (const [file, { dest, cropTop = 0, cropLeft = 0 }] of Object.entries(MAP)) {
   const src = path.join(SRC, file)
   try { await stat(src) } catch { console.log(`skip (missing): ${file}`); continue }
 
@@ -48,17 +49,19 @@ for (const [file, { dest, cropTop = 0 }] of Object.entries(MAP)) {
   const fullW = rotated ? meta.height : meta.width
   const fullH = rotated ? meta.width : meta.height
   const top = Math.round(fullH * cropTop)
+  const left = Math.round(fullW * cropLeft)
   const cropH = fullH - top
-  const longEdge = Math.max(fullW, cropH)
+  const cropW = fullW - left
+  const longEdge = Math.max(cropW, cropH)
 
   for (const w of WIDTHS) {
     if (w > longEdge) continue
     const outFile = path.join(dir, `${base}-${w}.jpg`)
     try { await stat(outFile); continue } catch { /* build it */ }
-    const resize = fullW >= cropH ? { width: w } : { height: w }
+    const resize = cropW >= cropH ? { width: w } : { height: w }
     await sharp(src)
       .rotate()
-      .extract({ left: 0, top, width: fullW, height: cropH })
+      .extract({ left, top, width: cropW, height: cropH })
       .resize(resize)
       .jpeg({ quality: 78, mozjpeg: true, progressive: true })
       .toFile(outFile)

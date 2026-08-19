@@ -138,6 +138,7 @@ export default function Home() {
         alt="Monica seated by a railing amid greenery, looking into the distance"
         treatment="duotone"
         aspect="aspect-[2/1] md:aspect-[3/1]"
+        position="center 20%"
         sizes="100vw"
         className="w-full"
       />
@@ -204,6 +205,7 @@ export default function Home() {
               alt="Monica behind a dressed anniversary table with a dramatic dried palm-leaf backdrop, cake stand, and marquee letters"
               treatment="duotone"
               aspect="aspect-[2/1]"
+              position="center 20%"
               sizes="(min-width: 1200px) 1200px, 100vw"
             />
           </motion.div>

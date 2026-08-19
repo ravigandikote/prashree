@@ -205,6 +205,7 @@ export default function About() {
               alt="An anniversary décor installation by Monica — dried palm-leaf backdrop, dressed table, and marquee letters"
               treatment="duotone"
               aspect="aspect-[2/1]"
+              position="center 20%"
               sizes="(min-width: 1200px) 1200px, 100vw"
             />
           </motion.div>

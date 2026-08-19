@@ -149,8 +149,13 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
   derivatives into `public/images/monica/{portraits,teaching,decor}/` per the map in the
   script. 13 photos processed. The watermark (top-left OR top-right, includes a long
   script swash tail) is **cropped out at derivative time** via per-image `cropTop`
-  fractions in the script's MAP (0.095–0.30, visually verified) — derivatives in
-  public/images are watermark-free, so components never need defensive positioning.
+  fractions in the script's MAP (visually verified) — except 1958 and 4718, where
+  the watermark vertically overlaps Monica's head, so those use `cropLeft` (0.18/0.16)
+  instead; their wide-banner placements pass `position="center 20%"` to keep her head
+  in frame. Head-crop audit (2026-08-19): every rendered photo checked element-by-
+  element; the saree-shoot portraits (2199/2208/1984) are inherently tight above the
+  hair because watermark+swash reach ~17% while her hair starts ~6% — unavoidable
+  until clean originals arrive.
   The brief references files **not yet supplied**:
   `DSC07336.jpeg`, `IMG_5730.JPG` (connections), `public/images/products/*` shadow-box photos.
 
