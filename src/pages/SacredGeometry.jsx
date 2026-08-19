@@ -69,7 +69,7 @@ export default function SacredGeometry() {
                                 Browse Mandala Art
                             </a>
                             <a
-                                href="/workshops"
+                                href="/learn"
                                 className="px-6 py-3 border border-primary text-primary font-medium tracking-wide
                            rounded-sm hover:bg-primary hover:text-white transition-colors no-underline"
                             >

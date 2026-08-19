@@ -51,7 +51,7 @@ export default function Home() {
                 <Button to="/products">
                   View Artworks <ArrowRight size={14} />
                 </Button>
-                <Button to="/workshops" variant="outline">
+                <Button to="/learn" variant="outline">
                   Learn with Monica
                 </Button>
               </div>
@@ -171,7 +171,7 @@ export default function Home() {
                   </p>
                 </li>
               </ul>
-              <Button to="/workshops" variant="link" className="mt-8">
+              <Button to="/learn" variant="link" className="mt-8">
                 See all offerings <ArrowRight size={14} />
               </Button>
             </motion.div>
@@ -263,8 +263,8 @@ export default function Home() {
                 Director at NeeRav Arts Village and through community and
                 social-service partnerships around Bengaluru.
               </p>
-              <Button to="/about" variant="link" className="mt-8">
-                About her work <ArrowRight size={14} />
+              <Button to="/connections" variant="link" className="mt-8">
+                See her connections <ArrowRight size={14} />
               </Button>
             </motion.div>
           </div>

@@ -11,7 +11,8 @@ const Home = lazy(() => import('./pages/Home'))
 const About = lazy(() => import('./pages/About'))
 const Products = lazy(() => import('./pages/Products'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
-const Workshops = lazy(() => import('./pages/Workshops'))
+const Learn = lazy(() => import('./pages/Learn'))
+const Connections = lazy(() => import('./pages/Connections'))
 const Contact = lazy(() => import('./pages/Contact'))
 const SacredGeometry = lazy(() => import('./pages/SacredGeometry'))
 
@@ -47,9 +48,12 @@ export default function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:slug" element={<ProductDetail />} />
-                <Route path="/workshops" element={<Workshops />} />
+                <Route path="/learn" element={<Learn />} />
+                <Route path="/connections" element={<Connections />} />
                 <Route path="/sacred-geometry" element={<SacredGeometry />} />
                 <Route path="/contact" element={<Contact />} />
+
+                <Route path="/workshops" element={<Navigate to="/learn" replace />} />
 
                 {/* Legacy routes from the shop era */}
                 <Route path="/categories" element={<Navigate to="/products" replace />} />

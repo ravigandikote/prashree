@@ -58,7 +58,9 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 | `/products` | `pages/Products.jsx` — **new Phase 3**: header with 2208, category filter (only categories that have products), ProductCard grid, EmptyState when none | `getProducts`, `getCategories` |
 | `/products/:slug` | `pages/ProductDetail.jsx` — **rebuilt Phase 3**: gallery (plain treatment), price via `formatPrice` (0 → "Price on request"), vastu note, PdfViewer, Express-interest modal. keyed-remount per slug; honest 404 EmptyState | `getProductBySlug`, `createInterest` |
 | `/categories`, `/categories/:slug`, `/cart` | redirects → `/products` (legacy shop-era URLs) | — |
-| `/workshops` | `pages/Workshops.jsx` — 6 hard-coded workshop cards, links to /contact | static |
+| `/learn` | `pages/Learn.jsx` — **new Phase 5**: 7529 hero, three offering cards (data in `src/data/learn.js`, [[ ]] for unknown durations/needs), 6 residential-workshop cards, community strip; every card opens `EnquiryModal` (kind=booking → `enquiries` table) | `createEnquiry` |
+| `/connections` | `pages/Connections.jsx` — **new Phase 5**: editorial ledger of community roles; data from Supabase `connections`, falling back to `src/data/connections.js`; logo/photo slot renders a mandala-ornament placeholder until images arrive | `getConnections` |
+| `/workshops` | redirect → `/learn` | — |
 | `/sacred-geometry` | `pages/SacredGeometry.jsx` — educational sections + interactive SVG mandala generator (`PatternGenerator` + `MandalaCanvas`, golden-ratio math) | static |
 | `/contact` | `pages/Contact.jsx` — info + form that **fakes success** (setTimeout, message discarded) — Phase 6 wires it to `createEnquiry` | none |
 | `/admin/login` | Supabase email/password sign-in (monochrome) | Supabase Auth |
@@ -72,6 +74,7 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 EmptyState), `Button`, `Photo`, `Form.jsx`, `ProductCard` (plain-treatment photo, inline
 SVG placeholder, formatPrice), `PdfViewer` (object + download fallback), `InterestForm` +
 `InterestModal` (Indian-phone validation `/^(\+91[-\s]?)?[6-9]\d{9}$/`),
+`EnquiryForm` + `EnquiryModal` (kind contact|booking|decor; requires phone OR email),
 `SacredGeometryInfoSection`, `PatternGenerator`, `MandalaCanvas`.
 
 Contexts: `AuthContext` (Supabase session) — CartContext deleted with the shop flow.
@@ -163,7 +166,7 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 4. **No Google Form / WhatsApp** — bookings + enquiries via the site's own Supabase-backed
    forms, surfaced in `/admin`.
 5. Phase plan: (1) design system+layout ✅, (2) Home+About, (3) Products+Interest,
-   (4) Admin ✅, (5) Learn+Connections, (6) Blog+Contact+audit. Commit per phase.
+   (4) Admin ✅, (5) Learn+Connections ✅, (6) Blog+Contact+audit. Commit per phase.
    Phases 2–3 ✅ likewise. Lint is fully clean as of Phase 4.
 
 Known remaining lint debt (pre-existing, resolved as phases touch them): react-refresh

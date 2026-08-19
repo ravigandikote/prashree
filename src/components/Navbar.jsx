@@ -8,7 +8,8 @@ const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
   { to: '/products', label: 'Artworks' },
-  { to: '/workshops', label: 'Workshops' },
+  { to: '/learn', label: 'Learn' },
+  { to: '/connections', label: 'Connections' },
   { to: '/sacred-geometry', label: 'Sacred Geometry' },
   { to: '/contact', label: 'Contact' },
 ]

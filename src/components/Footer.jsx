@@ -35,7 +35,8 @@ export default function Footer() {
                 { to: '/', label: 'Home' },
                 { to: '/about', label: 'About Monica' },
                 { to: '/products', label: 'Artworks & Products' },
-                { to: '/workshops', label: 'Workshops' },
+                { to: '/learn', label: 'Learn with Monica' },
+                { to: '/connections', label: 'Connections' },
                 { to: '/contact', label: 'Contact' },
               ].map((link) => (
                 <li key={link.to}>
@@ -59,7 +60,7 @@ export default function Footer() {
               {[
                 { to: '/products', label: 'The Collection' },
                 { to: '/sacred-geometry', label: 'Sacred Geometry' },
-                { to: '/workshops', label: 'Workshops & Classes' },
+                { to: '/learn', label: 'Workshops & Classes' },
                 { to: '/contact', label: 'Bespoke Orders' },
               ].map((link) => (
                 <li key={link.to}>
