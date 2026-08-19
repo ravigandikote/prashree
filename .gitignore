@@ -27,3 +27,6 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Source originals for scripts/optimize-images.mjs (multi-MB camera files, not shipped)
+images-src/

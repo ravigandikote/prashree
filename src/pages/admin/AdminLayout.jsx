@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Link, Outlet, useLocation, Navigate } from 'react-router-dom'
 import { LayoutDashboard, Package, Grid3X3, ShoppingCart, Image, LogOut } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'

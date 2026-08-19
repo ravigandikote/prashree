@@ -1,125 +1,132 @@
 @import "tailwindcss";
 
-/* ── PraShree Arts: Black & White Mandala Theme ── */
+/* ════════════════════════════════════════════════════════════════════
+   PraShree Arts — monochrome design system
+   Palette is strictly grayscale; hierarchy comes from contrast, weight,
+   size, and whitespace. No accent colors anywhere.
+   ════════════════════════════════════════════════════════════════════ */
 
 @theme {
-  --color-primary: #000000;
-  --color-secondary: #1a1a1a;
-  --color-accent: #333333;
-  --color-muted: #666666;
-  --color-light: #e5e5e5;
-  --color-lighter: #f5f5f5;
-  --color-surface: #fafafa;
-  --color-border: #d4d4d4;
+  /* ── Palette ── */
+  --color-ink: #0a0a0a;
+  --color-charcoal: #1f1f1f;
+  --color-graphite: #4a4a4a;
+  --color-ash: #9a9a9a;
+  --color-mist: #e6e6e6;
+  --color-paper: #f7f6f3; /* warm off-white */
 
-  --font-display: "Playfair Display", serif;
-  --font-body: "Inter", sans-serif;
+  /* Legacy aliases → remapped onto the new palette so unmigrated pages
+     stay monochrome. Remove after the final audit. */
+  --color-primary: #0a0a0a;
+  --color-secondary: #1f1f1f;
+  --color-accent: #4a4a4a;
+  --color-muted: #4a4a4a;
+  --color-light: #e6e6e6;
+  --color-lighter: #f0efec;
+  --color-surface: #f7f6f3;
+  --color-border: #e6e6e6;
+
+  /* ── Typography ── */
+  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --font-body: "Karla", "Segoe UI", system-ui, sans-serif;
+
+  /* Type scale (display / headings in Cormorant, light-to-regular weight) */
+  --text-display-xl: 4rem;            /* 64 */
+  --text-display-xl--line-height: 1.05;
+  --text-display-xl--font-weight: 400;
+  --text-display: 3rem;               /* 48 */
+  --text-display--line-height: 1.1;
+  --text-display--font-weight: 400;
+  --text-display-sm: 2.25rem;         /* 36 */
+  --text-display-sm--line-height: 1.15;
+  --text-display-sm--font-weight: 400;
+  --text-h2: 2rem;                    /* 32 */
+  --text-h2--line-height: 1.2;
+  --text-h2--font-weight: 400;
+  --text-h3: 1.5rem;                  /* 24 */
+  --text-h3--line-height: 1.3;
+  --text-h3--font-weight: 500;
+  --text-body: 1.0625rem;             /* 17 */
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;             /* 14 */
+  --text-small--line-height: 1.5;
+
+  /* Wide letter-spacing for uppercase eyebrow labels */
+  --tracking-label: 0.18em;
+
+  /* Content measure (~1200px) */
+  --container-content: 75rem;
 }
 
-/* ── Base styles ── */
-body {
-  font-family: var(--font-body);
-  background-color: #ffffff;
-  color: #1a1a1a;
+/* ── Base (layered so Tailwind utilities always win) ── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    background-color: #ffffff;
+    color: var(--color-charcoal);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: inherit;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: #ffffff;
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-display);
+@layer components {
+  /* ── Hairline divider ── */
+  .hairline {
+    height: 1px;
+    background-color: var(--color-mist);
+    border: 0;
+  }
+
+  /* ── Photo treatments (used by <Photo>) ── */
+  .treat-grayscale {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+  }
+  .treat-grayscale:hover,
+  a:hover .treat-grayscale,
+  .group:hover .treat-grayscale {
+    filter: grayscale(0%);
+  }
+
+  /* Soft warm-grey duotone for hero / décor imagery */
+  .treat-duotone {
+    filter: grayscale(100%) sepia(14%) contrast(0.96) brightness(1.02);
+  }
 }
 
-/* ── Mandala decorative border pattern ── */
-.mandala-border {
-  border-image: repeating-linear-gradient(90deg,
-      #000 0px,
-      #000 4px,
-      transparent 4px,
-      transparent 8px,
-      #000 8px,
-      #000 10px,
-      transparent 10px,
-      transparent 16px) 10;
-  border-width: 2px;
-  border-style: solid;
-}
-
-/* ── Mandala-inspired section divider ── */
-.mandala-divider {
-  position: relative;
-  text-align: center;
-  overflow: visible;
-}
-
-.mandala-divider::before,
-.mandala-divider::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 40%;
-  height: 1px;
-  background: linear-gradient(to var(--dir, right), #000, transparent);
-}
-
-.mandala-divider::before {
-  left: 0;
-  --dir: right;
-}
-
-.mandala-divider::after {
-  right: 0;
-  --dir: left;
-}
-
-/* ── Smooth scroll ── */
-html {
-  scroll-behavior: smooth;
-}
-
-/* ── Image grayscale hover ── */
-.grayscale-hover {
-  filter: grayscale(100%);
-  transition: filter 0.4s ease;
-}
-
-.grayscale-hover:hover {
-  filter: grayscale(0%);
-}
-
-/* ── Scrollbar styling ── */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar {
   width: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f5f5f5;
+  background: var(--color-paper);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #999;
+  background: var(--color-ash);
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #666;
+  background: var(--color-graphite);
 }
 
-/* ── Loading skeleton ── */
-.skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-
-  100% {
-    background-position: -200% 0;
-  }
+/* ── Visible focus for keyboard users ── */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
 }

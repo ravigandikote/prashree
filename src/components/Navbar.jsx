@@ -8,7 +8,7 @@ import logo from '../assets/logo.png'
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
-  { to: '/categories', label: 'Art Categories' },
+  { to: '/categories', label: 'Art' },
   { to: '/workshops', label: 'Workshops' },
   { to: '/sacred-geometry', label: 'Sacred Geometry' },
   { to: '/contact', label: 'Contact' },
@@ -19,32 +19,33 @@ export default function Navbar() {
   const { totalItems } = useCart()
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-mist">
+      <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 no-underline">
-            <img src={logo} alt="PraShree Arts" className="h-10 w-10 object-contain" />
+          <Link to="/" className="flex items-center gap-3 no-underline">
+            <img src={logo} alt="PraShree Arts mandala logo" className="h-11 w-11 object-contain" />
             <div className="flex flex-col leading-tight">
-              <span className="font-display text-xl font-bold tracking-tight text-primary">
+              <span className="font-display text-2xl text-ink tracking-tight">
                 PraShree
               </span>
-              <span className="font-display text-[10px] text-muted tracking-[0.2em] uppercase -mt-0.5">
+              <span className="text-[10px] text-graphite tracking-label uppercase -mt-1">
                 Arts
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop navigation */}
+          <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
-                  `text-sm font-medium tracking-wide transition-colors no-underline ${isActive
-                    ? 'text-primary'
-                    : 'text-muted hover:text-primary'
+                  `text-small uppercase tracking-label transition-colors no-underline pb-1 border-b ${
+                    isActive
+                      ? 'text-ink border-ink'
+                      : 'text-graphite border-transparent hover:text-ink'
                   }`
                 }
               >
@@ -53,15 +54,16 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Cart + Mobile Menu */}
+          {/* Cart + mobile menu */}
           <div className="flex items-center gap-4">
             <Link
               to="/cart"
-              className="relative p-2 text-secondary hover:text-primary transition-colors"
+              className="relative p-2 text-charcoal hover:text-ink transition-colors"
+              aria-label={`Cart, ${totalItems} items`}
             >
               <ShoppingBag size={20} />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs flex items-center justify-center rounded-full">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-ink text-white text-xs flex items-center justify-center rounded-full">
                   {totalItems}
                 </span>
               )}
@@ -69,8 +71,9 @@ export default function Navbar() {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-secondary hover:text-primary"
+              className="md:hidden p-2 text-charcoal hover:text-ink bg-transparent border-0 cursor-pointer"
               aria-label="Toggle menu"
+              aria-expanded={isOpen}
             >
               {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -78,24 +81,25 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile navigation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden border-t border-border bg-white"
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="md:hidden overflow-hidden border-t border-mist bg-white"
           >
-            <div className="px-4 py-4 space-y-2">
+            <div className="px-4 py-4 space-y-1">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `block py-2 text-sm font-medium no-underline ${isActive ? 'text-primary' : 'text-muted'
+                    `block py-2.5 text-small uppercase tracking-label no-underline ${
+                      isActive ? 'text-ink' : 'text-graphite'
                     }`
                   }
                 >
