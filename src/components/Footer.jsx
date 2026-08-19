@@ -34,7 +34,7 @@ export default function Footer() {
               {[
                 { to: '/', label: 'Home' },
                 { to: '/about', label: 'About Monica' },
-                { to: '/categories', label: 'Art Categories' },
+                { to: '/products', label: 'Artworks & Products' },
                 { to: '/workshops', label: 'Workshops' },
                 { to: '/contact', label: 'Contact' },
               ].map((link) => (
@@ -50,18 +50,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Art forms */}
+          {/* Studio */}
           <div>
             <h4 className="text-small uppercase tracking-label text-white/80 mb-4">
-              Art Forms
+              Studio
             </h4>
             <ul className="space-y-2 list-none p-0">
               {[
-                { to: '/categories/mandala-art', label: 'Mandala Art' },
-                { to: '/categories/janur-art', label: 'Janur Art' },
-                { to: '/categories/wall-arts', label: 'Wall Arts' },
-                { to: '/categories/home-decor', label: 'Home Décor' },
-                { to: '/categories/abstract-paintings', label: 'Abstract Paintings' },
+                { to: '/products', label: 'The Collection' },
+                { to: '/sacred-geometry', label: 'Sacred Geometry' },
+                { to: '/workshops', label: 'Workshops & Classes' },
+                { to: '/contact', label: 'Bespoke Orders' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link

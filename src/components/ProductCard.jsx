@@ -1,74 +1,50 @@
 import { Link } from 'react-router-dom'
-import { ShoppingBag } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useCart } from '../context/CartContext'
-import toast from 'react-hot-toast'
+import Photo from './Photo'
+import { formatPrice } from '../lib/format'
+
+/* Neutral local placeholder — shown until real product photos are uploaded */
+const PLACEHOLDER =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f7f6f3"/><circle cx="200" cy="200" r="90" fill="none" stroke="#d4d2cc" stroke-width="1.5"/><circle cx="200" cy="200" r="60" fill="none" stroke="#d4d2cc" stroke-width="1"/><circle cx="200" cy="200" r="30" fill="none" stroke="#d4d2cc" stroke-width="1"/></svg>'
+  )
 
 export default function ProductCard({ product, index = 0 }) {
-  const { addItem } = useCart()
-  const placeholderImage = `https://placehold.co/400x400/1a1a1a/ffffff?text=${encodeURIComponent(product.name)}`
-  const imageUrl = product.images?.[0] || placeholderImage
-
-  const handleAddToCart = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    addItem(product)
-    toast.success(`${product.name} added to cart`)
-  }
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
     >
-      <Link
-        to={`/products/${product.slug}`}
-        className="group block no-underline"
-      >
-        <div className="relative aspect-square overflow-hidden bg-lighter rounded-sm">
-          <img
-            src={imageUrl}
-            alt={product.name}
-            loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          {/* Quick add button */}
-          <button
-            onClick={handleAddToCart}
-            className="absolute bottom-3 right-3 p-2.5 bg-white text-primary rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-white cursor-pointer"
-            aria-label={`Add ${product.name} to cart`}
-          >
-            <ShoppingBag size={16} />
-          </button>
-          {/* Sale badge */}
-          {product.sale_price && (
-            <span className="absolute top-3 left-3 bg-primary text-white text-xs px-2 py-1 tracking-wider uppercase">
-              Sale
-            </span>
+      <Link to={`/products/${product.slug}`} className="group block no-underline">
+        {/* Product photos stay untouched (treatment: plain) so customers see true colours */}
+        <Photo
+          src={product.images?.[0] || PLACEHOLDER}
+          alt={product.name}
+          treatment="plain"
+          aspect="aspect-square"
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+          imgClassName="group-hover:scale-[1.03] transition-transform duration-300"
+        />
+        <div className="mt-4">
+          {product.categories?.name && (
+            <p className="text-small uppercase tracking-label text-ash">
+              {product.categories.name}
+            </p>
           )}
-        </div>
-        <div className="mt-3">
-          <h3 className="font-display text-base font-semibold text-primary">
+          <h3 className="font-display text-h3 text-ink mt-1 group-hover:underline decoration-1 underline-offset-4">
             {product.name}
           </h3>
-          <div className="flex items-center gap-2 mt-1">
+          <p className="text-charcoal mt-1">
+            {formatPrice(product.sale_price || product.price)}
             {product.sale_price ? (
-              <>
-                <span className="text-primary font-semibold">
-                  &#8377;{product.sale_price.toLocaleString('en-IN')}
-                </span>
-                <span className="text-muted text-sm line-through">
-                  &#8377;{product.price.toLocaleString('en-IN')}
-                </span>
-              </>
-            ) : (
-              <span className="text-primary font-semibold">
-                &#8377;{product.price.toLocaleString('en-IN')}
+              <span className="text-ash text-small line-through ml-2">
+                {formatPrice(product.price)}
               </span>
-            )}
-          </div>
+            ) : null}
+          </p>
         </div>
       </Link>
     </motion.div>

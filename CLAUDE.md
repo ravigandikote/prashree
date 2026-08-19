@@ -55,30 +55,34 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 |---|---|---|
 | `/` | `pages/Home.jsx` — **rebuilt Phase 2**: split hero (logo + 2199 portrait), statement band, Artworks/Learn/Décor/Founder/Community sections, enquiry CTA. All static; no Supabase fallbacks. Latest-blog section deferred to Phase 6. CTAs point at `/categories`+`/workshops` until Phases 3/5 rename them | static |
 | `/about` | `pages/About.jsx` — **rebuilt Phase 2**: 1984 hero, why-B&W + 1132 inset, credentials grid, teaching (7546), décor (4718), beyond-the-studio strip (0812/1516/1862), 20 art-form chips, NeeRav band | static |
-| `/categories` | `pages/Categories.jsx` — grid of 20 categories | `getCategories` + fallback list |
-| `/categories/:slug` | `pages/CategoryDetail.jsx` — products/gallery tabs | `getCategoryBySlug`, `getProducts`, `getGalleryByCategory` |
-| `/products/:slug` | `pages/ProductDetail.jsx` — gallery, qty, Add to Cart, Buy Now (Razorpay) | `getProductBySlug` (fabricates a fake product on error!) |
+| `/products` | `pages/Products.jsx` — **new Phase 3**: header with 2208, category filter (only categories that have products), ProductCard grid, EmptyState when none | `getProducts`, `getCategories` |
+| `/products/:slug` | `pages/ProductDetail.jsx` — **rebuilt Phase 3**: gallery (plain treatment), price via `formatPrice` (0 → "Price on request"), vastu note, PdfViewer, Express-interest modal. keyed-remount per slug; honest 404 EmptyState | `getProductBySlug`, `createInterest` |
+| `/categories`, `/categories/:slug`, `/cart` | redirects → `/products` (legacy shop-era URLs) | — |
 | `/workshops` | `pages/Workshops.jsx` — 6 hard-coded workshop cards, links to /contact | static |
 | `/sacred-geometry` | `pages/SacredGeometry.jsx` — educational sections + interactive SVG mandala generator (`PatternGenerator` + `MandalaCanvas`, golden-ratio math) | static |
-| `/contact` | `pages/Contact.jsx` — info + form that **fakes success** (setTimeout, message discarded) | none |
-| `/cart` | `pages/Cart.jsx` — localStorage cart, checkout form, Razorpay | `createOrder`, `updateOrderPayment` |
+| `/contact` | `pages/Contact.jsx` — info + form that **fakes success** (setTimeout, message discarded) — Phase 6 wires it to `createEnquiry` | none |
 | `/admin/login` | Supabase email/password sign-in | Supabase Auth |
 | `/admin/*` | `AdminLayout` (auth-guarded) → Dashboard, Products, Categories, Orders, Media — CRUD tables/modals | `lib/supabase.js` helpers |
 
 ## Components (`src/components/`)
 
-`Layout`, `Navbar` (sticky, mobile drawer, cart badge), `Footer` (black bg, links, contact:
-+91 93534 64363, info@prashreearts.com, "NeeRav Arts Village"), `SEO`, `ScrollToTop`,
-`UI.jsx` (SectionHeading + MandalaOrnament + MandalaHeroBg + LoadingSpinner + EmptyState),
-`CategoryCard`, `ProductCard` (quick-add, sale badge), `GalleryGrid` (masonry + lightbox),
-`RazorpayButton`, `SacredGeometryInfoSection`, `PatternGenerator`, `MandalaCanvas`.
+`Layout`, `Navbar` (sticky, mobile drawer; no cart), `Footer` (ink bg; contact:
++91 93534 64363, info@prashreearts.com, "Bengaluru · NeeRav Arts Village"), `SEO`,
+`ScrollToTop`, `UI.jsx` (SectionHeading/MandalaOrnament/MandalaHeroBg/LoadingSpinner/
+EmptyState), `Button`, `Photo`, `Form.jsx`, `ProductCard` (plain-treatment photo, inline
+SVG placeholder, formatPrice), `PdfViewer` (object + download fallback), `InterestForm` +
+`InterestModal` (Indian-phone validation `/^(\+91[-\s]?)?[6-9]\d{9}$/`),
+`SacredGeometryInfoSection`, `PatternGenerator`, `MandalaCanvas`.
 
-Contexts: `AuthContext` (Supabase session), `CartContext` (localStorage `prashree_cart`).
-Libs: `lib/supabase.js` (client + all query/CRUD helpers), `lib/razorpay.js` (script loader,
-checkout modal, order-number generator, and a `createRazorpayOrder` that POSTs to a
-**nonexistent** `/api/create-razorpay-order`).
+Contexts: `AuthContext` (Supabase session) — CartContext deleted with the shop flow.
+Libs: `lib/supabase.js` (client + query/CRUD helpers incl. interests/enquiries/posts/
+connections), `lib/format.js` (`formatPrice`). Razorpay is fully removed.
 
 ## Data model (Supabase — `supabase/schema.sql`)
+
+Fresh installs run `schema.sql` **then** `supabase/migrations/20260819_refactor.sql`
+(adds products.pdf_url/vastu_note, `interests`, `enquiries`, `posts`, `connections` +
+RLS + placeholder seeds; existing DBs run just the migration).
 
 - `categories` (id uuid, name, slug, description, image_url, display_order) — seeded with the 20 art categories
 - `products` (id, category_id FK→categories CASCADE, name, slug, description, price numeric, sale_price, images text[], is_featured, is_available, timestamps)
@@ -136,15 +140,11 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 
 ## Fragile / half-done / inconsistent
 
-1. Contact form fakes success and drops the message.
-2. `Cart.jsx` checkout creates a Supabase order but never opens payment (comment: "In
-   production…"); `handlePaymentSuccess` calls `updateOrderPayment(razorpay_order_id, …)`
-   but that helper filters `eq('id', …)` (row uuid) — the update can never match. `ProductDetail`
-   "Buy Now" opens Razorpay with no `order_id` and no server verification.
-3. `ProductDetail`/`CategoryDetail` fabricate fake products/categories on fetch failure —
-   any slug "exists" with an invented ₹2,500 price.
-4. Fallback demo data on Home/Categories masks Supabase misconfiguration.
-5. Admin UI uses green/red/yellow/blue/amber status colors — violates the monochrome brand.
+1. Contact form fakes success and drops the message (Phase 6 fixes → `createEnquiry`).
+2. ~~Cart/Razorpay~~ — removed in Phase 3 (files deleted; `orders` table kept as history).
+3. ~~Fake product fabrication~~ — fixed in Phase 3 (honest 404s, no invented prices).
+4. ~~Fallback demo data on Home~~ — removed in Phase 2.
+5. Admin UI uses green/red/yellow status colors — violates monochrome (Phase 4 fixes).
 6. `media` table unused; storage bucket naming inconsistent (see above).
 7. Old root CLAUDE.md claimed React 18; package.json is React 19. `.nvmrc`=18, env runs 24.
 8. `react-helmet-async@3` with React 19 — works but peer-dep pressure; consider replacing.

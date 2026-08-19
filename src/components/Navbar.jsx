@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Menu, X, ShoppingBag } from 'lucide-react'
-import { useCart } from '../context/CartContext'
+import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import logo from '../assets/logo.png'
 
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
-  { to: '/categories', label: 'Art' },
+  { to: '/products', label: 'Artworks' },
   { to: '/workshops', label: 'Workshops' },
   { to: '/sacred-geometry', label: 'Sacred Geometry' },
   { to: '/contact', label: 'Contact' },
@@ -16,7 +15,6 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const { totalItems } = useCart()
 
   return (
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-mist">
@@ -54,21 +52,8 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Cart + mobile menu */}
-          <div className="flex items-center gap-4">
-            <Link
-              to="/cart"
-              className="relative p-2 text-charcoal hover:text-ink transition-colors"
-              aria-label={`Cart, ${totalItems} items`}
-            >
-              <ShoppingBag size={20} />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-ink text-white text-xs flex items-center justify-center rounded-full">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-
+          {/* Mobile menu */}
+          <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden p-2 text-charcoal hover:text-ink bg-transparent border-0 cursor-pointer"

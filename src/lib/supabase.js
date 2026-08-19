@@ -179,6 +179,92 @@ export async function deleteGalleryItem(id) {
   if (error) throw error
 }
 
+/* ── Interests (express-interest requests) ── */
+export async function createInterest(interest) {
+  const { error } = await supabase.from('interests').insert([interest])
+  if (error) throw error
+}
+
+export async function getInterests() {
+  const { data, error } = await supabase
+    .from('interests')
+    .select('*, products(name, slug)')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+
+export async function updateInterest(id, updates) {
+  const { data, error } = await supabase
+    .from('interests')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+/* ── Enquiries (contact / booking form) ── */
+export async function createEnquiry(enquiry) {
+  const { error } = await supabase.from('enquiries').insert([enquiry])
+  if (error) throw error
+}
+
+export async function getEnquiries() {
+  const { data, error } = await supabase
+    .from('enquiries')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+
+export async function updateEnquiry(id, updates) {
+  const { data, error } = await supabase
+    .from('enquiries')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+/* ── Posts (blog) ── */
+export async function getPublishedPosts({ limit } = {}) {
+  let query = supabase
+    .from('posts')
+    .select('*')
+    .eq('published', true)
+    .order('published_at', { ascending: false })
+  if (limit) query = query.limit(limit)
+  const { data, error } = await query
+  if (error) throw error
+  return data
+}
+
+export async function getPostBySlug(slug) {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .eq('published', true)
+    .single()
+  if (error) throw error
+  return data
+}
+
+/* ── Connections ── */
+export async function getConnections() {
+  const { data, error } = await supabase
+    .from('connections')
+    .select('*')
+    .order('display_order', { ascending: true })
+  if (error) throw error
+  return data
+}
+
 /* ── Admin: Order management ── */
 export async function updateOrderStatus(id, status) {
   const { data, error } = await supabase

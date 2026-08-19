@@ -48,7 +48,7 @@ export default function Home() {
                 clarity, and calm.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <Button to="/categories">
+                <Button to="/products">
                   View Artworks <ArrowRight size={14} />
                 </Button>
                 <Button to="/workshops" variant="outline">
@@ -113,7 +113,7 @@ export default function Home() {
                 commissions are shaped around your requirements: a size, a story,
                 a space.
               </p>
-              <Button to="/categories" variant="link" className="mt-8">
+              <Button to="/products" variant="link" className="mt-8">
                 Browse the collection <ArrowRight size={14} />
               </Button>
             </motion.div>

@@ -30,4 +30,9 @@ export default defineConfig([
       'react/jsx-uses-vars': 'error',
     },
   },
+  {
+    // Context modules conventionally export a provider component plus its hook
+    files: ['**/context/*.jsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 ])

@@ -62,7 +62,7 @@ export default function SacredGeometry() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <a
-                                href="/categories/mandala-art"
+                                href="/products"
                                 className="px-6 py-3 bg-primary text-white font-medium tracking-wide rounded-sm
                            hover:bg-secondary transition-colors no-underline"
                             >

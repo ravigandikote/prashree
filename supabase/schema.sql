@@ -1,5 +1,7 @@
 -- ============================================================================
 -- PraShree Arts - Supabase Database Schema
+-- Fresh installs: run this file first, then every file in migrations/
+-- (currently migrations/20260819_refactor.sql) in the Supabase SQL editor.
 -- ============================================================================
 
 -- Enable UUID generation

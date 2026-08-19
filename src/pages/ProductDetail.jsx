@@ -1,208 +1,189 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, ShoppingBag, Minus, Plus } from 'lucide-react'
+import { ArrowLeft, Compass } from 'lucide-react'
 import { motion } from 'framer-motion'
 import SEO from '../components/SEO'
 import { LoadingSpinner, EmptyState } from '../components/UI'
-import RazorpayButton from '../components/RazorpayButton'
-import { useCart } from '../context/CartContext'
+import Button from '../components/Button'
+import PdfViewer from '../components/PdfViewer'
+import { InterestModal } from '../components/InterestForm'
 import { getProductBySlug } from '../lib/supabase'
-import toast from 'react-hot-toast'
+import { formatPrice } from '../lib/format'
 
 export default function ProductDetail() {
   const { slug } = useParams()
-  const { addItem } = useCart()
+  // key remounts the view per slug so all state resets cleanly
+  return <ProductView key={slug} slug={slug} />
+}
+
+function ProductView({ slug }) {
   const [product, setProduct] = useState(null)
+  const [notFound, setNotFound] = useState(false)
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(0)
-  const [quantity, setQuantity] = useState(1)
+  const [showInterest, setShowInterest] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
+    let cancelled = false
     getProductBySlug(slug)
-      .then((data) => setProduct(data))
-      .catch(() => {
-        // Fallback for demo
-        setProduct({
-          id: slug,
-          name: slug.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-          slug,
-          description: 'A beautiful handcrafted art piece by Monica Prakash. Each creation is unique and crafted with intention, reflecting the therapeutic philosophy of PraShree Arts.',
-          price: 2500,
-          images: [`https://placehold.co/800x800/1a1a1a/ffffff?text=${encodeURIComponent(slug)}`],
-          categories: { name: 'Art', slug: 'art' },
-        })
-      })
-      .finally(() => setLoading(false))
+      .then((data) => { if (!cancelled) setProduct(data) })
+      .catch(() => { if (!cancelled) setNotFound(true) })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
   }, [slug])
 
   if (loading) return <LoadingSpinner />
-  if (!product) return <EmptyState title="Product Not Found" message="This product doesn't exist." />
-
-  const images = product.images?.length
-    ? product.images
-    : [`https://placehold.co/800x800/1a1a1a/ffffff?text=${encodeURIComponent(product.name)}`]
-
-  const currentPrice = product.sale_price || product.price
-
-  const handleAddToCart = () => {
-    addItem(product, quantity)
-    toast.success(`${product.name} added to cart`)
+  if (notFound || !product) {
+    return (
+      <section className="py-24">
+        <EmptyState
+          title="Artwork not found"
+          message="This piece doesn't exist or is no longer available."
+        />
+        <div className="text-center">
+          <Button to="/products" variant="link">
+            <ArrowLeft size={14} /> Back to the collection
+          </Button>
+        </div>
+      </section>
+    )
   }
+
+  const images = product.images?.length ? product.images : []
 
   return (
     <>
       <SEO
         title={product.name}
-        description={product.description || `Buy ${product.name} from PraShree Arts.`}
+        description={product.description || `${product.name} — handcrafted by Monica Prakash at PraShree Arts.`}
         path={`/products/${slug}`}
       />
 
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-12 md:py-16">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-muted mb-8">
-            <Link to="/categories" className="hover:text-primary no-underline text-muted transition-colors">
-              Categories
+          <nav className="flex items-center gap-2 text-small text-graphite mb-10" aria-label="Breadcrumb">
+            <Link to="/products" className="hover:text-ink no-underline text-graphite transition-colors">
+              Collection
             </Link>
-            <span>/</span>
             {product.categories && (
               <>
-                <Link
-                  to={`/categories/${product.categories.slug}`}
-                  className="hover:text-primary no-underline text-muted transition-colors"
-                >
-                  {product.categories.name}
-                </Link>
-                <span>/</span>
+                <span aria-hidden="true">/</span>
+                <span>{product.categories.name}</span>
               </>
             )}
-            <span className="text-primary">{product.name}</span>
-          </div>
+            <span aria-hidden="true">/</span>
+            <span className="text-ink">{product.name}</span>
+          </nav>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Image viewer */}
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+            {/* Gallery — product photos untouched so customers see true colours */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
             >
-              <div className="aspect-square bg-lighter rounded-sm overflow-hidden">
-                <img
-                  src={images[selectedImage]}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              {images.length > 1 && (
-                <div className="flex gap-3 mt-4">
-                  {images.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setSelectedImage(i)}
-                      className={`w-20 h-20 rounded-sm overflow-hidden border-2 transition-colors cursor-pointer p-0 ${selectedImage === i ? 'border-primary' : 'border-border'
-                        }`}
-                    >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
+              {images.length > 0 ? (
+                <>
+                  <div className="aspect-square overflow-hidden bg-paper">
+                    <img
+                      src={images[selectedImage]}
+                      alt={`${product.name} — view ${selectedImage + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  {images.length > 1 && (
+                    <div className="flex gap-3 mt-4">
+                      {images.map((img, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSelectedImage(i)}
+                          className={`w-20 h-20 overflow-hidden border transition-colors cursor-pointer p-0 bg-transparent ${
+                            selectedImage === i ? 'border-ink' : 'border-mist'
+                          }`}
+                          aria-label={`Show view ${i + 1}`}
+                        >
+                          <img src={img} alt="" className="w-full h-full object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="aspect-square bg-paper border border-mist flex items-center justify-center">
+                  <p className="text-ash text-small uppercase tracking-label">
+                    Photos coming soon
+                  </p>
                 </div>
               )}
             </motion.div>
 
-            {/* Product info */}
+            {/* Details */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
             >
-              {product.categories && (
-                <Link
-                  to={`/categories/${product.categories.slug}`}
-                  className="text-muted text-sm tracking-wider uppercase no-underline hover:text-primary transition-colors"
-                >
+              {product.categories?.name && (
+                <p className="text-small uppercase tracking-label text-ash">
                   {product.categories.name}
-                </Link>
+                </p>
               )}
-
-              <h1 className="font-display text-3xl md:text-4xl font-bold text-primary mt-2">
+              <h1 className="font-display text-display-sm md:text-display text-ink mt-2">
                 {product.name}
               </h1>
 
-              {/* Price */}
-              <div className="flex items-baseline gap-3 mt-4">
-                <span className="text-2xl font-semibold text-primary">
-                  &#8377;{currentPrice.toLocaleString('en-IN')}
-                </span>
-                {product.sale_price && (
-                  <span className="text-lg text-muted line-through">
-                    &#8377;{product.price.toLocaleString('en-IN')}
+              <p className="text-h3 font-display text-charcoal mt-4">
+                {formatPrice(product.sale_price || product.price)}
+                {product.sale_price ? (
+                  <span className="text-ash text-body line-through ml-3">
+                    {formatPrice(product.price)}
                   </span>
-                )}
-              </div>
-
-              {/* Description */}
-              <p className="mt-6 text-muted leading-relaxed">
-                {product.description}
+                ) : null}
               </p>
 
-              {/* Divider */}
-              <div className="h-px bg-border my-8" />
+              {product.description && (
+                <p className="mt-6 text-graphite">{product.description}</p>
+              )}
 
-              {/* Quantity */}
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-medium text-secondary">Quantity</span>
-                <div className="flex items-center border border-border">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 hover:bg-lighter transition-colors cursor-pointer bg-transparent border-0"
-                    aria-label="Decrease quantity"
-                  >
-                    <Minus size={14} />
-                  </button>
-                  <span className="px-4 py-2 text-sm font-medium min-w-[40px] text-center">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="p-2 hover:bg-lighter transition-colors cursor-pointer bg-transparent border-0"
-                    aria-label="Increase quantity"
-                  >
-                    <Plus size={14} />
-                  </button>
+              {product.vastu_note && (
+                <div className="mt-6 border-l-2 border-mist pl-4 flex gap-3">
+                  <Compass size={18} className="text-graphite shrink-0 mt-1" aria-hidden="true" />
+                  <p className="text-small text-graphite">{product.vastu_note}</p>
                 </div>
-              </div>
+              )}
 
-              {/* Actions */}
-              <div className="mt-8 space-y-3">
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full py-3 px-6 border border-primary text-primary font-medium tracking-wide hover:bg-primary hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer bg-transparent"
-                >
-                  <ShoppingBag size={16} />
-                  Add to Cart
-                </button>
+              <hr className="hairline my-8" />
 
-                <RazorpayButton
-                  amount={currentPrice * quantity}
-                  customerName=""
-                  customerEmail=""
-                  customerPhone=""
-                  label="Buy Now"
-                />
-              </div>
+              <Button onClick={() => setShowInterest(true)}>
+                Express interest
+              </Button>
+              <p className="text-small text-ash mt-3">
+                No online payment — Monica will call you to discuss the piece,
+                customisation, and delivery.
+              </p>
 
-              {/* Info */}
-              <div className="mt-8 space-y-3 text-sm text-muted">
-                <p>All artworks are handcrafted by Monica Prakash</p>
-                <p>Delivery within 7-14 business days</p>
-                <p>Custom sizes available on request</p>
+              <div className="mt-8 space-y-2 text-small text-graphite">
+                <p>Handcrafted by Monica Prakash</p>
+                <p>Custom sizes and variations available on request</p>
               </div>
             </motion.div>
           </div>
+
+          {/* Catalogue PDF */}
+          {product.pdf_url && (
+            <div className="mt-16 max-w-3xl">
+              <PdfViewer url={product.pdf_url} title={`${product.name} catalogue`} />
+            </div>
+          )}
         </div>
       </section>
+
+      <InterestModal
+        open={showInterest}
+        onClose={() => setShowInterest(false)}
+        product={product}
+      />
     </>
   )
 }
