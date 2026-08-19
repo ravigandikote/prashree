@@ -183,7 +183,11 @@ export default function Home() {
                   </p>
                 </li>
               </ul>
-              <Button to="/learn" variant="link" className="mt-8">
+              <p className="mt-6 text-small text-graphite border-l-2 border-mist pl-4">
+                Also at your doorstep — sound healing and art therapy sessions
+                for residential societies, corporate teams, and partner studios.
+              </p>
+              <Button to="/learn" variant="link" className="mt-6">
                 See all offerings <ArrowRight size={14} />
               </Button>
             </motion.div>

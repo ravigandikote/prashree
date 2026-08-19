@@ -81,3 +81,28 @@ export const workshops = [
     highlights: ['Age-appropriate activities', 'Family bonding', 'DIY crafts', 'Take-home creations'],
   },
 ]
+
+/* Sessions Monica conducts at the host's own venue */
+export const doorstepAudiences = [
+  {
+    icon: 'Building2',
+    title: 'Residential Societies',
+    description:
+      'Sound healing sessions in your society club house — a calm evening of singing bowls and guided stillness for residents, arranged with your association.',
+    subject: 'Doorstep sessions — residential society',
+  },
+  {
+    icon: 'Briefcase',
+    title: 'Corporate Offices',
+    description:
+      'Mandala Art Therapy and sound healing for your teams, at your office — designed to relieve workplace stress and reset focus, for small groups or whole floors.',
+    subject: 'Doorstep sessions — corporate office',
+  },
+  {
+    icon: 'Handshake',
+    title: 'Studios & Space Owners',
+    description:
+      'Run these sessions for your own customers. Art studios and space owners can host Janur Art, Mandala Art Therapy, or sound healing on an agreed revenue share.',
+    subject: 'Doorstep sessions — studio / space partnership',
+  },
+]

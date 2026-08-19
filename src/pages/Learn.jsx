@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Clock, MapPin, Users, Backpack, ArrowRight } from 'lucide-react'
+import { Clock, MapPin, Users, Backpack, ArrowRight, Building2, Briefcase, Handshake } from 'lucide-react'
 import SEO from '../components/SEO'
 import { SectionHeading } from '../components/UI'
 import Button from '../components/Button'
 import Photo from '../components/Photo'
 import { EnquiryModal } from '../components/EnquiryForm'
-import { offerings, workshops } from '../data/learn'
+import { offerings, workshops, doorstepAudiences } from '../data/learn'
 
 const fadeUp = {
   initial: { opacity: 0, y: 16 },
@@ -22,7 +22,7 @@ export default function Learn() {
     <>
       <SEO
         title="Learn with Monica"
-        description="Mandala Art classes, meditation practice, and Janur & DIY workshops with Monica Prakash — online and in person at NeeRav Arts Village."
+        description="Mandala Art classes, meditation practice, and Janur & DIY workshops with Monica Prakash — online, at NeeRav Arts Village, or at your doorstep: sound healing and art therapy for societies, offices, and studios."
         path="/learn"
       />
 
@@ -168,6 +168,51 @@ export default function Learn() {
                 </Button>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── At your doorstep ── */}
+      <section id="doorstep" className="bg-ink text-white py-20 md:py-28">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div {...fadeUp} className="text-center mb-12">
+            <p className="text-small uppercase tracking-label text-white/60 mb-3">
+              At Your Doorstep
+            </p>
+            <h2 className="font-display text-display-sm md:text-display text-white">
+              Sessions where you are
+            </h2>
+            <p className="mt-4 text-white/70 max-w-2xl mx-auto">
+              Monica brings Janur Art, sound healing, and Mandala Art Therapy
+              to your venue — no studio visit needed.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-px bg-white/20 border border-white/20">
+            {doorstepAudiences.map((aud, i) => {
+              const Icon =
+                aud.icon === 'Building2' ? Building2 : aud.icon === 'Briefcase' ? Briefcase : Handshake
+              return (
+                <motion.div
+                  key={aud.title}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.07 }}
+                  className="bg-ink p-8 flex flex-col"
+                >
+                  <Icon size={22} className="text-white/70" aria-hidden="true" />
+                  <h3 className="font-display text-h3 text-white mt-4">{aud.title}</h3>
+                  <p className="text-white/70 text-small mt-3 flex-1">{aud.description}</p>
+                  <button
+                    onClick={() => setBooking(aud.subject)}
+                    className="mt-6 inline-flex items-center gap-2 text-small uppercase tracking-label text-white bg-transparent border-0 p-0 cursor-pointer underline decoration-transparent hover:decoration-white underline-offset-4 transition-all self-start"
+                  >
+                    Enquire <ArrowRight size={13} aria-hidden="true" />
+                  </button>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </section>
