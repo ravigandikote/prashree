@@ -36,5 +36,9 @@
     "sharp": "^0.35.3",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.4"
+  },
+  "packageManager": "npm@11.9.0",
+  "engines": {
+    "node": ">=20.19.0"
   }
 }
