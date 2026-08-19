@@ -13,26 +13,29 @@ const SRC = 'images-src'
 const OUT = 'public/images'
 const WIDTHS = [800, 1600, 2400]
 
-// original filename -> destination folder under public/images/
+// original filename -> destination + fraction of height cropped from the top.
+// cropTop removes the "NeeRav Arts Village" watermark (verified per image;
+// it sits in the top-left or top-right corner) without touching faces.
+// Set cropTop: 0 for clean originals (DSC07336, IMG_5730).
 const MAP = {
-  '20250620-IMG_1958.jpg': 'monica/portraits',
-  '20250620-IMG_1984.jpg': 'monica/portraits',
-  '20250620-IMG_1998.jpg': 'monica/portraits',
-  '20250620-IMG_2199.jpg': 'monica/portraits',
-  '20250620-IMG_2208.jpg': 'monica/portraits',
-  '20250831-IMG_1132.jpg': 'monica/portraits',
-  '20251227-IMG_7387.jpg': 'monica/portraits',
-  '20250828-IMG_0812.jpg': 'monica/portraits',
-  '20250918-IMG_1516.jpg': 'monica/portraits',
-  '20251118-IMG_1862-2.jpg': 'monica/portraits',
-  '20251227-IMG_7529.jpg': 'monica/teaching',
-  '20251227-IMG_7546.jpg': 'monica/teaching',
-  '20250828-IMG_4718.jpg': 'monica/decor',
-  // future: 'DSC07336.jpeg': 'monica/portraits',
-  // future: 'IMG_5730.JPG': 'connections',
+  '20250620-IMG_1958.jpg': { dest: 'monica/portraits', cropTop: 0.235 },
+  '20250620-IMG_1984.jpg': { dest: 'monica/portraits', cropTop: 0.185 },
+  '20250620-IMG_1998.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
+  '20250620-IMG_2199.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
+  '20250620-IMG_2208.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
+  '20250831-IMG_1132.jpg': { dest: 'monica/portraits', cropTop: 0.14 },
+  '20251227-IMG_7387.jpg': { dest: 'monica/portraits', cropTop: 0.16 },
+  '20250828-IMG_0812.jpg': { dest: 'monica/portraits', cropTop: 0.16 },
+  '20250918-IMG_1516.jpg': { dest: 'monica/portraits', cropTop: 0.165 },
+  '20251118-IMG_1862-2.jpg': { dest: 'monica/portraits', cropTop: 0.155 },
+  '20251227-IMG_7529.jpg': { dest: 'monica/teaching', cropTop: 0.1 },
+  '20251227-IMG_7546.jpg': { dest: 'monica/teaching', cropTop: 0.11 },
+  '20250828-IMG_4718.jpg': { dest: 'monica/decor', cropTop: 0.3 },
+  // future: 'DSC07336.jpeg': { dest: 'monica/portraits', cropTop: 0 },
+  // future: 'IMG_5730.JPG': { dest: 'connections', cropTop: 0 },
 }
 
-for (const [file, dest] of Object.entries(MAP)) {
+for (const [file, { dest, cropTop = 0 }] of Object.entries(MAP)) {
   const src = path.join(SRC, file)
   try { await stat(src) } catch { console.log(`skip (missing): ${file}`); continue }
 
@@ -40,14 +43,25 @@ for (const [file, dest] of Object.entries(MAP)) {
   await mkdir(dir, { recursive: true })
   const base = path.parse(file).name
   const meta = await sharp(src).metadata()
-  const longEdge = Math.max(meta.width, meta.height)
+  // after rotate() EXIF orientation is applied; swap dims for rotated portraits
+  const rotated = (meta.orientation || 1) >= 5
+  const fullW = rotated ? meta.height : meta.width
+  const fullH = rotated ? meta.width : meta.height
+  const top = Math.round(fullH * cropTop)
+  const cropH = fullH - top
+  const longEdge = Math.max(fullW, cropH)
 
   for (const w of WIDTHS) {
     if (w > longEdge) continue
     const outFile = path.join(dir, `${base}-${w}.jpg`)
     try { await stat(outFile); continue } catch { /* build it */ }
-    const resize = meta.width >= meta.height ? { width: w } : { height: w }
-    await sharp(src).rotate().resize(resize).jpeg({ quality: 78, mozjpeg: true, progressive: true }).toFile(outFile)
+    const resize = fullW >= cropH ? { width: w } : { height: w }
+    await sharp(src)
+      .rotate()
+      .extract({ left: 0, top, width: fullW, height: cropH })
+      .resize(resize)
+      .jpeg({ quality: 78, mozjpeg: true, progressive: true })
+      .toFile(outFile)
     console.log(`wrote ${outFile}`)
   }
 }

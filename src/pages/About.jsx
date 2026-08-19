@@ -1,7 +1,15 @@
 import { motion } from 'framer-motion'
 import { Palette, Heart, Star, Award, Users, Leaf } from 'lucide-react'
 import SEO from '../components/SEO'
-import { SectionHeading, MandalaHeroBg } from '../components/UI'
+import { SectionHeading } from '../components/UI'
+import Photo from '../components/Photo'
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.3, ease: 'easeOut' },
+}
 
 const credentials = [
   { icon: Palette, title: 'Mandala Art Therapist', desc: 'Certified practitioner using mandala creation for mental wellness and stress relief.' },
@@ -32,53 +40,45 @@ export default function About() {
       />
 
       {/* ── Hero ── */}
-      <section className="relative py-24 bg-white overflow-hidden">
-        <MandalaHeroBg />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+      <section className="bg-white py-16 md:py-24">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
             >
-              <div className="aspect-[3/4] bg-lighter rounded-sm overflow-hidden">
-                <img
-                  src="/images/artwork-2.jpg"
-                  alt="Monica Prakash – Mandala Art Therapist"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <Photo
+                base="/images/monica/portraits/20250620-IMG_1984"
+                alt="Monica Prakash in a black-and-white Warli-print saree beside a vintage lantern"
+                treatment="duotone"
+                aspect="aspect-[4/5]"
+                sizes="(min-width: 768px) 50vw, 100vw"
+                priority
+              />
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
             >
-              <p className="text-muted text-sm tracking-[0.3em] uppercase mb-2">
+              <p className="text-small uppercase tracking-label text-graphite mb-3">
                 The Artist
               </p>
-              <h1 className="font-display text-4xl md:text-5xl font-bold text-primary">
+              <h1 className="font-display text-display md:text-display-xl text-ink">
                 Monica Prakash
               </h1>
-              <p className="mt-2 font-display text-xl text-accent">
-                Mandala Art Therapist & Founder of PraShree Arts
+              <p className="mt-3 font-display text-h3 text-charcoal italic">
+                Mandala Art Therapist &amp; Founder of PraShree Arts
               </p>
 
-              <div className="mt-8 space-y-4 text-muted leading-relaxed">
+              <div className="mt-8 space-y-4 text-graphite">
                 <p>
                   Monica Prakash is a dedicated Mandala Art Therapist who believes
                   in the transformative power of art. Through PraShree Arts, she
                   brings together ancient artistic traditions and modern therapeutic
                   practices to create art that heals.
-                </p>
-                <p>
-                  Her specialty lies in creating monochrome mandala compositions that
-                  are intentionally left uncolored. This deliberate choice is rooted
-                  in therapy — colored art can sometimes create mental conflict for
-                  clients. By keeping mandalas in black and white, the focus remains
-                  on the meditative process of creation and the calming symmetry of
-                  sacred geometry.
                 </p>
                 <p>
                   As a specialist in Janur Art (Coconut Leaf Art), Monica preserves
@@ -92,116 +92,188 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Philosophy ── */}
-      <section className="py-20 bg-surface">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            title="Philosophy"
-            subtitle="Art as a path to inner peace"
-          />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="bg-white p-8 md:p-12 border border-border"
-          >
-            <blockquote className="font-display text-xl md:text-2xl text-primary leading-relaxed text-center italic">
-              "Art is not just about beauty — it is about balance, clarity, and
-              the journey inward. Every mandala is a meditation, every stroke a
-              step toward calm."
-            </blockquote>
-            <p className="text-center text-muted mt-6">— Monica Prakash</p>
-          </motion.div>
-
-          {/* Mandala artwork close-up */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mt-12 aspect-[16/9] overflow-hidden rounded-sm"
-          >
-            <img
-              src="/images/artwork-3.jpg"
-              alt="Intricate mandala artwork in progress by Monica Prakash"
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </motion.div>
+      {/* ── Why black and white ── */}
+      <section className="bg-paper border-y border-mist py-20 md:py-28">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-5 gap-12 items-center">
+            <motion.div {...fadeUp} className="md:col-span-3">
+              <SectionHeading
+                align="left"
+                eyebrow="Philosophy"
+                title="Why black and white"
+                className="mb-6"
+              />
+              <div className="space-y-4 text-graphite">
+                <p>
+                  Monica&apos;s monochrome mandala compositions are intentionally
+                  left uncolored. This deliberate choice is rooted in therapy —
+                  colored art can sometimes create mental conflict for clients. By
+                  keeping mandalas in black and white, the focus remains on the
+                  meditative process of creation and the calming symmetry of
+                  sacred geometry.
+                </p>
+                <blockquote className="border-l-2 border-ink pl-6 py-1 font-display text-h3 text-ink italic">
+                  &ldquo;Art is not just about beauty — it is about balance,
+                  clarity, and the journey inward. Every mandala is a meditation,
+                  every stroke a step toward calm.&rdquo;
+                </blockquote>
+                <p className="text-small text-ash">— Monica Prakash</p>
+              </div>
+            </motion.div>
+            <motion.div {...fadeUp} className="md:col-span-2">
+              <Photo
+                base="/images/monica/portraits/20250831-IMG_1132"
+                alt="Monica in an ikat saree, looking upward in soft natural light"
+                treatment="grayscale"
+                aspect="aspect-[3/4]"
+                sizes="(min-width: 768px) 40vw, 100vw"
+              />
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ── Credentials ── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── Her practice ── */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="Expertise & Credentials"
+            eyebrow="Her Practice"
+            title="Expertise & credentials"
             subtitle="A versatile artist with deep knowledge across multiple disciplines"
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-mist border border-mist">
             {credentials.map((item, i) => (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="p-6 border border-border hover:border-primary transition-colors group"
+                transition={{ duration: 0.3, delay: i * 0.05 }}
+                className="bg-white p-8"
               >
-                <item.icon
-                  size={24}
-                  className="text-accent group-hover:text-primary transition-colors"
-                />
-                <h3 className="font-display text-lg font-semibold text-primary mt-4">
-                  {item.title}
-                </h3>
-                <p className="text-muted text-sm mt-2 leading-relaxed">
-                  {item.desc}
-                </p>
+                <item.icon size={22} className="text-graphite" aria-hidden="true" />
+                <h3 className="font-display text-h3 text-ink mt-4">{item.title}</h3>
+                <p className="text-graphite text-small mt-2">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── All Art Forms ── */}
-      <section className="py-20 bg-surface">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── Teaching ── */}
+      <section className="bg-paper border-y border-mist py-20 md:py-28">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <motion.div {...fadeUp}>
+              <Photo
+                base="/images/monica/teaching/20251227-IMG_7546"
+                alt="Monica guiding workshop participants through a mandala drawing"
+                treatment="grayscale"
+                aspect="aspect-[3/4]"
+                sizes="(min-width: 768px) 50vw, 100vw"
+              />
+            </motion.div>
+            <motion.div {...fadeUp}>
+              <SectionHeading
+                align="left"
+                eyebrow="Teaching"
+                title="Passing the practice on"
+                className="mb-6"
+              />
+              <p className="text-graphite">
+                Monica teaches Mandala Art, Janur Art, and other DIY art forms —
+                and guides meditation practice alongside them. Her workshops at
+                NeeRav Arts Village bring participants of all skill levels into a
+                calm, hands-on rhythm of making.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Décor & occasions ── */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="Art Forms"
+            eyebrow="Natural Décor"
+            title="Occasions & installations"
+            subtitle="Monica designs natural décor for celebrations — dried palm backdrops, table arrangements, and bespoke installations."
+          />
+          <motion.div {...fadeUp}>
+            <Photo
+              base="/images/monica/decor/20250828-IMG_4718"
+              alt="An anniversary décor installation by Monica — dried palm-leaf backdrop, dressed table, and marquee letters"
+              treatment="duotone"
+              aspect="aspect-[2/1]"
+              sizes="(min-width: 1200px) 1200px, 100vw"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Beyond the studio ── */}
+      <section className="bg-paper border-y border-mist py-20 md:py-28">
+        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            eyebrow="Beyond the Studio"
+            title="Model & actor"
+            subtitle="Monica's creative life extends in front of the camera as well."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { base: '/images/monica/portraits/20250828-IMG_0812', alt: 'Monica in a white jumpsuit and sunglasses in a garden' },
+              { base: '/images/monica/portraits/20250918-IMG_1516', alt: 'Monica seated on a log in a black dress, garden behind her' },
+              { base: '/images/monica/portraits/20251118-IMG_1862-2', alt: 'Night portrait of Monica in a dark green dress with warm rim light' },
+            ].map((img, i) => (
+              <motion.div
+                key={img.base}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: i * 0.07 }}
+              >
+                <Photo
+                  base={img.base}
+                  alt={img.alt}
+                  treatment="grayscale"
+                  aspect="aspect-[3/4]"
+                  sizes="(min-width: 640px) 33vw, 100vw"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Art forms ── */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            eyebrow="Range"
+            title="Art forms"
             subtitle="Monica's expertise spans traditional and contemporary art disciplines"
           />
           <div className="flex flex-wrap justify-center gap-3">
-            {artForms.map((form, i) => (
-              <motion.span
+            {artForms.map((form) => (
+              <span
                 key={form}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.03 }}
-                className="px-4 py-2 border border-border text-sm text-secondary hover:border-primary hover:text-primary transition-colors cursor-default"
+                className="px-4 py-2 border border-mist text-small text-charcoal hover:border-ink transition-colors cursor-default"
               >
                 {form}
-              </motion.span>
+              </span>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── NeeRav Arts Village ── */}
-      <section className="py-20 bg-primary text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="text-white/60 text-sm tracking-[0.2em] uppercase mb-4">
+      <section className="bg-ink text-white py-20 md:py-28">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div {...fadeUp}>
+            <p className="text-small uppercase tracking-label text-white/60 mb-4">
               Creative Director
             </p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold">
+            <h2 className="font-display text-display-sm md:text-display text-white">
               NeeRav Arts Village
             </h2>
             <p className="mt-6 text-white/70 leading-relaxed max-w-2xl mx-auto">

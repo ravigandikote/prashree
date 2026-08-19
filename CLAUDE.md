@@ -53,8 +53,8 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 
 | Route | Page | Data |
 |---|---|---|
-| `/` | `pages/Home.jsx` — hero w/ logo + mandala SVG bg, category grid, founder intro, featured products, workshops CTA | `getCategories`, `getProducts({featured})`, hard-coded fallbacks |
-| `/about` | `pages/About.jsx` — bio, philosophy quote, credentials grid, 20 art-form chips, NeeRav section | static |
+| `/` | `pages/Home.jsx` — **rebuilt Phase 2**: split hero (logo + 2199 portrait), statement band, Artworks/Learn/Décor/Founder/Community sections, enquiry CTA. All static; no Supabase fallbacks. Latest-blog section deferred to Phase 6. CTAs point at `/categories`+`/workshops` until Phases 3/5 rename them | static |
+| `/about` | `pages/About.jsx` — **rebuilt Phase 2**: 1984 hero, why-B&W + 1132 inset, credentials grid, teaching (7546), décor (4718), beyond-the-studio strip (0812/1516/1862), 20 art-form chips, NeeRav band | static |
 | `/categories` | `pages/Categories.jsx` — grid of 20 categories | `getCategories` + fallback list |
 | `/categories/:slug` | `pages/CategoryDetail.jsx` — products/gallery tabs | `getCategoryBySlug`, `getProducts`, `getGalleryByCategory` |
 | `/products/:slug` | `pages/ProductDetail.jsx` — gallery, qty, Add to Cart, Buy Now (Razorpay) | `getProductBySlug` (fabricates a fake product on error!) |
@@ -120,9 +120,11 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 - **Image pipeline**: camera originals (5–28 MB) live in gitignored `images-src/`;
   `npm run images` (scripts/optimize-images.mjs, sharp) emits `-800/-1600/-2400.jpg`
   derivatives into `public/images/monica/{portraits,teaching,decor}/` per the map in the
-  script. 13 photos processed. Photos carry a "NeeRav Arts Village" watermark occupying
-  roughly the top 12–15% left of frame — hide it with `Photo`'s `position` prop
-  (e.g. `center 30%`), never stretch/blur. The brief references files **not yet supplied**:
+  script. 13 photos processed. The watermark (top-left OR top-right, includes a long
+  script swash tail) is **cropped out at derivative time** via per-image `cropTop`
+  fractions in the script's MAP (0.095–0.30, visually verified) — derivatives in
+  public/images are watermark-free, so components never need defensive positioning.
+  The brief references files **not yet supplied**:
   `DSC07336.jpeg`, `IMG_5730.JPG` (connections), `public/images/products/*` shadow-box photos.
 
 ## Existing integrations
