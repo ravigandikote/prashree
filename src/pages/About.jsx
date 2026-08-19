@@ -237,7 +237,8 @@ export default function About() {
                   base={img.base}
                   alt={img.alt}
                   treatment="grayscale"
-                  aspect="aspect-[3/4]"
+                  aspect="aspect-[9/16]"
+                  position="center top"
                   sizes="(min-width: 640px) 33vw, 100vw"
                 />
               </motion.div>

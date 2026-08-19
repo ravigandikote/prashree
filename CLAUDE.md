@@ -152,10 +152,13 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
   fractions in the script's MAP (visually verified) — except 1958 and 4718, where
   the watermark vertically overlaps Monica's head, so those use `cropLeft` (0.18/0.16)
   instead; their wide-banner placements pass `position="center 20%"` to keep her head
-  in frame. Head-crop audit (2026-08-19): every rendered photo checked element-by-
-  element; the saree-shoot portraits (2199/2208/1984) are inherently tight above the
-  hair because watermark+swash reach ~17% while her hair starts ~6% — unavoidable
-  until clean originals arrive.
+  in frame. The model-strip shots (0812/1516/1862) also use `cropLeft` (0.24–0.26)
+  and render in `aspect-[9/16]` + `position="center top"` on About. Head-crop audit
+  (2026-08-19): every rendered photo checked element-by-element; the saree-shoot
+  portraits (2199/2208/1984) are inherently tight above the hair because
+  watermark+swash reach ~17% while her hair starts ~6% and the mark is too wide for
+  a side-crop — unavoidable until clean originals arrive (then set crops to 0 and
+  re-run `npm run images`).
   The brief references files **not yet supplied**:
   `DSC07336.jpeg`, `IMG_5730.JPG` (connections), `public/images/products/*` shadow-box photos.
 
