@@ -90,9 +90,11 @@ artworks (id/name/size/size_code/price/price_range/usd/prints/hours/series/
 form/intent/direction/pdf/thumb). `npm run artworks:sql` regenerates
 `supabase/migrations/20260820_artworks.sql` (ALTER products + idempotent
 upserts by slug; also deletes the old `sample-%` seeds). Thumbs are committed
-at `public/images/products/thumbs/<id>.jpg`; catalogue PDFs belong in
-`public/catalogues/` (**not yet supplied** — UI hides PDF links until a HEAD
-check sees a real PDF). Products table gained: size, size_code, price_range,
+at `public/images/products/thumbs/<id>.jpg`. Catalogue PDFs: originals
+(200 MB, gitignored) in `src/assets/artworks/pdf/`; ghostscript-compressed
+copies (`gs -dPDFSETTINGS=/printer`, ~1.5 MB each) are committed in
+`public/catalogues/` under the exact `pdf`-field names — the UI HEAD-checks
+availability, so new PDFs go live by just adding the file. Products table gained: size, size_code, price_range,
 usd, prints, hours, series, form, intent, direction (+ indexes on form/series/
 size_code/price). Filter reference behaviour ported from
 `PraShree-Products-Metadata/prashree-products-catalog.html`; decisions

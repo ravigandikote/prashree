@@ -91,7 +91,6 @@ Project Settings > Domains → add `prashreearts.com`; follow DNS instructions.
 - [ ] All pages load at 375px and 1440px
 - [ ] Admin login works; interests/enquiries appear after a test submission
 - [ ] Replace `[[ ]]` placeholder copy (site + product/connection seeds)
-- [ ] Upload real product photos and PDFs
 - [ ] Set the Instagram URL in `src/pages/Contact.jsx`
 - [ ] Supply clean (un-watermarked) originals to re-run `npm run images` without crops
 

@@ -30,3 +30,6 @@ dist-ssr
 
 # Source originals for scripts/optimize-images.mjs (multi-MB camera files, not shipped)
 images-src/
+
+# PDF originals (200MB+ camera-quality; compressed copies live in public/catalogues)
+src/assets/artworks/
