@@ -180,7 +180,7 @@ export default function AdminCategories() {
                 <button onClick={() => openEdit(cat)} className="p-1.5 text-muted hover:text-primary cursor-pointer bg-transparent border-0">
                   <Pencil size={14} />
                 </button>
-                <button onClick={() => handleDelete(cat.id, cat.name)} className="p-1.5 text-muted hover:text-red-600 cursor-pointer bg-transparent border-0">
+                <button onClick={() => handleDelete(cat.id, cat.name)} className="p-1.5 text-muted hover:text-ink cursor-pointer bg-transparent border-0">
                   <Trash2 size={14} />
                 </button>
               </div>

@@ -63,37 +63,6 @@ export async function getGalleryByCategory(categoryId) {
   return data
 }
 
-/* ── Order helpers ── */
-export async function createOrder(orderData) {
-  const { data, error } = await supabase
-    .from('orders')
-    .insert([orderData])
-    .select()
-    .single()
-  if (error) throw error
-  return data
-}
-
-export async function updateOrderPayment(orderId, paymentData) {
-  const { data, error } = await supabase
-    .from('orders')
-    .update(paymentData)
-    .eq('id', orderId)
-    .select()
-    .single()
-  if (error) throw error
-  return data
-}
-
-export async function getOrders() {
-  const { data, error } = await supabase
-    .from('orders')
-    .select('*')
-    .order('created_at', { ascending: false })
-  if (error) throw error
-  return data
-}
-
 /* ── Media / Storage helpers ── */
 export async function uploadImage(bucket, filePath, file) {
   const { data, error } = await supabase.storage
@@ -255,6 +224,42 @@ export async function getPostBySlug(slug) {
   return data
 }
 
+/* ── Admin: Posts CRUD ── */
+export async function getAllPosts() {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+
+export async function createPost(post) {
+  const { data, error } = await supabase
+    .from('posts')
+    .insert([post])
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function updatePost(id, updates) {
+  const { data, error } = await supabase
+    .from('posts')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function deletePost(id) {
+  const { error } = await supabase.from('posts').delete().eq('id', id)
+  if (error) throw error
+}
+
 /* ── Connections ── */
 export async function getConnections() {
   const { data, error } = await supabase
@@ -265,14 +270,3 @@ export async function getConnections() {
   return data
 }
 
-/* ── Admin: Order management ── */
-export async function updateOrderStatus(id, status) {
-  const { data, error } = await supabase
-    .from('orders')
-    .update({ status, updated_at: new Date().toISOString() })
-    .eq('id', id)
-    .select()
-    .single()
-  if (error) throw error
-  return data
-}

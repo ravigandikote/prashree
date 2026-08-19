@@ -30,7 +30,7 @@ export default function AdminMedia() {
     }
   }
 
-  useEffect(() => { loadFiles() }, [])
+  useEffect(() => { loadFiles() }, [])  // eslint-disable-line react-hooks/exhaustive-deps -- load once on mount
 
   const handleUpload = async (e) => {
     const selectedFiles = Array.from(e.target.files || [])
@@ -109,7 +109,7 @@ export default function AdminMedia() {
                 </button>
                 <button
                   onClick={() => handleDelete(file.name)}
-                  className="p-2 bg-white text-red-600 rounded-full hover:bg-red-50 cursor-pointer border-0"
+                  className="p-2 bg-white text-ink rounded-full hover:bg-mist cursor-pointer border-0"
                   title="Delete"
                 >
                   <Trash2 size={14} />

@@ -17,10 +17,11 @@ const SacredGeometry = lazy(() => import('./pages/SacredGeometry'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
-const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
+const AdminInterests = lazy(() => import('./pages/admin/AdminInterests'))
+const AdminEnquiries = lazy(() => import('./pages/admin/AdminEnquiries'))
 const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'))
+const AdminPosts = lazy(() => import('./pages/admin/AdminPosts'))
 const AdminCategories = lazy(() => import('./pages/admin/AdminCategories'))
-const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'))
 const AdminMedia = lazy(() => import('./pages/admin/AdminMedia'))
 
 export default function App() {
@@ -59,10 +60,11 @@ export default function App() {
               {/* Admin routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminDashboard />} />
+                <Route index element={<AdminInterests />} />
+                <Route path="enquiries" element={<AdminEnquiries />} />
                 <Route path="products" element={<AdminProducts />} />
+                <Route path="posts" element={<AdminPosts />} />
                 <Route path="categories" element={<AdminCategories />} />
-                <Route path="orders" element={<AdminOrders />} />
                 <Route path="media" element={<AdminMedia />} />
               </Route>
             </Routes>

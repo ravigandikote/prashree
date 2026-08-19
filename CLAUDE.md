@@ -61,8 +61,8 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 | `/workshops` | `pages/Workshops.jsx` — 6 hard-coded workshop cards, links to /contact | static |
 | `/sacred-geometry` | `pages/SacredGeometry.jsx` — educational sections + interactive SVG mandala generator (`PatternGenerator` + `MandalaCanvas`, golden-ratio math) | static |
 | `/contact` | `pages/Contact.jsx` — info + form that **fakes success** (setTimeout, message discarded) — Phase 6 wires it to `createEnquiry` | none |
-| `/admin/login` | Supabase email/password sign-in | Supabase Auth |
-| `/admin/*` | `AdminLayout` (auth-guarded) → Dashboard, Products, Categories, Orders, Media — CRUD tables/modals | `lib/supabase.js` helpers |
+| `/admin/login` | Supabase email/password sign-in (monochrome) | Supabase Auth |
+| `/admin/*` | **reworked Phase 4** — `AdminLayout` (auth-guarded, desktop sidebar + mobile top-nav) → index = `AdminInterests` (filters by product/status, tel:/mailto links, status New/Called/Follow-up/Closed, expandable notes), `AdminEnquiries`, `AdminProducts` (+pdf_url/vastu_note fields), `AdminPosts` (markdown body, cover upload, publish toggle), `AdminCategories`, `AdminMedia`. Dashboard & Orders pages deleted. Shared bits in `admin/adminUi.js` + `admin/StatusBadge.jsx` — all badges monochrome | `lib/supabase.js` helpers |
 
 ## Components (`src/components/`)
 
@@ -144,7 +144,7 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 2. ~~Cart/Razorpay~~ — removed in Phase 3 (files deleted; `orders` table kept as history).
 3. ~~Fake product fabrication~~ — fixed in Phase 3 (honest 404s, no invented prices).
 4. ~~Fallback demo data on Home~~ — removed in Phase 2.
-5. Admin UI uses green/red/yellow status colors — violates monochrome (Phase 4 fixes).
+5. ~~Admin status colors~~ — fixed in Phase 4 (monochrome badges everywhere).
 6. `media` table unused; storage bucket naming inconsistent (see above).
 7. Old root CLAUDE.md claimed React 18; package.json is React 19. `.nvmrc`=18, env runs 24.
 8. `react-helmet-async@3` with React 19 — works but peer-dep pressure; consider replacing.
@@ -163,7 +163,8 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 4. **No Google Form / WhatsApp** — bookings + enquiries via the site's own Supabase-backed
    forms, surfaced in `/admin`.
 5. Phase plan: (1) design system+layout ✅, (2) Home+About, (3) Products+Interest,
-   (4) Admin, (5) Learn+Connections, (6) Blog+Contact+audit. Commit per phase.
+   (4) Admin ✅, (5) Learn+Connections, (6) Blog+Contact+audit. Commit per phase.
+   Phases 2–3 ✅ likewise. Lint is fully clean as of Phase 4.
 
 Known remaining lint debt (pre-existing, resolved as phases touch them): react-refresh
 warnings in Auth/CartContext, setState-in-effect in CategoryDetail/ProductDetail.

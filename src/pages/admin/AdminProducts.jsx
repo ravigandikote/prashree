@@ -20,7 +20,7 @@ export default function AdminProducts() {
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({
-    name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', is_featured: false, is_available: true,
+    name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '', is_featured: false, is_available: true,
   })
   const [imageFile, setImageFile] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -37,7 +37,7 @@ export default function AdminProducts() {
   useEffect(() => { loadData() }, [])
 
   const resetForm = () => {
-    setForm({ name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', is_featured: false, is_available: true })
+    setForm({ name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '', is_featured: false, is_available: true })
     setImageFile(null)
     setEditing(null)
     setShowForm(false)
@@ -52,6 +52,8 @@ export default function AdminProducts() {
       price: product.price.toString(),
       sale_price: product.sale_price?.toString() || '',
       category_id: product.category_id || '',
+      pdf_url: product.pdf_url || '',
+      vastu_note: product.vastu_note || '',
       is_featured: product.is_featured,
       is_available: product.is_available,
     })
@@ -78,6 +80,8 @@ export default function AdminProducts() {
         price: parseFloat(form.price),
         sale_price: form.sale_price ? parseFloat(form.sale_price) : null,
         category_id: form.category_id || null,
+        pdf_url: form.pdf_url || null,
+        vastu_note: form.vastu_note || null,
         is_featured: form.is_featured,
         is_available: form.is_available,
         images,
@@ -187,6 +191,21 @@ export default function AdminProducts() {
               </div>
 
               <div>
+                <label className="block text-xs text-muted mb-1">Catalogue PDF URL</label>
+                <input
+                  value={form.pdf_url}
+                  onChange={(e) => setForm({ ...form, pdf_url: e.target.value })}
+                  placeholder="/pdfs/product-name.pdf or a full URL"
+                  className={inputClasses}
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs text-muted mb-1">Vastu note (optional)</label>
+                <textarea rows={2} value={form.vastu_note} onChange={(e) => setForm({ ...form, vastu_note: e.target.value })} className={`${inputClasses} resize-none`} />
+              </div>
+
+              <div>
                 <label className="block text-xs text-muted mb-1">Image</label>
                 <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} className="text-sm" />
               </div>
@@ -251,16 +270,16 @@ export default function AdminProducts() {
                     )}
                   </td>
                   <td className="p-3">
-                    <span className={`px-2 py-0.5 text-xs ${p.is_available ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                      {p.is_available ? 'Available' : 'Unavailable'}
+                    <span className={`px-2 py-0.5 text-xs uppercase tracking-wider border ${p.is_available ? 'bg-ink text-white border-ink' : 'text-ash border-mist'}`}>
+                      {p.is_available ? 'Available' : 'Hidden'}
                     </span>
-                    {p.is_featured && <span className="ml-2 px-2 py-0.5 text-xs bg-yellow-50 text-yellow-700">Featured</span>}
+                    {p.is_featured && <span className="ml-2 px-2 py-0.5 text-xs uppercase tracking-wider border border-graphite text-charcoal">Featured</span>}
                   </td>
                   <td className="p-3 text-right">
                     <button onClick={() => openEdit(p)} className="p-1.5 text-muted hover:text-primary cursor-pointer bg-transparent border-0" aria-label="Edit">
                       <Pencil size={14} />
                     </button>
-                    <button onClick={() => handleDelete(p.id, p.name)} className="p-1.5 text-muted hover:text-red-600 cursor-pointer bg-transparent border-0 ml-1" aria-label="Delete">
+                    <button onClick={() => handleDelete(p.id, p.name)} className="p-1.5 text-muted hover:text-ink cursor-pointer bg-transparent border-0 ml-1" aria-label="Delete">
                       <Trash2 size={14} />
                     </button>
                   </td>
