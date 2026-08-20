@@ -28,7 +28,14 @@ export default function Home() {
 
   return (
     <>
-      <SEO />
+      <SEO
+        description="PraShree Arts is Monica Prakash's studio for hand-drawn mandala art, Janur (coconut-leaf) art, natural décor, and bespoke commissions — plus art therapy classes, meditation, and sound healing in Bengaluru."
+        keywords={[
+          'buy mandala art online India', 'mandala wall art Bengaluru',
+          'handmade wall art', 'bespoke art commissions', 'natural event decor',
+          'art therapy classes Bengaluru',
+        ]}
+      />
 
       {/* ── Hero ── */}
       <section className="bg-white">

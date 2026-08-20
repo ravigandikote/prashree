@@ -21,9 +21,27 @@ export default function Learn() {
   return (
     <>
       <SEO
-        title="Learn with Monica"
-        description="Mandala Art classes, meditation practice, and Janur & DIY workshops with Monica Prakash — online, at NeeRav Arts Village, or at your doorstep: sound healing and art therapy for societies, offices, and studios."
+        title="Mandala Art Classes, Meditation & Janur Workshops — Bengaluru"
+        description="Learn with Monica Prakash: mandala art classes (2.5–3 hrs, materials provided), 45-minute meditation sessions, and 3-hour Janur workshops — online, residential at NeeRav Arts Village, or at your doorstep for societies, offices, and studios."
         path="/learn"
+        keywords={[
+          'mandala art classes Bengaluru', 'mandala classes online India',
+          'art therapy workshop', 'meditation classes Bengaluru',
+          'sound healing sessions Bengaluru', 'corporate wellness art workshop',
+          'team building art activity', 'Janur workshop', 'art retreat India',
+        ]}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          itemListElement: offerings.map((o, i) => ({
+            '@type': 'Course',
+            position: i + 1,
+            name: o.title,
+            description: o.description,
+            provider: { '@id': 'https://prashreearts.com/#org' },
+            courseMode: o.format,
+          })),
+        }}
       />
 
       {/* ── Hero ── */}

@@ -34,9 +34,27 @@ export default function About() {
   return (
     <>
       <SEO
-        title="About Monica Prakash"
-        description="Learn about Monica Prakash, Mandala Art Therapist and founder of PraShree Arts. Discover her journey, philosophy, and expertise across 20+ art forms."
+        title="Monica Prakash — Mandala Art Therapist & Janur Artist"
+        description="Meet Monica Prakash: Mandala Art Therapist, Janur (coconut-leaf) art specialist, founder of PraShree Arts, and Creative Director at NeeRav Arts Village, Bengaluru. 20+ art forms, one philosophy — black and white."
         path="/about"
+        keywords={[
+          'Monica Prakash artist', 'mandala art therapist Bengaluru',
+          'Janur art specialist', 'coconut leaf artist India',
+          'NeeRav Arts Village', 'warli art', 'doodle art', 'bamboo art',
+        ]}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Person',
+          name: 'Monica Prakash',
+          jobTitle: 'Mandala Art Therapist & Founder',
+          url: 'https://prashreearts.com/about',
+          worksFor: { '@id': 'https://prashreearts.com/#org' },
+          knowsAbout: [
+            'Mandala Art', 'Mandala Art Therapy', 'Janur Art (Coconut Leaf Art)',
+            'Warli Art', 'Sacred Geometry', 'Sound Healing', 'Natural Décor',
+          ],
+          sameAs: ['https://www.instagram.com/prashreearts'],
+        }}
       />
 
       {/* ── Hero ── */}

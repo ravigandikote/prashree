@@ -9,9 +9,13 @@ export default function Contact() {
   return (
     <>
       <SEO
-        title="Contact"
-        description="Get in touch with PraShree Arts — enquire about artworks, classes, custom orders, or event décor by Monica Prakash. Bengaluru."
+        title="Contact PraShree Arts — Commissions, Classes & Décor"
+        description="Enquire about original mandala artworks, bespoke art commissions, mandala and Janur classes, sound healing sessions, or natural event décor. PraShree Arts — NeeRav Arts Village, Bengaluru. Call +91 93534 64363."
         path="/contact"
+        keywords={[
+          'commission mandala art', 'custom handmade art India',
+          'event decor Bengaluru', 'art classes enquiry',
+        ]}
       />
 
       {/* ── Header ── */}

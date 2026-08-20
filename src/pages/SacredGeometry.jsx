@@ -9,8 +9,12 @@ export default function SacredGeometry() {
         <>
             <SEO
                 title="Sacred Geometry & Mandala Practice"
-                description="Explore the meditative art of sacred geometry. Learn how mandala patterns promote mindfulness, reduce stress, and create inner balance. Try our interactive mandala pattern generator."
+                description="Explore the meditative art of sacred geometry. Learn how mandala patterns promote mindfulness, reduce stress, and create inner balance — and draw your own with our interactive mandala pattern generator."
                 path="/sacred-geometry"
+                keywords={[
+                  'sacred geometry meaning', 'mandala meditation', 'flower of life',
+                  'golden ratio art', 'mandala pattern generator', 'mindfulness art',
+                ]}
             />
 
             {/* ── Hero banner ── */}

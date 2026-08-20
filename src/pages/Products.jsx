@@ -112,9 +112,30 @@ export default function Products() {
   return (
     <>
       <SEO
-        title="Artworks & Products"
-        description="27 handcrafted artworks by Monica Prakash — mandala, botanical, abstract line, devotional, and geometric art. Filter by art form, series, size, price, and Vastu direction."
+        title="Buy Hand-Drawn Mandala Art & Original Artworks"
+        description="Original hand-drawn artworks by Monica Prakash — mandala, botanical, abstract line, devotional, geometric, and money manifestation art. Filter by art form, series, size, price, and Vastu direction; enquire directly, ships across India."
         path="/products"
+        keywords={[
+          'buy mandala art online India', 'original mandala artwork for sale',
+          'mandala wall art', 'Vastu direction wall art', 'money manifestation art',
+          'botanical line art', 'devotional art India', 'fine art prints India',
+        ]}
+        jsonLd={
+          items && items.length
+            ? {
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                name: 'PraShree Arts — original artworks',
+                numberOfItems: items.length,
+                itemListElement: items.slice(0, 30).map((p, i) => ({
+                  '@type': 'ListItem',
+                  position: i + 1,
+                  url: `https://prashreearts.com/products/${p.slug}`,
+                  name: p.name,
+                })),
+              }
+            : undefined
+        }
       />
 
       {/* ── Header ── */}

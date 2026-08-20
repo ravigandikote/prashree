@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "images": "node scripts/optimize-images.mjs",
     "test": "vitest run",
-    "artworks:sql": "node scripts/generate-artworks-sql.mjs"
+    "artworks:sql": "node scripts/generate-artworks-sql.mjs",
+    "seo:sitemap": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.0",

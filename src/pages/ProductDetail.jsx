@@ -89,11 +89,29 @@ function ProductView({ slug }) {
   return (
     <>
       <SEO
-        title={product.name}
-        description={product.intent || product.description || `${product.name} — handcrafted by Monica Prakash at PraShree Arts.`}
+        title={`${product.name} — Original Hand-Drawn Artwork`}
+        description={`${product.intent || product.description || 'Handcrafted artwork'} · ${product.form || 'Original art'}${product.size ? ` · ${product.size}` : ''}${product.direction ? ` · Vastu: ${product.direction}` : ''} — hand-drawn by Monica Prakash, PraShree Arts, Bengaluru.`}
         path={`/products/${slug}`}
         image={product.images?.[0] || undefined}
+        type="product"
+        keywords={[
+          product.form, product.series, 'original hand-drawn artwork',
+          'buy mandala art India', product.direction && `${product.direction} Vastu art`,
+        ].filter(Boolean)}
       />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://prashreearts.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Artworks', item: 'https://prashreearts.com/products' },
+              { '@type': 'ListItem', position: 3, name: product.name },
+            ],
+          })}
+        </script>
+      </Helmet>
       <Helmet>
         <script type="application/ld+json">
           {JSON.stringify({

@@ -178,9 +178,14 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
    location = "NeeRav Arts Village, Bengaluru", learn.js durations (Mandala 2.5–3 h,
    Meditation 45 min, Janur 3 h; materials provided). Still open: connections
    descriptions (page parked), photos DSC07336/IMG_5730.
-9. ~~SEO gaps~~ — Phase 6 added `public/sitemap.xml`, `public/robots.txt`, and a
-   1200×630 `public/images/og-image.jpg` (from 2208) wired into SEO.jsx + index.html.
-   Sitemap is static: add new public routes there by hand.
+9. ~~SEO gaps~~ — full SEO layer (2026-08-20): SEO.jsx takes keywords/type/jsonLd
+   props (+ og:site_name/locale, meta keywords); index.html carries crawler-visible
+   defaults + an ArtGallery JSON-LD (@id …/#org). Structured data: Person (About),
+   ItemList (Products + Learn Courses), Product+BreadcrumbList (detail),
+   BlogPosting (posts). `npm run seo:sitemap` regenerates sitemap.xml from
+   items.json (7 routes + 27 artwork URLs). Canonicals/sitemap/JSON-LD all point
+   at **https://prashreearts.com** — the custom domain must be connected in Vercel
+   (or SITE_URL in SEO.jsx + index.html + sitemap script updated).
 10. New photos are unoptimized multi-MB originals; several carry a third-party watermark.
 11. npm optional-deps bug can break fresh builds (rolldown binding — fix above).
 

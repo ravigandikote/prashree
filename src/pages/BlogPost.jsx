@@ -50,6 +50,20 @@ function PostView({ slug }) {
         title={post.title}
         description={post.excerpt || `${post.title} — from Monica Prakash's studio journal.`}
         path={`/blog/${slug}`}
+        image={post.cover_image || undefined}
+        type="article"
+        keywords={post.tags || []}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          headline: post.title,
+          description: post.excerpt || undefined,
+          image: post.cover_image || undefined,
+          datePublished: post.published_at || undefined,
+          author: { '@type': 'Person', name: 'Monica Prakash' },
+          publisher: { '@id': 'https://prashreearts.com/#org' },
+          mainEntityOfPage: `https://prashreearts.com/blog/${slug}`,
+        }}
       />
 
       <article className="bg-white py-16 md:py-24">
