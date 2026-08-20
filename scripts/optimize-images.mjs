@@ -29,6 +29,8 @@ const MAP = {
   '20250828-IMG_0812.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.24 },
   '20250918-IMG_1516.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.24 },
   '20251118-IMG_1862-2.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.26 },
+  // studio portrait before the framed mandala wall — clean, no watermark
+  'IMG20260819191222.jpg': { dest: 'monica/portraits', cropTop: 0 },
   '20251227-IMG_7529.jpg': { dest: 'monica/teaching', cropTop: 0.1 },
   '20251227-IMG_7546.jpg': { dest: 'monica/teaching', cropTop: 0.11 },
   '20250828-IMG_4718.jpg': { dest: 'monica/decor', cropTop: 0, cropLeft: 0.16 },
@@ -55,10 +57,10 @@ for (const [file, { dest, cropTop = 0, cropLeft = 0 }] of Object.entries(MAP)) {
   const longEdge = Math.max(cropW, cropH)
 
   for (const w of WIDTHS) {
-    if (w > longEdge) continue
+    const target = Math.min(w, longEdge) // never enlarge small originals
     const outFile = path.join(dir, `${base}-${w}.jpg`)
     try { await stat(outFile); continue } catch { /* build it */ }
-    const resize = cropW >= cropH ? { width: w } : { height: w }
+    const resize = cropW >= cropH ? { width: target } : { height: target }
     await sharp(src)
       .rotate()
       .extract({ left, top, width: cropW, height: cropH })

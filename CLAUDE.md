@@ -147,7 +147,10 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 - **Image pipeline**: camera originals (5–28 MB) live in gitignored `images-src/`;
   `npm run images` (scripts/optimize-images.mjs, sharp) emits `-800/-1600/-2400.jpg`
   derivatives into `public/images/monica/{portraits,teaching,decor}/` per the map in the
-  script. 13 photos processed. The watermark (top-left OR top-right, includes a long
+  script. 14 photos processed (incl. IMG20260819191222, a clean 962×1280 studio
+  shot of Monica before her framed mandala wall — no watermark, cropTop 0, used in
+  Home's Artworks section; the script caps derivative sizes at native resolution
+  for small originals instead of upscaling). The watermark (top-left OR top-right, includes a long
   script swash tail) is **cropped out at derivative time** via per-image `cropTop`
   fractions in the script's MAP (visually verified) — except 1958 and 4718, where
   the watermark vertically overlaps Monica's head, so those use `cropLeft` (0.18/0.16)

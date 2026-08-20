@@ -104,10 +104,10 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div {...fadeUp}>
               <Photo
-                base="/images/monica/portraits/20250620-IMG_2208"
-                alt="A hand-drawn monochrome mandala card held forward in sharp focus, Monica in soft focus behind it"
+                base="/images/monica/portraits/IMG20260819191222"
+                alt="Monica seated in her studio in front of a wall of framed black-and-white mandala artworks"
                 treatment="duotone"
-                aspect="aspect-[4/5]"
+                aspect="aspect-[3/4]"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </motion.div>
