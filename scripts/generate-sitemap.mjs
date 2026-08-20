@@ -7,7 +7,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs'
 
-const SITE = 'https://prashreearts.com'
+const SITE = 'https://www.prashreearts.com'
 const items = JSON.parse(readFileSync('PraShree-Products-Metadata/items.json', 'utf8'))
 
 const staticRoutes = [

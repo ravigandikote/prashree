@@ -61,8 +61,8 @@ function PostView({ slug }) {
           image: post.cover_image || undefined,
           datePublished: post.published_at || undefined,
           author: { '@type': 'Person', name: 'Monica Prakash' },
-          publisher: { '@id': 'https://prashreearts.com/#org' },
-          mainEntityOfPage: `https://prashreearts.com/blog/${slug}`,
+          publisher: { '@id': 'https://www.prashreearts.com/#org' },
+          mainEntityOfPage: `https://www.prashreearts.com/blog/${slug}`,
         }}
       />
 

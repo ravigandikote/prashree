@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://prashreearts.com/sitemap.xml
+Sitemap: https://www.prashreearts.com/sitemap.xml

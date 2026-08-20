@@ -38,7 +38,7 @@ export default function Learn() {
             position: i + 1,
             name: o.title,
             description: o.description,
-            provider: { '@id': 'https://prashreearts.com/#org' },
+            provider: { '@id': 'https://www.prashreearts.com/#org' },
             courseMode: o.format,
           })),
         }}

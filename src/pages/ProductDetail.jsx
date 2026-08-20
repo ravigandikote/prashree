@@ -105,8 +105,8 @@ function ProductView({ slug }) {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://prashreearts.com/' },
-              { '@type': 'ListItem', position: 2, name: 'Artworks', item: 'https://prashreearts.com/products' },
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.prashreearts.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Artworks', item: 'https://www.prashreearts.com/products' },
               { '@type': 'ListItem', position: 3, name: product.name },
             ],
           })}
@@ -120,9 +120,9 @@ function ProductView({ slug }) {
             name: product.name,
             description: product.intent || product.description || undefined,
             image: product.images?.[0]
-              ? `https://prashreearts.com${product.images[0]}`
+              ? `https://www.prashreearts.com${product.images[0]}`
               : undefined,
-            url: `https://prashreearts.com/products/${slug}`,
+            url: `https://www.prashreearts.com/products/${slug}`,
             brand: { '@type': 'Brand', name: 'PraShree Arts' },
             offers: {
               '@type': 'Offer',

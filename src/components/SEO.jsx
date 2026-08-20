@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 
-export const SITE_URL = 'https://prashreearts.com'
+export const SITE_URL = 'https://www.prashreearts.com'
 
 const DEFAULT_KEYWORDS = [
   'mandala art', 'hand-drawn mandala', 'black and white mandala',

@@ -47,8 +47,8 @@ export default function About() {
           '@type': 'Person',
           name: 'Monica Prakash',
           jobTitle: 'Mandala Art Therapist & Founder',
-          url: 'https://prashreearts.com/about',
-          worksFor: { '@id': 'https://prashreearts.com/#org' },
+          url: 'https://www.prashreearts.com/about',
+          worksFor: { '@id': 'https://www.prashreearts.com/#org' },
           knowsAbout: [
             'Mandala Art', 'Mandala Art Therapy', 'Janur Art (Coconut Leaf Art)',
             'Warli Art', 'Sacred Geometry', 'Sound Healing', 'Natural Décor',

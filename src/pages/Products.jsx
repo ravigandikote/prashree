@@ -130,7 +130,7 @@ export default function Products() {
                 itemListElement: items.slice(0, 30).map((p, i) => ({
                   '@type': 'ListItem',
                   position: i + 1,
-                  url: `https://prashreearts.com/products/${p.slug}`,
+                  url: `https://www.prashreearts.com/products/${p.slug}`,
                   name: p.name,
                 })),
               }
