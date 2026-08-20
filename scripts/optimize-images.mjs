@@ -13,27 +13,25 @@ const SRC = 'images-src'
 const OUT = 'public/images'
 const WIDTHS = [800, 1600, 2400]
 
-// original filename -> destination + watermark removal crop (verified per image).
-// cropTop removes a top-corner watermark without touching faces; cropLeft is
-// used instead where the watermark vertically overlaps Monica's head
-// (1958, 4718) but sits in the left ~16% of the frame.
-// Set both to 0 for clean originals (DSC07336, IMG_5730).
+// original filename -> destination folder. Crops are all 0: the NeeRav Arts
+// Village watermark is Monica's own brand and stays in frame (decision
+// 2026-08-20) — full frames, full headroom.
 const MAP = {
-  '20250620-IMG_1958.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.18 },
-  '20250620-IMG_1984.jpg': { dest: 'monica/portraits', cropTop: 0.185 },
-  '20250620-IMG_1998.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
-  '20250620-IMG_2199.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
-  '20250620-IMG_2208.jpg': { dest: 'monica/portraits', cropTop: 0.175 },
-  '20250831-IMG_1132.jpg': { dest: 'monica/portraits', cropTop: 0.14 },
-  '20251227-IMG_7387.jpg': { dest: 'monica/portraits', cropTop: 0.16 },
-  '20250828-IMG_0812.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.24 },
-  '20250918-IMG_1516.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.24 },
-  '20251118-IMG_1862-2.jpg': { dest: 'monica/portraits', cropTop: 0, cropLeft: 0.26 },
+  '20250620-IMG_1958.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20250620-IMG_1984.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20250620-IMG_1998.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20250620-IMG_2199.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20250620-IMG_2208.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20250831-IMG_1132.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20251227-IMG_7387.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20250828-IMG_0812.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20250918-IMG_1516.jpg': { dest: 'monica/portraits', cropTop: 0 },
+  '20251118-IMG_1862-2.jpg': { dest: 'monica/portraits', cropTop: 0 },
   // studio portrait before the framed mandala wall — clean, no watermark
   'IMG20260819191222.jpg': { dest: 'monica/portraits', cropTop: 0 },
-  '20251227-IMG_7529.jpg': { dest: 'monica/teaching', cropTop: 0.1 },
-  '20251227-IMG_7546.jpg': { dest: 'monica/teaching', cropTop: 0.11 },
-  '20250828-IMG_4718.jpg': { dest: 'monica/decor', cropTop: 0, cropLeft: 0.16 },
+  '20251227-IMG_7529.jpg': { dest: 'monica/teaching', cropTop: 0 },
+  '20251227-IMG_7546.jpg': { dest: 'monica/teaching', cropTop: 0 },
+  '20250828-IMG_4718.jpg': { dest: 'monica/decor', cropTop: 0 },
   // future: 'DSC07336.jpeg': { dest: 'monica/portraits', cropTop: 0 },
   // future: 'IMG_5730.JPG': { dest: 'connections', cropTop: 0 },
 }

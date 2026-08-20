@@ -12,7 +12,6 @@ const About = lazy(() => import('./pages/About'))
 const Products = lazy(() => import('./pages/Products'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 const Learn = lazy(() => import('./pages/Learn'))
-const Connections = lazy(() => import('./pages/Connections'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
@@ -51,13 +50,14 @@ export default function App() {
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:slug" element={<ProductDetail />} />
                 <Route path="/learn" element={<Learn />} />
-                <Route path="/connections" element={<Connections />} />
                 <Route path="/sacred-geometry" element={<SacredGeometry />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<Contact />} />
 
                 <Route path="/workshops" element={<Navigate to="/learn" replace />} />
+                {/* Connections is parked for now (page kept in src/pages) */}
+                <Route path="/connections" element={<Navigate to="/about" replace />} />
 
                 {/* Legacy routes from the shop era */}
                 <Route path="/categories" element={<Navigate to="/products" replace />} />

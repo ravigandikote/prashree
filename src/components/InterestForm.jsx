@@ -7,6 +7,7 @@ import { createInterest } from '../lib/supabase'
 import { MandalaOrnament } from './UI'
 
 const INDIAN_PHONE = /^(\+91[-\s]?)?[6-9]\d{9}$/
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 /**
  * Express-interest form for a product. Creates an `interests` record;
@@ -37,13 +38,19 @@ export default function InterestForm({ product, onDone }) {
     if (!validate()) return
     setSubmitting(true)
     try {
+      // product.id is only a DB uuid once the catalogue is seeded; in
+      // fallback mode it's the slug — record the name in the message instead.
+      const linked = UUID.test(product?.id || '')
+      const note = form.message.trim()
       await createInterest({
-        product_id: product?.id || null,
+        product_id: linked ? product.id : null,
         name: form.name.trim(),
         phone: form.phone.trim(),
         email: form.email.trim() || null,
         city: form.city.trim() || null,
-        message: form.message.trim() || null,
+        message: !linked && product?.name
+          ? `[${product.name}] ${note}`.trim()
+          : note || null,
       })
       setDone(true)
     } catch {

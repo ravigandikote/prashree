@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Phone, Mail, MapPin } from 'lucide-react'
+import { Phone, Mail, MapPin, AtSign } from 'lucide-react'
 import logo from '../assets/logo.png'
 
 export default function Footer() {
@@ -36,7 +36,6 @@ export default function Footer() {
                 { to: '/about', label: 'About Monica' },
                 { to: '/products', label: 'Artworks & Products' },
                 { to: '/learn', label: 'Learn with Monica' },
-                { to: '/connections', label: 'Connections' },
                 { to: '/blog', label: 'Blog' },
                 { to: '/contact', label: 'Contact' },
               ].map((link) => (
@@ -100,9 +99,20 @@ export default function Footer() {
                   info@prashreearts.com
                 </a>
               </li>
+              <li className="flex items-center gap-3 text-small">
+                <AtSign size={16} className="shrink-0 text-white/60" />
+                <a
+                  href="https://instagram.com/prashreearts"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white transition-colors no-underline"
+                >
+                  @prashreearts
+                </a>
+              </li>
               <li className="flex items-start gap-3 text-small text-white/60">
                 <MapPin size={16} className="shrink-0 mt-0.5" />
-                <span>Bengaluru · NeeRav Arts Village</span>
+                <span>NeeRav Arts Village, Bengaluru</span>
               </li>
             </ul>
           </div>

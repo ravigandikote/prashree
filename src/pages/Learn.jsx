@@ -62,6 +62,7 @@ export default function Learn() {
                 alt="Monica demonstrating a mandala sketch to a seated workshop group under fairy lights, singing bowls on the table"
                 treatment="duotone"
                 aspect="aspect-[3/4]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
                 priority
               />
@@ -227,6 +228,7 @@ export default function Learn() {
                 alt="Monica leaning over participants, guiding their mandala drawing"
                 treatment="grayscale"
                 aspect="aspect-[3/4]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </motion.div>

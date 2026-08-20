@@ -59,7 +59,7 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 | `/products/:slug` | `pages/ProductDetail.jsx` — framed image, intent, form/series/direction chips, pricing strip (original+range/USD/prints/size/hours), vastu note, availability-checked catalogue-PDF button+viewer (`usePdfAvailable` HEAD-checks content-type because the SPA rewrite 200s missing files), Express-interest modal, JSON-LD Product, per-artwork OG image, "You may also like" (same series → same form, 4). Fallback to local data by slug | `getProductBySlug`, `createInterest` |
 | `/categories`, `/categories/:slug`, `/cart` | redirects → `/products` (legacy shop-era URLs) | — |
 | `/learn` | `pages/Learn.jsx` — 7529 hero, three offering cards (data in `src/data/learn.js`, [[ ]] for unknown durations/needs), 6 residential-workshop cards, **`#doorstep` dark section** (Janur Art / sound healing / Mandala Art Therapy at the host's venue — cards for residential societies, corporate offices, and studios/space owners on revenue share; data `doorstepAudiences` in learn.js), community strip; every card opens `EnquiryModal` (kind=booking → `enquiries` table, distinct subject per audience) | `createEnquiry` |
-| `/connections` | `pages/Connections.jsx` — **new Phase 5**: editorial ledger of community roles; data from Supabase `connections`, falling back to `src/data/connections.js`; logo/photo slot renders a mandala-ornament placeholder until images arrive | `getConnections` |
+| `/connections` | **parked 2026-08-20** (user request): route redirects → `/about`; nav/footer links removed. `pages/Connections.jsx` + `src/data/connections.js` + the `connections` table are kept for revival | — |
 | `/workshops` | redirect → `/learn` | — |
 | `/sacred-geometry` | `pages/SacredGeometry.jsx` — educational sections + interactive SVG mandala generator (`PatternGenerator` + `MandalaCanvas`, golden-ratio math) | static |
 | `/blog` | `pages/Blog.jsx` — **new Phase 6**: editorial list of published posts (cover, date, tags, excerpt); EmptyState until posts exist | `getPublishedPosts` |
@@ -148,20 +148,12 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
   `npm run images` (scripts/optimize-images.mjs, sharp) emits `-800/-1600/-2400.jpg`
   derivatives into `public/images/monica/{portraits,teaching,decor}/` per the map in the
   script. 14 photos processed (incl. IMG20260819191222, a clean 962×1280 studio
-  shot of Monica before her framed mandala wall — no watermark, cropTop 0, used in
-  Home's Artworks section; the script caps derivative sizes at native resolution
-  for small originals instead of upscaling). The watermark (top-left OR top-right, includes a long
-  script swash tail) is **cropped out at derivative time** via per-image `cropTop`
-  fractions in the script's MAP (visually verified) — except 1958 and 4718, where
-  the watermark vertically overlaps Monica's head, so those use `cropLeft` (0.18/0.16)
-  instead; their wide-banner placements pass `position="center 20%"` to keep her head
-  in frame. The model-strip shots (0812/1516/1862) also use `cropLeft` (0.24–0.26)
-  and render in `aspect-[9/16]` + `position="center top"` on About. Head-crop audit
-  (2026-08-19): every rendered photo checked element-by-element; the saree-shoot
-  portraits (2199/2208/1984) are inherently tight above the hair because
-  watermark+swash reach ~17% while her hair starts ~6% and the mark is too wide for
-  a side-crop — unavoidable until clean originals arrive (then set crops to 0 and
-  re-run `npm run images`).
+  shot of Monica before her framed mandala wall, used in Home's Artworks section;
+  the script caps derivative sizes at native resolution for small originals).
+  **Watermark policy (2026-08-20): the NeeRav Arts Village watermark is Monica's
+  own brand and STAYS in frame** — all crop values in the script MAP are 0 and
+  derivatives are full-frame. Portrait placements pass `position="center top"`
+  (banners 1958/4718 use `center 20%`) so heads always keep full headroom.
   The brief references files **not yet supplied**:
   `DSC07336.jpeg`, `IMG_5730.JPG` (connections), `public/images/products/*` shadow-box photos.
 
@@ -182,8 +174,10 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 6. `media` table unused; storage bucket naming inconsistent (see above).
 7. Old root CLAUDE.md claimed React 18; package.json is React 19. `.nvmrc`=18, env runs 24.
 8. `react-helmet-async@3` with React 19 — works but peer-dep pressure; consider replacing.
-   Remaining placeholders to fill: [[INSTAGRAM_URL]]/handle in Contact, learn.js durations/
-   needs, connections descriptions, product seeds; missing photos DSC07336/IMG_5730/products.
+   Placeholders resolved 2026-08-20: Instagram = @prashreearts (Contact + Footer),
+   location = "NeeRav Arts Village, Bengaluru", learn.js durations (Mandala 2.5–3 h,
+   Meditation 45 min, Janur 3 h; materials provided). Still open: connections
+   descriptions (page parked), photos DSC07336/IMG_5730.
 9. ~~SEO gaps~~ — Phase 6 added `public/sitemap.xml`, `public/robots.txt`, and a
    1200×630 `public/images/og-image.jpg` (from 2208) wired into SEO.jsx + index.html.
    Sitemap is static: add new public routes there by hand.

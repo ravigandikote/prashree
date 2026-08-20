@@ -9,15 +9,15 @@ export const offerings = [
     format: 'Online & in-person',
     description:
       'Therapeutic mandala drawing — sacred geometry as a meditative practice. Monica teaches pattern, symmetry, and the calm, deliberate process behind every monochrome mandala.',
-    duration: '[[Duration — e.g. 4 sessions of 90 minutes]]',
-    needs: '[[What you’ll need — e.g. fine-liner pens, A4 sketchbook, compass]]',
+    duration: '2.5 – 3 hours per session',
+    needs: 'All materials provided.',
   },
   {
     title: 'Meditation Practice',
     format: 'Online & in-person',
     description:
       'Guided meditation sessions woven through the art practice — stillness, breath, and focus, with sound accompaniment from singing bowls.',
-    duration: '[[Duration — e.g. weekly 45-minute sessions]]',
+    duration: '45 minutes per class',
     needs: 'Nothing but a quiet corner.',
   },
   {
@@ -25,7 +25,7 @@ export const offerings = [
     format: 'In-person',
     description:
       'Hands-on workshops in Janur (coconut-leaf) art and other DIY art forms — traditional craft taught from first weave to finished piece.',
-    duration: '[[Duration — varies by workshop]]',
+    duration: '3 hours per workshop',
     needs: 'All materials provided.',
   },
 ]

@@ -53,6 +53,7 @@ export default function About() {
                 alt="Monica Prakash in a black-and-white Warli-print saree beside a vintage lantern"
                 treatment="duotone"
                 aspect="aspect-[4/5]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
                 priority
               />
@@ -126,6 +127,7 @@ export default function About() {
                 alt="Monica in an ikat saree, looking upward in soft natural light"
                 treatment="grayscale"
                 aspect="aspect-[3/4]"
+                position="center top"
                 sizes="(min-width: 768px) 40vw, 100vw"
               />
             </motion.div>
@@ -170,6 +172,7 @@ export default function About() {
                 alt="Monica guiding workshop participants through a mandala drawing"
                 treatment="grayscale"
                 aspect="aspect-[3/4]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </motion.div>

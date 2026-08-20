@@ -78,6 +78,7 @@ export default function Home() {
                 alt="Monica Prakash smiling, holding a hand-drawn black-and-white mandala on white card"
                 treatment="duotone"
                 aspect="aspect-[4/5]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
                 priority
               />
@@ -153,6 +154,7 @@ export default function Home() {
                 alt="Monica demonstrating a mandala sketch to a seated workshop group outdoors under fairy lights, singing bowls on the table"
                 treatment="duotone"
                 aspect="aspect-[3/4]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </motion.div>
@@ -231,6 +233,7 @@ export default function Home() {
                 alt="Monica Prakash in a black-and-white Warli-print saree, leaning on a rustic wooden rail by a carved door"
                 treatment="grayscale"
                 aspect="aspect-[4/5]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </motion.div>
@@ -265,13 +268,14 @@ export default function Home() {
                 alt="Monica leaning over workshop participants, guiding their mandala drawing"
                 treatment="grayscale"
                 aspect="aspect-[3/4]"
+                position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             </motion.div>
             <motion.div {...fadeUp} className="md:order-1">
               <SectionHeading
                 align="left"
-                eyebrow="Community & Connections"
+                eyebrow="Community"
                 title="Art that gathers people"
                 className="mb-6"
               />
@@ -280,8 +284,8 @@ export default function Home() {
                 Director at NeeRav Arts Village and through community and
                 social-service partnerships around Bengaluru.
               </p>
-              <Button to="/connections" variant="link" className="mt-8">
-                See her connections <ArrowRight size={14} />
+              <Button to="/about" variant="link" className="mt-8">
+                About her work <ArrowRight size={14} />
               </Button>
             </motion.div>
           </div>

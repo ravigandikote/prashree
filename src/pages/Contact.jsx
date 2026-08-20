@@ -43,6 +43,7 @@ export default function Contact() {
                 alt="Monica Prakash seated before a wall with a faint mandala mural"
                 treatment="duotone"
                 aspect="aspect-[4/5]"
+                position="center top"
                 sizes="(min-width: 768px) 40vw, 100vw"
                 priority
               />
@@ -78,7 +79,7 @@ export default function Contact() {
                 </li>
                 <li>
                   <a
-                    href="[[INSTAGRAM_URL]]"
+                    href="https://instagram.com/prashreearts" target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-4 text-charcoal hover:text-ink transition-colors no-underline group"
                   >
                     <span className="w-10 h-10 border border-mist group-hover:border-ink flex items-center justify-center transition-colors">
@@ -86,7 +87,7 @@ export default function Contact() {
                     </span>
                     <span>
                       <span className="block text-small uppercase tracking-label text-ash">Instagram</span>
-                      [[@instagram-handle]]
+                      @prashreearts
                     </span>
                   </a>
                 </li>
@@ -96,7 +97,7 @@ export default function Contact() {
                   </span>
                   <span>
                     <span className="block text-small uppercase tracking-label text-ash">Location</span>
-                    Bengaluru · NeeRav Arts Village
+                    NeeRav Arts Village, Bengaluru
                   </span>
                 </li>
               </ul>
