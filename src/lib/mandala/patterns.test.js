@@ -103,3 +103,29 @@ describe('ring fills', () => {
     expect(dots.length).toBe(6)
   })
 })
+
+describe('repeat density scales with radius', async () => {
+  const { repeatsForCell } = await import('./patterns')
+
+  it('inner rings keep one repeat per sector', () => {
+    // centre disc: arc ≈ 0.26·r < thickness → no subdivision
+    expect(repeatsForCell(0, 12, 12)).toBe(12)
+  })
+
+  it('outer rings subdivide, always as an exact multiple of the sector count', () => {
+    // ring at 84–96 mm, 12 sectors: arc ≈ 47 mm vs 12 mm thickness → ~4 repeats/sector
+    const reps = repeatsForCell(84, 96, 12)
+    expect(reps).toBeGreaterThan(12)
+    expect(reps % 12).toBe(0)
+  })
+
+  it('an outer petal ring gets more petals than sectors', () => {
+    const state = {
+      ...initialStudioState(),
+      fills: { 7: { patternId: 'petal-solid', weight: 'medium' } }, // 84–96 mm ring
+    }
+    const petals = ringFillPrimitives(state, 7)
+    expect(petals.length).toBeGreaterThan(12)
+    expect(petals.length % 12).toBe(0)
+  })
+})

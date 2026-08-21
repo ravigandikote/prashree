@@ -486,6 +486,23 @@ export const WEIGHTS = [
   { id: 'bold', label: 'Bold', mm: 0.5 },
 ]
 
+/**
+ * How many motif repeats a ring should carry. One repeat per sector looks
+ * right near the centre, but sector cells get angularly wider with radius
+ * (arc = radius × angle) and motifs stretch fat. Keep each motif cell
+ * roughly square (arc ≈ ring thickness) by subdividing every sector into
+ * m repeats — always an exact multiple of the sector count, so motifs stay
+ * aligned with the radial guides and the mandala's symmetry.
+ */
+export function repeatsForCell(r0, r1, sectors) {
+  if (!sectors || r1 <= r0) return sectors
+  const rMid = (r0 + r1) / 2
+  const arcPerSector = (2 * Math.PI * rMid) / sectors
+  const thickness = Math.max(r1 - r0, 0.001)
+  const m = Math.max(1, Math.min(8, Math.round(arcPerSector / thickness)))
+  return sectors * m
+}
+
 /** Annulus cell for ring index i (ring 0 = centre disc). */
 export function ringCell(state, i) {
   const radii = state.rings.radii
@@ -509,7 +526,8 @@ export function ringFillPrimitives(state, i) {
   const pattern = patternById(fill.patternId)
   if (!pattern) return []
   const weight = WEIGHTS.find((w) => w.id === fill.weight)?.mm ?? 0.35
-  const cell = { ...ringCell(state, i), weight }
+  const base = ringCell(state, i)
+  const cell = { ...base, weight, sectors: repeatsForCell(base.r0, base.r1, base.sectors) }
 
   if (!fill.patternB) return pattern.ringPaths(cell)
 
