@@ -19,6 +19,7 @@ export default function Studio() {
   const [history, dispatch] = useReducer(historyReducer, undefined, () => initialHistory(initialStudioState()))
   const state = history.present
   const [selectedRing, setSelectedRing] = useState(null)
+  const [patternSheet, setPatternSheet] = useState(false)
   const [step, setStep] = useState('paper')
   const [zoom, setZoom] = useState(1)
   const [showIntro, setShowIntro] = useState(() => !localStorage.getItem(INTRO_KEY))
@@ -160,9 +161,9 @@ export default function Studio() {
             onSelectRing={setSelectedRing}
           />
 
-          {/* Pattern library — right on desktop */}
+          {/* Pattern library — right panel on desktop */}
           {step === 'patterns' && (
-            <aside className="md:w-80 shrink-0 border-t md:border-t-0 md:border-l border-mist bg-white overflow-y-auto p-5 max-h-[45vh] md:max-h-none">
+            <aside className="hidden md:block md:w-80 shrink-0 border-l border-mist bg-white overflow-y-auto p-5">
               <PatternPanel
                 state={state}
                 dispatch={dispatch}
@@ -172,6 +173,41 @@ export default function Studio() {
             </aside>
           )}
         </div>
+
+        {/* Pattern library — bottom sheet on mobile */}
+        {step === 'patterns' && (
+          <div className="md:hidden">
+            {!patternSheet && (
+              <button
+                onClick={() => setPatternSheet(true)}
+                className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 px-6 py-3 bg-ink text-white text-small uppercase tracking-label border-0 cursor-pointer shadow-lg"
+              >
+                Patterns{selectedRing != null ? ` · ring ${selectedRing + 1}` : ''}
+              </button>
+            )}
+            {patternSheet && (
+              <div className="fixed inset-x-0 bottom-0 z-40 bg-white border-t border-mist max-h-[70vh] flex flex-col shadow-[0_-8px_32px_rgba(10,10,10,0.15)]">
+                <div className="flex items-center justify-between px-5 py-3 border-b border-mist shrink-0">
+                  <p className="text-small uppercase tracking-label text-graphite">Patterns</p>
+                  <button
+                    onClick={() => setPatternSheet(false)}
+                    className="text-small text-graphite hover:text-ink bg-transparent border-0 cursor-pointer p-1"
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="overflow-y-auto p-5">
+                  <PatternPanel
+                    state={state}
+                    dispatch={dispatch}
+                    selectedRing={selectedRing}
+                    onSelectRing={setSelectedRing}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <ExportDialog open={showExport} onClose={() => setShowExport(false)} state={state} />

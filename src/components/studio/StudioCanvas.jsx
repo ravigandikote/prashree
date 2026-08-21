@@ -8,7 +8,7 @@ const RingFill = memo(
     const prims = useMemo(() => ringFillPrimitives(state, index), [state, index])
     return prims.map((p, i) =>
       p.type === 'circle' ? (
-        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill={p.fill} />
+        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill={p.fill} stroke={p.stroke} strokeWidth={p.strokeWidth} />
       ) : (
         <path
           key={i} d={p.d} fill={p.fill} stroke={p.stroke} strokeWidth={p.strokeWidth}

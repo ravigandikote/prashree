@@ -12,7 +12,7 @@ function Swatch({ pattern }) {
     <svg viewBox="-22 -22 44 44" className="w-full h-auto bg-white" aria-hidden="true">
       {prims.map((p, i) =>
         p.type === 'circle' ? (
-          <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill={p.fill} />
+          <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill={p.fill} stroke={p.stroke} strokeWidth={p.strokeWidth} />
         ) : (
           <path key={i} d={p.d} fill={p.fill} stroke={p.stroke} strokeWidth={p.strokeWidth}
             strokeLinecap="round" strokeLinejoin="round" />
@@ -28,7 +28,9 @@ function Swatch({ pattern }) {
  */
 export default function PatternPanel({ state, dispatch, selectedRing, onSelectRing }) {
   const [query, setQuery] = useState('')
+  const [slot, setSlot] = useState('A')
   const fill = selectedRing != null ? state.fills[selectedRing] : null
+  const evenSectors = state.lines.sectors % 2 === 0
 
   const visible = PATTERNS.filter(
     (p) =>
@@ -39,7 +41,11 @@ export default function PatternPanel({ state, dispatch, selectedRing, onSelectRi
 
   const applyPattern = (patternId) => {
     if (selectedRing == null) return
-    dispatch({ type: 'SET_RING_FILL', index: selectedRing, patternId })
+    if (slot === 'B' && fill) {
+      dispatch({ type: 'SET_RING_FILL_B', index: selectedRing, patternId })
+    } else {
+      dispatch({ type: 'SET_RING_FILL', index: selectedRing, patternId })
+    }
   }
 
   return (
@@ -81,6 +87,44 @@ export default function PatternPanel({ state, dispatch, selectedRing, onSelectRi
       {/* Selected-ring actions */}
       {selectedRing != null && fill && (
         <div className="space-y-3 border border-mist p-3">
+          {/* A/B alternation: even sector counts alternate two motifs */}
+          <div>
+            <p className="text-[10px] uppercase tracking-label text-graphite mb-1.5">
+              Sector fill
+            </p>
+            <div className="flex gap-1" role="radiogroup" aria-label="Pattern slot">
+              {['A', 'B'].map((sl) => (
+                <button
+                  key={sl}
+                  role="radio"
+                  aria-checked={slot === sl}
+                  disabled={sl === 'B' && !evenSectors}
+                  onClick={() => setSlot(sl)}
+                  title={sl === 'B' && !evenSectors ? 'Alternation needs an even sector count' : undefined}
+                  className={`flex-1 px-2 py-1.5 text-small border transition-colors ${
+                    sl === 'B' && !evenSectors
+                      ? 'border-mist text-ash cursor-not-allowed'
+                      : slot === sl
+                        ? 'bg-ink text-white border-ink cursor-pointer'
+                        : 'bg-white text-graphite border-mist hover:border-ink cursor-pointer'
+                  }`}
+                >
+                  {sl === 'A'
+                    ? `A · ${patternById(fill.patternId)?.name || '—'}`
+                    : `B · ${fill.patternB ? patternById(fill.patternB)?.name : 'same as A'}`}
+                </button>
+              ))}
+            </div>
+            {fill.patternB && (
+              <button
+                onClick={() => { dispatch({ type: 'SET_RING_FILL_B', index: selectedRing, patternId: null }); setSlot('A') }}
+                className="mt-1.5 text-small text-graphite hover:text-ink bg-transparent border-0 cursor-pointer p-0 underline underline-offset-4 decoration-transparent hover:decoration-ink transition-all"
+              >
+                Remove alternation
+              </button>
+            )}
+          </div>
+
           <div className="flex gap-1" role="radiogroup" aria-label="Stroke weight">
             {WEIGHTS.map((w) => (
               <button
