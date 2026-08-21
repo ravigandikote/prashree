@@ -8,7 +8,9 @@ import StudioCanvas from '../components/studio/StudioCanvas'
 import {
   PaperPanel, CentrePanel, CirclesPanel, LinesPanel, GuidesToggles,
 } from '../components/studio/ControlPanels'
+import TemplatesPanel from '../components/studio/TemplatesPanel'
 import { initialStudioState, studioReducer } from '../lib/mandala/state'
+import { autosave, readAutosave, clearAutosave } from '../lib/mandala/templates'
 
 const INTRO_KEY = 'prashree_studio_intro_seen'
 
@@ -18,6 +20,13 @@ export default function Studio() {
   const [zoom, setZoom] = useState(1)
   const [showIntro, setShowIntro] = useState(() => !localStorage.getItem(INTRO_KEY))
   const [showExport, setShowExport] = useState(false)
+  const [resume, setResume] = useState(() => (localStorage.getItem(INTRO_KEY) ? readAutosave() : null))
+
+  /* autosave the working state every few seconds */
+  useEffect(() => {
+    const id = setTimeout(() => autosave(state), 3000)
+    return () => clearTimeout(id)
+  }, [state])
 
   useEffect(() => {
     if (!showIntro) localStorage.setItem(INTRO_KEY, '1')
@@ -55,6 +64,27 @@ export default function Studio() {
             Download
           </button>
         </div>
+
+        {resume && (
+          <div className="flex items-center justify-center gap-3 bg-paper border-b border-mist px-4 py-2 text-small text-graphite">
+            <span>
+              You have unsaved work from{' '}
+              {new Date(resume.at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} —
+            </span>
+            <button
+              onClick={() => { dispatch({ type: 'LOAD_STATE', state: resume.config }); setResume(null) }}
+              className="text-ink underline underline-offset-4 bg-transparent border-0 cursor-pointer p-0 text-small"
+            >
+              resume where you left off
+            </button>
+            <button
+              onClick={() => { clearAutosave(); setResume(null) }}
+              className="text-ash hover:text-ink bg-transparent border-0 cursor-pointer p-0 text-small"
+            >
+              dismiss
+            </button>
+          </div>
+        )}
 
         <div className="flex flex-1 min-h-0 flex-col md:flex-row">
           {/* Controls */}
@@ -96,6 +126,11 @@ export default function Studio() {
             <div className="pt-4 border-t border-mist">
               <p className="text-[10px] uppercase tracking-label text-graphite mb-2">Guides</p>
               <GuidesToggles state={state} dispatch={dispatch} />
+            </div>
+
+            <div className="pt-4 border-t border-mist">
+              <p className="text-[10px] uppercase tracking-label text-graphite mb-3">Base templates</p>
+              <TemplatesPanel state={state} dispatch={dispatch} />
             </div>
           </aside>
 
