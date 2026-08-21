@@ -26,6 +26,7 @@ const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'))
 const AdminPosts = lazy(() => import('./pages/admin/AdminPosts'))
 const AdminCategories = lazy(() => import('./pages/admin/AdminCategories'))
 const AdminMedia = lazy(() => import('./pages/admin/AdminMedia'))
+const AdminTemplates = lazy(() => import('./pages/admin/AdminTemplates'))
 
 export default function App() {
   return (
@@ -76,6 +77,7 @@ export default function App() {
                 <Route path="posts" element={<AdminPosts />} />
                 <Route path="categories" element={<AdminCategories />} />
                 <Route path="media" element={<AdminMedia />} />
+                <Route path="templates" element={<AdminTemplates />} />
               </Route>
             </Routes>
           </Suspense>

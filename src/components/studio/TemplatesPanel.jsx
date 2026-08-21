@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Save, Upload, Download, Trash2, FolderOpen } from 'lucide-react'
 import {
   listTemplates, saveTemplate, deleteTemplate,
-  exportTemplateFile, parseTemplateFile,
+  exportTemplateFile, parseTemplateFile, normaliseConfig,
 } from '../../lib/mandala/templates'
+import { getStarterTemplates } from '../../lib/supabase'
 
 const inputCls =
   'w-full bg-white border border-mist px-2 py-1.5 text-small text-charcoal focus:outline-none focus:border-ink'
@@ -11,9 +12,17 @@ const inputCls =
 /** Save/load reusable base templates — structured JSON, never flattened SVG. */
 export default function TemplatesPanel({ state, dispatch }) {
   const [templates, setTemplates] = useState(listTemplates)
+  const [starters, setStarters] = useState([])
+  const [tab, setTab] = useState('mine')
   const [name, setName] = useState(state.name || '')
   const [note, setNote] = useState(null)
   const fileRef = useRef(null)
+
+  useEffect(() => {
+    getStarterTemplates()
+      .then((rows) => setStarters(rows || []))
+      .catch(() => setStarters([]))
+  }, [])
 
   const refresh = () => setTemplates(listTemplates())
 
@@ -86,8 +95,56 @@ export default function TemplatesPanel({ state, dispatch }) {
       </div>
 
       <div>
-        <p className="text-[10px] uppercase tracking-label text-graphite mb-2">Saved on this device</p>
-        {templates.length === 0 ? (
+        <div className="flex gap-1 mb-2" role="tablist" aria-label="Template source">
+          {[['mine', 'Saved on this device'], ['starters', 'PraShree starters']].map(([id, label]) => (
+            <button
+              key={id}
+              role="tab"
+              aria-selected={tab === id}
+              onClick={() => setTab(id)}
+              className={`px-2.5 py-1 text-[10px] uppercase tracking-label border transition-colors cursor-pointer ${
+                tab === id ? 'bg-ink text-white border-ink' : 'bg-white text-graphite border-mist hover:border-ink'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {tab === 'starters' ? (
+          starters.length === 0 ? (
+            <p className="text-small text-ash">No starter templates available right now.</p>
+          ) : (
+            <ul className="space-y-1.5 list-none p-0 max-h-56 overflow-y-auto">
+              {starters.map((t) => (
+                <li key={t.id} className="flex items-center gap-2 border border-mist px-2.5 py-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-small text-ink truncate">{t.name}</p>
+                    <p className="text-[11px] text-ash">
+                      {t.config_json?.paper?.w}×{t.config_json?.paper?.h} mm ·{' '}
+                      {t.config_json?.rings?.radii?.length} rings
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const config = normaliseConfig(t.config_json)
+                      if (config) {
+                        dispatch({ type: 'LOAD_STATE', state: config })
+                        setName(config.name || t.name)
+                        setNote(`Loaded starter “${t.name}”.`)
+                      }
+                    }}
+                    className="p-1.5 text-graphite hover:text-ink bg-transparent border-0 cursor-pointer"
+                    aria-label={`Load starter ${t.name}`}
+                    title="Load"
+                  >
+                    <FolderOpen size={14} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )
+        ) : templates.length === 0 ? (
           <p className="text-small text-ash">No saved templates yet.</p>
         ) : (
           <ul className="space-y-1.5 list-none p-0 max-h-56 overflow-y-auto">

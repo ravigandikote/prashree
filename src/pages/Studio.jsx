@@ -12,6 +12,13 @@ import TemplatesPanel from '../components/studio/TemplatesPanel'
 import PatternPanel from '../components/studio/PatternPanel'
 import { initialStudioState, historyReducer, initialHistory } from '../lib/mandala/state'
 import { autosave, readAutosave, clearAutosave } from '../lib/mandala/templates'
+import { Link } from 'react-router-dom'
+
+/* Finished pieces the patterns are drawn from — for study, not tracing */
+const EXAMPLES = [
+  'aditya', 'ajna', 'anahata', 'ananda', 'chakra',
+  'dhyana', 'jaala', 'kavach', 'kubera', 'lakshmi',
+]
 
 const INTRO_KEY = 'prashree_studio_intro_seen'
 
@@ -148,6 +155,33 @@ export default function Studio() {
             <div className="pt-4 border-t border-mist">
               <p className="text-[10px] uppercase tracking-label text-graphite mb-3">Base templates</p>
               <TemplatesPanel state={state} dispatch={dispatch} />
+            </div>
+
+            {/* Examples — finished pieces by Monica */}
+            <div className="pt-4 border-t border-mist">
+              <p className="text-[10px] uppercase tracking-label text-graphite mb-2">
+                Examples from the collection
+              </p>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {EXAMPLES.map((slug) => (
+                  <Link
+                    key={slug}
+                    to={`/products/${slug}`}
+                    className="shrink-0 w-14 h-14 border border-mist hover:border-ink transition-colors bg-paper"
+                    title={`See “${slug}” in the collection`}
+                  >
+                    <img
+                      src={`/images/products/thumbs/${slug}.jpg`}
+                      alt={`Finished mandala artwork “${slug}” by Monica Prakash`}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  </Link>
+                ))}
+              </div>
+              <p className="text-[11px] text-ash mt-1.5">
+                Every pattern here is drawn from these finished pieces.
+              </p>
             </div>
           </aside>
 

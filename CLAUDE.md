@@ -61,7 +61,8 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 | `/learn` | `pages/Learn.jsx` — 7529 hero, three offering cards (data in `src/data/learn.js`, [[ ]] for unknown durations/needs), 6 residential-workshop cards, **`#doorstep` dark section** (Janur Art / sound healing / Mandala Art Therapy at the host's venue — cards for residential societies, corporate offices, and studios/space owners on revenue share; data `doorstepAudiences` in learn.js), community strip; every card opens `EnquiryModal` (kind=booking → `enquiries` table, distinct subject per audience) | `createEnquiry` |
 | `/connections` | **parked 2026-08-20** (user request): route redirects → `/about`; nav/footer links removed. `pages/Connections.jsx` + `src/data/connections.js` + the `connections` table are kept for revival | — |
 | `/workshops` | redirect → `/learn` | — |
-| `/sacred-geometry` | `pages/SacredGeometry.jsx` — educational sections + interactive SVG mandala generator (`PatternGenerator` + `MandalaCanvas`, golden-ratio math) | static |
+| `/sacred-geometry` | `pages/SacredGeometry.jsx` — educational sections; the old simple generator was retired in favour of a Studio CTA | static |
+| `/studio` | **Mandala Studio (2026-08-21)** — teaching-first drafting tool built in six phases. mm-true SVG stage (viewBox = paper), stepper mirroring the taught order (paper → centre → circles → radial lines → patterns → download). Pure logic in `src/lib/mandala/` (geometry, state+50-step undo/redo history with tweak coalescing, templates, exporter, patterns) — 37 Vitest tests incl. per-motif rotation-symmetry proofs and mm→pt scaling. 31 tileable motifs in 5 families; A/B sector alternation; per-ring weights fine/medium/bold. Export: vector PDF (jsPDF+svg2pdf, exact paper MediaBox), PNG 300 DPI, SVG; guides-only "print and fill by hand" is first-class. Templates: localStorage + JSON file import/export + autosave/resume + **PraShree starters** from `mandala_templates` (migration `20260821_mandala_templates.sql`, curated in `/admin/templates`). Examples strip links the 10 reference artworks. UI in `src/components/studio/` (canvas w/ zoom-pan + draggable centre + annulus ring hit areas, panels, pattern bottom-sheet on mobile) | `getStarterTemplates` |
 | `/blog` | `pages/Blog.jsx` — **new Phase 6**: editorial list of published posts (cover, date, tags, excerpt); EmptyState until posts exist | `getPublishedPosts` |
 | `/blog/:slug` | `pages/BlogPost.jsx` — serif reading layout (`.prose-post`), markdown via `marked` + `DOMPurify`, keyed remount per slug | `getPostBySlug` |
 | `/contact` | `pages/Contact.jsx` — **rebuilt Phase 6**: 7387 portrait, tel/mailto/Instagram ([[INSTAGRAM_URL]] placeholder)/location, real `EnquiryForm` (kind=contact) → `enquiries` table | `createEnquiry` |
@@ -105,7 +106,9 @@ interest forms (no WhatsApp/Google Form).
 
 Fresh installs run `schema.sql` **then** `supabase/migrations/20260819_refactor.sql`
 (adds products.pdf_url/vastu_note, `interests`, `enquiries`, `posts`, `connections` +
-RLS + placeholder seeds; existing DBs run just the migration).
+RLS + placeholder seeds; existing DBs run just the migration), then
+`20260820_artworks.sql` (catalogue), then `20260821_mandala_templates.sql`
+(Studio starter templates, public-read starters + admin write).
 
 - `categories` (id uuid, name, slug, description, image_url, display_order) — seeded with the 20 art categories
 - `products` (id, category_id FK→categories CASCADE, name, slug, description, price numeric, sale_price, images text[], is_featured, is_available, timestamps)

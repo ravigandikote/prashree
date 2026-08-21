@@ -260,6 +260,52 @@ export async function deletePost(id) {
   if (error) throw error
 }
 
+/* ── Mandala Studio templates ── */
+export async function getStarterTemplates() {
+  const { data, error } = await supabase
+    .from('mandala_templates')
+    .select('id, name, config_json, created_at')
+    .eq('is_starter', true)
+    .order('created_at', { ascending: true })
+  if (error) throw error
+  return data
+}
+
+export async function getAllMandalaTemplates() {
+  const { data, error } = await supabase
+    .from('mandala_templates')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+
+export async function createMandalaTemplate(template) {
+  const { data, error } = await supabase
+    .from('mandala_templates')
+    .insert([template])
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function updateMandalaTemplate(id, updates) {
+  const { data, error } = await supabase
+    .from('mandala_templates')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function deleteMandalaTemplate(id) {
+  const { error } = await supabase.from('mandala_templates').delete().eq('id', id)
+  if (error) throw error
+}
+
 /* ── Connections ── */
 export async function getConnections() {
   const { data, error } = await supabase

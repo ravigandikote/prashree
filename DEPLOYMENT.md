@@ -20,8 +20,12 @@ In the SQL Editor, run in order:
 2. `supabase/migrations/20260819_refactor.sql` — catalogue fields
    (pdf_url/vastu_note), `interests`, `enquiries`, `posts`, `connections`,
    RLS, and placeholder seeds
+3. `supabase/migrations/20260820_artworks.sql` — the 27-artwork catalogue
+4. `supabase/migrations/20260821_mandala_templates.sql` — Mandala Studio
+   starter templates (curated at /admin/templates)
 
-Existing databases that already ran `schema.sql` only need step 2.
+Existing databases only need the migrations they haven't run yet — every
+file is idempotent.
 
 ### Create Storage Buckets (Storage > New bucket, both **Public**)
 - `artworks` — media library, category images, blog covers

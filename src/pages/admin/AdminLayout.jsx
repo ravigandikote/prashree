@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, Navigate } from 'react-router-dom'
-import { Inbox, MessageSquare, Package, Grid3X3, Image, FileText, LogOut } from 'lucide-react'
+import { Inbox, MessageSquare, Package, Grid3X3, Image, FileText, Compass, LogOut } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { LoadingSpinner } from '../../components/UI'
 
@@ -10,6 +10,7 @@ const sidebarLinks = [
   { to: '/admin/posts', label: 'Blog', icon: FileText },
   { to: '/admin/categories', label: 'Categories', icon: Grid3X3 },
   { to: '/admin/media', label: 'Media', icon: Image },
+  { to: '/admin/templates', label: 'Studio', icon: Compass },
 ]
 
 export default function AdminLayout() {
