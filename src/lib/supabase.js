@@ -64,10 +64,27 @@ export async function getGalleryByCategory(categoryId) {
 }
 
 /* ── Media / Storage helpers ── */
+
+/** Storage keys reject spaces and most punctuation — slugify each path
+    segment while keeping the extension (fixes "Invalid key" on uploads). */
+function safeStoragePath(filePath) {
+  return filePath
+    .split('/')
+    .map((segment) =>
+      segment
+        .replace(/[^a-zA-Z0-9._-]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^[-.]+|[-]+$/g, '')
+        .toLowerCase()
+    )
+    .filter(Boolean)
+    .join('/')
+}
+
 export async function uploadImage(bucket, filePath, file) {
   const { data, error } = await supabase.storage
     .from(bucket)
-    .upload(filePath, file, { cacheControl: '3600', upsert: false })
+    .upload(safeStoragePath(filePath), file, { cacheControl: '3600', upsert: false })
   if (error) throw error
   const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(data.path)
   return urlData.publicUrl
