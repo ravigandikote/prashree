@@ -2,6 +2,7 @@ import { useEffect, useReducer, useState } from 'react'
 import SEO from '../components/SEO'
 import Button from '../components/Button'
 import Stepper from '../components/studio/Stepper'
+import ExportDialog from '../components/studio/ExportDialog'
 import { STEPS } from '../lib/mandala/steps'
 import StudioCanvas from '../components/studio/StudioCanvas'
 import {
@@ -16,6 +17,7 @@ export default function Studio() {
   const [step, setStep] = useState('paper')
   const [zoom, setZoom] = useState(1)
   const [showIntro, setShowIntro] = useState(() => !localStorage.getItem(INTRO_KEY))
+  const [showExport, setShowExport] = useState(false)
 
   useEffect(() => {
     if (!showIntro) localStorage.setItem(INTRO_KEY, '1')
@@ -40,7 +42,19 @@ export default function Studio() {
       />
 
       <div className="flex flex-col h-[calc(100vh-5rem)] min-h-[480px]">
-        <Stepper active={step} onSelect={setStep} />
+        <div className="flex items-center border-b border-mist bg-white">
+          <div className="flex-1 min-w-0 [&>nav]:border-b-0">
+            <Stepper active={step} onSelect={setStep} />
+          </div>
+          <button
+            onClick={() => setShowExport(true)}
+            aria-label="Open download options"
+            data-testid="studio-download"
+            className="shrink-0 mx-3 my-2 px-4 py-2 bg-ink text-white text-small uppercase tracking-label border-0 cursor-pointer hover:bg-charcoal transition-colors"
+          >
+            Download
+          </button>
+        </div>
 
         <div className="flex flex-1 min-h-0 flex-col md:flex-row">
           {/* Controls */}
@@ -65,10 +79,18 @@ export default function Studio() {
               </p>
             )}
             {step === 'export' && (
-              <p className="text-small text-graphite">
-                Export arrives in the next stage — PDF at true print size,
-                with or without the construction guides.
-              </p>
+              <div className="space-y-4">
+                <p className="text-small text-graphite">
+                  Print at 100% for true-size guides — then keep working on
+                  screen, or by hand with pen. Both are the real thing.
+                </p>
+                <button
+                  onClick={() => setShowExport(true)}
+                  className="px-4 py-2 bg-ink text-white text-small uppercase tracking-label border-0 cursor-pointer hover:bg-charcoal transition-colors"
+                >
+                  Open download options
+                </button>
+              </div>
             )}
 
             <div className="pt-4 border-t border-mist">
@@ -81,6 +103,8 @@ export default function Studio() {
           <StudioCanvas state={state} dispatch={dispatch} zoom={zoom} setZoom={setZoom} />
         </div>
       </div>
+
+      <ExportDialog open={showExport} onClose={() => setShowExport(false)} state={state} />
 
       {/* First-visit intro */}
       {showIntro && (

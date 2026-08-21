@@ -17,13 +17,15 @@
     "@supabase/supabase-js": "^2.103.0",
     "dompurify": "^3.4.14",
     "framer-motion": "^12.38.0",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.8.0",
     "marked": "^18.0.10",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-helmet-async": "^3.0.0",
     "react-hot-toast": "^2.6.0",
-    "react-router-dom": "^7.14.0"
+    "react-router-dom": "^7.14.0",
+    "svg2pdf.js": "^2.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
