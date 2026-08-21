@@ -15,6 +15,7 @@ const staticRoutes = [
   { path: '/products', priority: '0.9' },
   { path: '/about', priority: '0.8' },
   { path: '/learn', priority: '0.8' },
+  { path: '/workshops', priority: '0.8' },
   { path: '/contact', priority: '0.7' },
   { path: '/studio', priority: '0.7' },
   { path: '/blog', priority: '0.6' },

@@ -23,6 +23,8 @@ In the SQL Editor, run in order:
 3. `supabase/migrations/20260820_artworks.sql` — the 27-artwork catalogue
 4. `supabase/migrations/20260821_mandala_templates.sql` — Mandala Studio
    starter templates (curated at /admin/templates)
+5. `supabase/migrations/20260821_workshop_events.sql` — upcoming workshops
+   (announced on /workshops, managed at /admin/workshops)
 
 Existing databases only need the migrations they haven't run yet — every
 file is idempotent.

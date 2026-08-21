@@ -260,6 +260,52 @@ export async function deletePost(id) {
   if (error) throw error
 }
 
+/* ── Upcoming workshops ── */
+export async function getActiveWorkshops() {
+  const { data, error } = await supabase
+    .from('workshop_events')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order', { ascending: true })
+  if (error) throw error
+  return data
+}
+
+export async function getAllWorkshops() {
+  const { data, error } = await supabase
+    .from('workshop_events')
+    .select('*')
+    .order('display_order', { ascending: true })
+  if (error) throw error
+  return data
+}
+
+export async function createWorkshop(workshop) {
+  const { data, error } = await supabase
+    .from('workshop_events')
+    .insert([workshop])
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function updateWorkshop(id, updates) {
+  const { data, error } = await supabase
+    .from('workshop_events')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function deleteWorkshop(id) {
+  const { error } = await supabase.from('workshop_events').delete().eq('id', id)
+  if (error) throw error
+}
+
 /* ── Mandala Studio templates ── */
 export async function getStarterTemplates() {
   const { data, error } = await supabase

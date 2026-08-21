@@ -64,9 +64,12 @@ export default function Learn() {
                 workshops — online and in person. Every session moves at a calm,
                 deliberate pace, whatever your starting point.
               </p>
-              <div className="mt-10">
-                <Button onClick={() => setBooking('General enquiry — classes & workshops')}>
-                  Enquire about joining <ArrowRight size={14} />
+              <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                <Button to="/workshops">
+                  Upcoming workshop dates <ArrowRight size={14} />
+                </Button>
+                <Button variant="outline" onClick={() => setBooking('General enquiry — classes & workshops')}>
+                  Enquire about joining
                 </Button>
               </div>
             </motion.div>

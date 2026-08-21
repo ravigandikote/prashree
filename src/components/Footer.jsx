@@ -60,7 +60,7 @@ export default function Footer() {
               {[
                 { to: '/products', label: 'The Collection' },
                 { to: '/sacred-geometry', label: 'Sacred Geometry' },
-                { to: '/learn', label: 'Workshops & Classes' },
+                { to: '/workshops', label: 'Upcoming Workshops' },
                 { to: '/contact', label: 'Bespoke Orders' },
               ].map((link) => (
                 <li key={link.to}>

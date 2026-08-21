@@ -16,6 +16,7 @@ const Contact = lazy(() => import('./pages/Contact'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const SacredGeometry = lazy(() => import('./pages/SacredGeometry'))
+const WorkshopEvents = lazy(() => import('./pages/WorkshopEvents'))
 const Studio = lazy(() => import('./pages/Studio'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
@@ -27,6 +28,7 @@ const AdminPosts = lazy(() => import('./pages/admin/AdminPosts'))
 const AdminCategories = lazy(() => import('./pages/admin/AdminCategories'))
 const AdminMedia = lazy(() => import('./pages/admin/AdminMedia'))
 const AdminTemplates = lazy(() => import('./pages/admin/AdminTemplates'))
+const AdminWorkshops = lazy(() => import('./pages/admin/AdminWorkshops'))
 
 export default function App() {
   return (
@@ -58,7 +60,7 @@ export default function App() {
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<Contact />} />
 
-                <Route path="/workshops" element={<Navigate to="/learn" replace />} />
+                <Route path="/workshops" element={<WorkshopEvents />} />
                 {/* Connections is parked for now (page kept in src/pages) */}
                 <Route path="/connections" element={<Navigate to="/about" replace />} />
 
@@ -78,6 +80,7 @@ export default function App() {
                 <Route path="categories" element={<AdminCategories />} />
                 <Route path="media" element={<AdminMedia />} />
                 <Route path="templates" element={<AdminTemplates />} />
+                <Route path="workshops" element={<AdminWorkshops />} />
               </Route>
             </Routes>
           </Suspense>

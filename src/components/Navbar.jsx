@@ -9,9 +9,9 @@ const navLinks = [
   { to: '/about', label: 'About' },
   { to: '/products', label: 'Artworks' },
   { to: '/learn', label: 'Learn' },
+  { to: '/workshops', label: 'Workshops' },
   { to: '/studio', label: 'Studio' },
   { to: '/blog', label: 'Blog' },
-  { to: '/sacred-geometry', label: 'Sacred Geometry' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -36,7 +36,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop navigation */}
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden md:flex items-center gap-6 lg:gap-9">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
