@@ -1,7 +1,6 @@
 import SEO from '../components/SEO'
 import { MandalaHeroBg } from '../components/UI'
 import SacredGeometryInfoSection from '../components/SacredGeometryInfoSection'
-import PatternGenerator from '../components/PatternGenerator'
 import { motion } from 'framer-motion'
 
 export default function SacredGeometry() {
@@ -44,8 +43,30 @@ export default function SacredGeometry() {
             {/* ── Educational content ── */}
             <SacredGeometryInfoSection />
 
-            {/* ── Interactive pattern generator ── */}
-            <PatternGenerator />
+            {/* ── Try it yourself: the Mandala Studio ── */}
+            <section className="py-20 bg-ink text-white">
+                <div className="max-w-2xl mx-auto px-4 text-center">
+                    <p className="text-small uppercase tracking-label text-white/60 mb-3">
+                        Try it yourself
+                    </p>
+                    <h2 className="font-display text-display-sm text-white">
+                        The Mandala Studio
+                    </h2>
+                    <p className="mt-4 text-white/70">
+                        Construct a mandala the way it's taught on paper — centre,
+                        circles, radial guides, patterns — and download a true-size
+                        PDF to print and fill by hand.
+                    </p>
+                    <div className="mt-8">
+                        <a
+                            href="/studio"
+                            className="inline-flex items-center gap-2 px-8 py-3 text-small font-medium uppercase tracking-label border border-white text-white hover:bg-white hover:text-ink transition-colors no-underline"
+                        >
+                            Open the Studio
+                        </a>
+                    </div>
+                </div>
+            </section>
 
             {/* ── Closing call-to-action ── */}
             <section className="py-16 bg-white">

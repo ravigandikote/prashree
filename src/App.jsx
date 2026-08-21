@@ -16,6 +16,7 @@ const Contact = lazy(() => import('./pages/Contact'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const SacredGeometry = lazy(() => import('./pages/SacredGeometry'))
+const Studio = lazy(() => import('./pages/Studio'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
@@ -51,6 +52,7 @@ export default function App() {
                 <Route path="/products/:slug" element={<ProductDetail />} />
                 <Route path="/learn" element={<Learn />} />
                 <Route path="/sacred-geometry" element={<SacredGeometry />} />
+                <Route path="/studio" element={<Studio />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<Contact />} />
