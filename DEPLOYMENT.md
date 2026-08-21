@@ -29,8 +29,11 @@ In the SQL Editor, run in order:
 Existing databases only need the migrations they haven't run yet — every
 file is idempotent.
 
-### Create Storage Buckets (Storage > New bucket, both **Public**)
-- `artworks` — media library, category images, blog covers
+### Create Storage Buckets
+Run `supabase/migrations/20260821_storage_buckets.sql` in the SQL editor
+(creates public `artworks` + `products` buckets with admin-only writes) —
+or create them by hand in Storage > New bucket, both **Public**:
+- `artworks` — media library, category images, blog covers, workshop flyers
 - `products` — product photos
 
 ### Enable Authentication
