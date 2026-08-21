@@ -67,10 +67,14 @@ export function studioReducer(state, action) {
         state.rings.mode === 'uniform'
           ? uniformRadii(count, state.rings.gap)
           : resizeCustomRadii(state.rings.radii, count, state.rings.gap)
+      const fills = Object.fromEntries(
+        Object.entries(state.fills).filter(([k]) => +k < count)
+      )
       return {
         ...state,
         rings: { ...state.rings, count, radii },
         lines: clampLineRings({ ...state.lines, outerRing: count - 1 }, count),
+        fills,
       }
     }
     case 'SET_RING_GAP': {
@@ -103,6 +107,42 @@ export function studioReducer(state, action) {
       return { ...state, lines: { ...state.lines, offset: clamp(action.offset, -180, 180) } }
     case 'TOGGLE_GUIDE':
       return { ...state, guides: { ...state.guides, [action.guide]: !state.guides[action.guide] } }
+    case 'SET_RING_FILL': {
+      const prev = state.fills[action.index] || {}
+      return {
+        ...state,
+        fills: {
+          ...state.fills,
+          [action.index]: { weight: 'medium', ...prev, patternId: action.patternId },
+        },
+      }
+    }
+    case 'SET_RING_FILL_B': {
+      const prev = state.fills[action.index]
+      if (!prev) return state
+      return {
+        ...state,
+        fills: { ...state.fills, [action.index]: { ...prev, patternB: action.patternId || null } },
+      }
+    }
+    case 'SET_RING_WEIGHT': {
+      const prev = state.fills[action.index]
+      if (!prev) return state
+      return {
+        ...state,
+        fills: { ...state.fills, [action.index]: { ...prev, weight: action.weight } },
+      }
+    }
+    case 'CLEAR_RING_FILL': {
+      const fills = { ...state.fills }
+      delete fills[action.index]
+      return { ...state, fills }
+    }
+    case 'COPY_RING_STYLE': {
+      const src = state.fills[action.from]
+      if (!src) return state
+      return { ...state, fills: { ...state.fills, [action.to]: { ...src } } }
+    }
     case 'SET_NAME':
       return { ...state, name: action.name || null }
     case 'LOAD_STATE':
@@ -121,4 +161,48 @@ function resizeCustomRadii(radii, count, gap) {
     out.push(+(last + gap).toFixed(2))
   }
   return out
+}
+
+
+/* ── Undo/redo history (50 steps). Continuous tweaks of the same control
+      coalesce so a slider drag is one undo step. ── */
+
+const COALESCE = new Set([
+  'SET_CENTRE', 'SET_RING_RADIUS', 'SET_RING_GAP', 'SET_ROTATION_OFFSET',
+  'SET_MARGIN', 'SET_ANGLE_STEP', 'SET_SECTORS', 'SET_RING_COUNT', 'SET_CUSTOM_PAPER',
+])
+const HISTORY_LIMIT = 50
+
+export function initialHistory(state) {
+  return { past: [], present: state, future: [], lastType: null }
+}
+
+export function historyReducer(h, action) {
+  if (action.type === 'UNDO') {
+    if (!h.past.length) return h
+    return {
+      past: h.past.slice(0, -1),
+      present: h.past[h.past.length - 1],
+      future: [h.present, ...h.future].slice(0, HISTORY_LIMIT),
+      lastType: null,
+    }
+  }
+  if (action.type === 'REDO') {
+    if (!h.future.length) return h
+    return {
+      past: [...h.past, h.present].slice(-HISTORY_LIMIT),
+      present: h.future[0],
+      future: h.future.slice(1),
+      lastType: null,
+    }
+  }
+  const present = studioReducer(h.present, action)
+  if (present === h.present) return h
+  const coalesce = action.type === h.lastType && COALESCE.has(action.type)
+  return {
+    past: coalesce ? h.past : [...h.past, h.present].slice(-HISTORY_LIMIT),
+    present,
+    future: [],
+    lastType: action.type,
+  }
 }

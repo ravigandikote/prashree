@@ -9,13 +9,16 @@ import {
   PaperPanel, CentrePanel, CirclesPanel, LinesPanel, GuidesToggles,
 } from '../components/studio/ControlPanels'
 import TemplatesPanel from '../components/studio/TemplatesPanel'
-import { initialStudioState, studioReducer } from '../lib/mandala/state'
+import PatternPanel from '../components/studio/PatternPanel'
+import { initialStudioState, historyReducer, initialHistory } from '../lib/mandala/state'
 import { autosave, readAutosave, clearAutosave } from '../lib/mandala/templates'
 
 const INTRO_KEY = 'prashree_studio_intro_seen'
 
 export default function Studio() {
-  const [state, dispatch] = useReducer(studioReducer, undefined, () => initialStudioState())
+  const [history, dispatch] = useReducer(historyReducer, undefined, () => initialHistory(initialStudioState()))
+  const state = history.present
+  const [selectedRing, setSelectedRing] = useState(null)
   const [step, setStep] = useState('paper')
   const [zoom, setZoom] = useState(1)
   const [showIntro, setShowIntro] = useState(() => !localStorage.getItem(INTRO_KEY))
@@ -27,6 +30,19 @@ export default function Studio() {
     const id = setTimeout(() => autosave(state), 3000)
     return () => clearTimeout(id)
   }, [state])
+
+  /* undo/redo keyboard shortcuts */
+  useEffect(() => {
+    const onKey = (e) => {
+      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== 'z') return
+      const tag = document.activeElement?.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return
+      e.preventDefault()
+      dispatch({ type: e.shiftKey ? 'REDO' : 'UNDO' })
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   useEffect(() => {
     if (!showIntro) localStorage.setItem(INTRO_KEY, '1')
@@ -104,8 +120,8 @@ export default function Studio() {
             {step === 'lines' && <LinesPanel state={state} dispatch={dispatch} />}
             {step === 'patterns' && (
               <p className="text-small text-graphite">
-                The pattern library arrives in the next stage of the studio —
-                for now, download your base and fill it by hand with pen.
+                Pick a ring — on the paper or in the panel — then a pattern.
+                It repeats across every sector. Undo with Ctrl/Cmd+Z.
               </p>
             )}
             {step === 'export' && (
@@ -135,7 +151,26 @@ export default function Studio() {
           </aside>
 
           {/* Stage */}
-          <StudioCanvas state={state} dispatch={dispatch} zoom={zoom} setZoom={setZoom} />
+          <StudioCanvas
+            state={state}
+            dispatch={dispatch}
+            zoom={zoom}
+            setZoom={setZoom}
+            selectedRing={selectedRing}
+            onSelectRing={setSelectedRing}
+          />
+
+          {/* Pattern library — right on desktop */}
+          {step === 'patterns' && (
+            <aside className="md:w-80 shrink-0 border-t md:border-t-0 md:border-l border-mist bg-white overflow-y-auto p-5 max-h-[45vh] md:max-h-none">
+              <PatternPanel
+                state={state}
+                dispatch={dispatch}
+                selectedRing={selectedRing}
+                onSelectRing={setSelectedRing}
+              />
+            </aside>
+          )}
         </div>
       </div>
 

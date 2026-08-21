@@ -4,6 +4,7 @@
  * Everything stays in millimetres so prints at 100% are true to size.
  */
 import { pointAt, sectorAngles } from './geometry'
+import { fillsMarkup } from './patterns'
 
 export const GUIDE_STROKE = '#c9c9c9'
 export const GUIDE_WIDTH = 0.2 // mm
@@ -44,8 +45,8 @@ export function buildSvgMarkup(state, { includeGuides = true } = {}) {
     }
   }
 
-  // artwork layer (pattern fills) — populated from Phase 4 onward
-  if (state.artworkMarkup) parts.push(state.artworkMarkup)
+  // artwork layer: the pattern fills
+  parts.push(fillsMarkup(state))
 
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" width="${paper.w}mm" height="${paper.h}mm" viewBox="0 0 ${paper.w} ${paper.h}">` +

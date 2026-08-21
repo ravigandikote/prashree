@@ -72,3 +72,34 @@ describe('studio reducer', () => {
     expect(s.lines.sectors).toBe(16)
   })
 })
+
+describe('fills + history', async () => {
+  const { historyReducer, initialHistory } = await import('./state')
+
+  it('undo/redo restores ring fills', () => {
+    let h = initialHistory(initialStudioState())
+    h = historyReducer(h, { type: 'SET_RING_FILL', index: 2, patternId: 'petal-solid' })
+    expect(h.present.fills[2].patternId).toBe('petal-solid')
+    h = historyReducer(h, { type: 'UNDO' })
+    expect(h.present.fills[2]).toBeUndefined()
+    h = historyReducer(h, { type: 'REDO' })
+    expect(h.present.fills[2].patternId).toBe('petal-solid')
+  })
+
+  it('coalesces continuous tweaks into one undo step', () => {
+    let h = initialHistory(initialStudioState())
+    h = historyReducer(h, { type: 'SET_RING_GAP', gap: 13 })
+    h = historyReducer(h, { type: 'SET_RING_GAP', gap: 14 })
+    h = historyReducer(h, { type: 'SET_RING_GAP', gap: 15 })
+    expect(h.past).toHaveLength(1)
+    h = historyReducer(h, { type: 'UNDO' })
+    expect(h.present.rings.gap).toBe(12)
+  })
+
+  it('shrinking the ring count drops orphaned fills', () => {
+    let h = initialHistory(initialStudioState())
+    h = historyReducer(h, { type: 'SET_RING_FILL', index: 7, patternId: 'chevron' })
+    h = historyReducer(h, { type: 'SET_RING_COUNT', count: 4 })
+    expect(h.present.fills[7]).toBeUndefined()
+  })
+})

@@ -1,5 +1,29 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { pointAt, sectorAngles, ringsOutOfBounds, clamp } from '../../lib/mandala/geometry'
+import { ringFillPrimitives } from '../../lib/mandala/patterns'
+
+/** One filled ring, memoised so untouched rings never re-render. */
+const RingFill = memo(
+  function RingFill({ state, index }) {
+    const prims = useMemo(() => ringFillPrimitives(state, index), [state, index])
+    return prims.map((p, i) =>
+      p.type === 'circle' ? (
+        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill={p.fill} />
+      ) : (
+        <path
+          key={i} d={p.d} fill={p.fill} stroke={p.stroke} strokeWidth={p.strokeWidth}
+          strokeLinecap="round" strokeLinejoin="round"
+        />
+      )
+    )
+  },
+  (prev, next) =>
+    prev.index === next.index &&
+    prev.state.fills[prev.index] === next.state.fills[next.index] &&
+    prev.state.rings.radii === next.state.rings.radii &&
+    prev.state.centre === next.state.centre &&
+    prev.state.lines === next.state.lines
+)
 
 const PX_PER_MM = 3.2 // on-screen scale at 100 %
 
@@ -8,7 +32,7 @@ const PX_PER_MM = 3.2 // on-screen scale at 100 %
  * see is the true geometry of the chosen paper. Zoom 25–400 %, pan by
  * dragging the paper (or space-drag), centre point draggable.
  */
-export default function StudioCanvas({ state, dispatch, zoom, setZoom }) {
+export default function StudioCanvas({ state, dispatch, zoom, setZoom, selectedRing, onSelectRing }) {
   const { paper, margin, centre, rings, lines, guides } = state
   const svgRef = useRef(null)
   const wrapRef = useRef(null)
@@ -133,6 +157,34 @@ export default function StudioCanvas({ state, dispatch, zoom, setZoom }) {
                   key={a}
                   x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}
                   stroke="#c9c9c9" strokeWidth="0.2"
+                />
+              )
+            })}
+
+          {/* pattern fills (under the centre marker, over the guides) */}
+          {Object.keys(state.fills || {}).map((k) => (
+            <RingFill key={k} state={state} index={+k} />
+          ))}
+
+          {/* ring hit areas + selection highlight */}
+          {onSelectRing &&
+            state.rings.radii.map((r, i) => {
+              const r0 = i === 0 ? 0 : state.rings.radii[i - 1]
+              const mid = (r0 + r) / 2
+              const thickness = Math.max(r - r0, 1)
+              return (
+                <circle
+                  key={`hit-${i}`}
+                  cx={centre.x} cy={centre.y} r={mid}
+                  fill="none"
+                  stroke={selectedRing === i ? 'rgba(10,10,10,0.07)' : 'transparent'}
+                  strokeWidth={thickness}
+                  style={{ pointerEvents: 'stroke', cursor: 'pointer' }}
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onSelectRing(selectedRing === i ? null : i)
+                  }}
                 />
               )
             })}
