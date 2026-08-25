@@ -69,7 +69,7 @@ export default function Contact() {
                 </li>
                 <li>
                   <a
-                    href="mailto:info@prashreearts.com"
+                    href="mailto:monica@prashreearts.com"
                     className="flex items-center gap-4 text-charcoal hover:text-ink transition-colors no-underline group"
                   >
                     <span className="w-10 h-10 border border-mist group-hover:border-ink flex items-center justify-center transition-colors">
@@ -77,7 +77,7 @@ export default function Contact() {
                     </span>
                     <span>
                       <span className="block text-small uppercase tracking-label text-ash">Email</span>
-                      info@prashreearts.com
+                      monica@prashreearts.com
                     </span>
                   </a>
                 </li>

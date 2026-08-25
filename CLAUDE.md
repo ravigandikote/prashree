@@ -73,7 +73,7 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 ## Components (`src/components/`)
 
 `Layout`, `Navbar` (sticky, mobile drawer; no cart), `Footer` (ink bg; contact:
-+91 93534 64363, info@prashreearts.com, "Bengaluru · NeeRav Arts Village"), `SEO`,
++91 93534 64363, monica@prashreearts.com, "Bengaluru · NeeRav Arts Village"), `SEO`,
 `ScrollToTop`, `UI.jsx` (SectionHeading/MandalaOrnament/MandalaHeroBg/LoadingSpinner/
 EmptyState), `Button`, `Photo`, `Form.jsx`, `ProductCard` (plain-treatment photo, inline
 SVG placeholder, formatPrice), `PdfViewer` (object + download fallback), `InterestForm` +
