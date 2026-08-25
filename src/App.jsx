@@ -17,6 +17,7 @@ const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const SacredGeometry = lazy(() => import('./pages/SacredGeometry'))
 const WorkshopEvents = lazy(() => import('./pages/WorkshopEvents'))
+const Events = lazy(() => import('./pages/Events'))
 const Studio = lazy(() => import('./pages/Studio'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
@@ -61,6 +62,7 @@ export default function App() {
                 <Route path="/contact" element={<Contact />} />
 
                 <Route path="/workshops" element={<WorkshopEvents />} />
+                <Route path="/events" element={<Events />} />
                 {/* Connections is parked for now (page kept in src/pages) */}
                 <Route path="/connections" element={<Navigate to="/about" replace />} />
 

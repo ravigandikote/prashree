@@ -10,9 +10,12 @@ const STATUSES = [
   { value: 'closed', label: 'Closed' },
 ]
 
+const KINDS = ['all', 'contact', 'booking', 'decor', 'event']
+
 export default function AdminEnquiries() {
   const [enquiries, setEnquiries] = useState([])
   const [filter, setFilter] = useState('all')
+  const [kindFilter, setKindFilter] = useState('all')
 
   useEffect(() => {
     getEnquiries().then((data) => setEnquiries(data || [])).catch(() => {})
@@ -28,12 +31,32 @@ export default function AdminEnquiries() {
     }
   }
 
-  const filtered = filter === 'all' ? enquiries : enquiries.filter((e) => e.status === filter)
+  const filtered = enquiries.filter(
+    (e) =>
+      (filter === 'all' || e.status === filter) &&
+      (kindFilter === 'all' || e.kind === kindFilter)
+  )
 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <h1 className="font-display text-h2 text-ink">Enquiries</h1>
+        <div className="flex flex-wrap gap-3 items-center">
+        <div className="flex gap-1">
+          {KINDS.map((k) => (
+            <button
+              key={k}
+              onClick={() => setKindFilter(k)}
+              className={`px-3 py-1.5 text-small capitalize transition-colors cursor-pointer border ${
+                kindFilter === k
+                  ? 'bg-ink text-white border-ink'
+                  : 'bg-white text-graphite border-mist hover:border-ink'
+              }`}
+            >
+              {k}
+            </button>
+          ))}
+        </div>
         <div className="flex gap-1">
           {[{ value: 'all', label: 'All' }, ...STATUSES].map((s) => (
             <button
@@ -48,6 +71,7 @@ export default function AdminEnquiries() {
               {s.label}
             </button>
           ))}
+        </div>
         </div>
       </div>
 
@@ -81,6 +105,16 @@ export default function AdminEnquiries() {
                     })}
                   </span>
                 </div>
+                {(item.event_date || item.venue || item.guest_count) && (
+                  <p className="text-small text-charcoal mt-1.5">
+                    {[
+                      item.event_date &&
+                        new Date(item.event_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+                      item.venue,
+                      item.guest_count && `${item.guest_count} guests`,
+                    ].filter(Boolean).join(' · ')}
+                  </p>
+                )}
                 <p className="text-small text-graphite mt-2 max-w-2xl whitespace-pre-line">{item.message}</p>
               </div>
               <select

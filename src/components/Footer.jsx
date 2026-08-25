@@ -61,6 +61,7 @@ export default function Footer() {
                 { to: '/products', label: 'The Collection' },
                 { to: '/sacred-geometry', label: 'Sacred Geometry' },
                 { to: '/workshops', label: 'Upcoming Workshops' },
+                { to: '/events', label: 'PraShree Events' },
                 { to: '/contact', label: 'Bespoke Orders' },
               ].map((link) => (
                 <li key={link.to}>

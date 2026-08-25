@@ -25,6 +25,8 @@ In the SQL Editor, run in order:
    starter templates (curated at /admin/templates)
 5. `supabase/migrations/20260821_workshop_events.sql` — upcoming workshops
    (announced on /workshops, managed at /admin/workshops)
+6. `supabase/migrations/20260825_event_enquiries.sql` — event enquiry kind +
+   fields for /events; gallery photos go in the artworks bucket under events/
 
 Existing databases only need the migrations they haven't run yet — every
 file is idempotent.

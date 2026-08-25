@@ -223,8 +223,8 @@ export default function Home() {
             />
           </motion.div>
           <div className="text-center mt-10">
-            <Button to="/contact" variant="outline">
-              Plan an occasion <ArrowRight size={14} />
+            <Button to="/events" variant="outline">
+              Plan an occasion with PraShree Events <ArrowRight size={14} />
             </Button>
           </div>
         </div>
