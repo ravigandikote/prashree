@@ -1,41 +1,41 @@
 /**
  * PraShree Events content — single source for the /events page.
- * Occasions and materials come from the supplied sub-brand banner;
- * [[ ]] marks copy awaiting Monica's review.
+ * Copy is verbatim from prashree-events-website-content.md (repo root).
  */
 
 export const eventsContent = {
   meta: {
     title: 'PraShree Events — Natural & Sustainable Event Décor, Bengaluru',
     description:
-      'Natural, sustainable event décor in Bengaluru — birthdays, mehandi, baby showers, weddings — styled by hand in janur, gunny, bamboo, flowers, and clay.',
+      'Hand-made event décor in Janur, gunny, bamboo and flowers for birthdays, anniversaries, Mehandi and housewarmings. By PraShree Arts, Bengaluru.',
   },
   hero: {
     eyebrow: 'Natural · Sustainable · Event Décor',
     title: 'PraShree Events',
     script: 'Stories told in leaf & jute',
-    sub: 'Handmade backdrops and table settings from natural materials — designed, built, and installed by PraShree Arts.',
+    sub: 'Earthy, hand-made décor for the days that matter — built from Janur, gunny, bamboo, flowers and clay, not plastic.',
   },
   intro: [
-    'Every celebration has a story, and PraShree Events tells it in leaf and jute. Monica and her team design décor the way she makes art — by hand, from natural materials, shaped around the people the day is for.',
-    'Instead of plastic and foam, your backdrop is woven, tied, and arranged from janur, gunny, bamboo, fresh flowers, and clay — beautiful on the day, gentle on the venue, and kinder to what comes after.',
+    'PraShree Events is the décor wing of PraShree Arts. Before the studio, there was the events floor — years of setting up birthdays, anniversaries and Mehandi evenings, sometimes with a full team, sometimes single-handed. We are bringing that back, with one clear promise: décor that feels like it grew from the occasion rather than arrived in a carton.',
+    'We work with Janur (young coconut leaf), gunny and jute, bamboo, cane, fresh flowers, terracotta and hand-lettered boards. Every backdrop, arch and table piece is shaped by hand at NeeRav Arts Village and set up by our team on the day. What we build looks warm in photographs, smells of the garden, and leaves almost nothing behind for the landfill.',
   ],
   occasions: [
-    { name: 'Birthdays', line: 'Playful, personal backdrops that grow up with the guest of honour.' },
-    { name: 'Anniversaries', line: 'Quiet, elegant settings for milestones worth pausing for.' },
-    { name: 'Mehandi', line: 'Lush, traditional greens and marigold moments for the mehandi day.' },
-    { name: 'Housewarming', line: 'Natural, auspicious touches that make a new house feel blessed.' },
-    { name: 'Baby Showers', line: 'Soft, handmade décor for the gentlest of celebrations.' },
-    { name: 'Weddings', line: 'Full-scale natural styling, from mandap accents to table trails.' },
+    { name: 'Birthdays', line: "For toddlers or turning-fifty, without a single balloon if you'd rather not." },
+    { name: 'Anniversaries', line: 'Intimate home setups and garden dinners.' },
+    { name: 'Mehandi & Haldi', line: 'Marigold, Janur and jute in full colour.' },
+    { name: 'Housewarming & Griha Pravesh', line: 'Thoranam, rangoli and entrance décor.' },
+    { name: 'Baby showers & naming ceremonies', line: 'Soft botanical settings.' },
+    { name: 'Weddings, engagements & receptions', line: 'Small weddings — mandap and stage in natural materials.' },
+    { name: 'Corporate & community gatherings', line: 'Welcome arches, stage dressing, signage.' },
   ],
   process: [
-    { title: 'Tell us the occasion', line: 'Share the date, venue, guest count, and the feeling you want the room to have.' },
-    { title: 'A design in natural materials', line: 'Monica proposes a look built from leaf, jute, bamboo, flowers, and clay — shaped to your space and budget.' },
-    { title: 'We set up, you celebrate', line: 'The team installs on the day and clears gently after, so you only host.' },
+    { title: 'Tell us the occasion', line: 'Share the occasion, date, venue and rough guest count — on WhatsApp or the form below.' },
+    { title: 'Mood board in two days', line: 'We share a mood board and a quote within two days.' },
+    { title: 'We build, set up, and clear', line: 'Our team builds off-site, sets up on the day and clears everything after.' },
   ],
   materialsNote:
-    'Janur · Gunny · Bamboo · Flowers · Clay — everything we build is natural first: woven and tied rather than glued and moulded, reusable where possible, and easy on the venue.',
-  closing: 'One story, told in leaf and jute — tell us yours.',
+    "Our first choice is always natural: Janur, gunny, bamboo, cane, palm fronds, flowers, clay and cotton. If you want balloons, we'll do them well — but we'll show you what leaf and jute can do first.",
+  closing: "Whatever the story, our team will be there to make the décor tell it. Write to us and let's begin.",
 }
 
 export const WHATSAPP_NUMBER = '919353464363'
