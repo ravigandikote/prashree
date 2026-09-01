@@ -78,6 +78,44 @@ function spiralPath(cx, cy, r0, r1, a0, a1) {
   return `M ${pts[0]} L ${pts.join(' L ')}`
 }
 
+/* ── helpers for cell-centred motifs (flowers, stipple, scales) ── */
+
+/** Mid radius, angular arc length (mm) and radial thickness of a cell. */
+function cellMetrics(c, a0, a1) {
+  const rm = (c.r0 + c.r1) / 2
+  const arc = (2 * Math.PI * rm * (a1 - a0)) / 360
+  return { rm, arc, thick: c.r1 - c.r0 }
+}
+
+/** Absolute point from a local origin: `along` the axis, `across` it. */
+function localPoint(fx, fy, angDeg, along, across) {
+  const rad = ((angDeg - 90) * Math.PI) / 180
+  const ux = Math.cos(rad)
+  const uy = Math.sin(rad)
+  return [f(fx + ux * along - uy * across), f(fy + uy * along + ux * across)]
+}
+
+/** Petal growing from a local point outward along angDeg. */
+function localPetal(fx, fy, len, wid, angDeg) {
+  const [tx, ty] = localPoint(fx, fy, angDeg, len, 0)
+  const [c1x, c1y] = localPoint(fx, fy, angDeg, len * 0.3, wid)
+  const [c2x, c2y] = localPoint(fx, fy, angDeg, len * 0.78, wid * 0.7)
+  const [d1x, d1y] = localPoint(fx, fy, angDeg, len * 0.78, -wid * 0.7)
+  const [d2x, d2y] = localPoint(fx, fy, angDeg, len * 0.3, -wid)
+  return `M ${f(fx)} ${f(fy)} C ${c1x} ${c1y} ${c2x} ${c2y} ${tx} ${ty} C ${d1x} ${d1y} ${d2x} ${d2y} ${f(fx)} ${f(fy)} Z`
+}
+
+/** Quad following the cell's own edges, inset by a fraction. */
+function cellQuad(c, a0, a1, inset) {
+  const dr = (c.r1 - c.r0) * inset
+  const da = (a1 - a0) * inset
+  const [x1, y1] = pt(c.cx, c.cy, c.r0 + dr, a0 + da)
+  const [x2, y2] = pt(c.cx, c.cy, c.r1 - dr, a0 + da)
+  const [x3, y3] = pt(c.cx, c.cy, c.r1 - dr, a1 - da)
+  const [x4, y4] = pt(c.cx, c.cy, c.r0 + dr, a1 - da)
+  return `M ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} L ${x4} ${y4} Z`
+}
+
 /* ── the registry ── */
 
 export const PATTERNS = [
@@ -469,6 +507,292 @@ export const PATTERNS = [
         const [tx, ty] = pt(c.cx, c.cy, c.r1 - (c.r1 - c.r0) * 0.12, a)
         out.push(stroke(`M ${hx} ${hy} L ${tx} ${ty}`, c.weight * 0.8))
       }
+      return out
+    }),
+  },
+
+  /* ── Studied from Monica's reference mandalas (2026-09) ── */
+
+  /* Petals & leaves */
+  {
+    id: 'petal-swept', name: 'Swept lotus', family: 'Petals & leaves',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).map(([a0, a1]) => {
+      // tip leans a sector-width sideways: the pinwheel lotus of the references
+      const w = a1 - a0
+      return stroke(petalPath(c.cx, c.cy, c.r0, c.r1, a0 + w * 0.5, a1 + w * 0.5), c.weight)
+    }),
+  },
+  {
+    id: 'petal-swept-solid', name: 'Swept lotus, filled', family: 'Petals & leaves',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).map(([a0, a1]) => {
+      const w = a1 - a0
+      return solid(petalPath(c.cx, c.cy, c.r0, c.r1, a0 + w * 0.5, a1 + w * 0.5))
+    }),
+  },
+  {
+    id: 'petal-contour', name: 'Contour petal', family: 'Petals & leaves',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      // nested outlines echo the petal edge, like fine pen contour shading
+      const w = a1 - a0
+      const h = c.r1 - c.r0
+      return [0, 0.14, 0.28].map((k) =>
+        stroke(
+          petalPath(c.cx, c.cy, c.r0 + h * k * 0.5, c.r1 - h * k, a0 + w * k, a1 - w * k),
+          c.weight * (k === 0 ? 1 : 0.75)
+        )
+      )
+    }),
+  },
+  {
+    id: 'leaf-serrated', name: 'Serrated frond', family: 'Petals & leaves',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).map(([a0, a1]) => {
+      // palm frond: saw-toothed on one edge, smooth on the other
+      const w = a1 - a0
+      const h = c.r1 - c.r0
+      const spine = (a0 + a1) / 2
+      const half = w * 0.3
+      const teeth = 6
+      const [bx, by] = pt(c.cx, c.cy, c.r0, spine)
+      const parts = [`M ${bx} ${by}`]
+      for (let i = 1; i <= teeth; i++) {
+        const t = i / teeth
+        const taper = 1 - t * 0.85
+        const [vx, vy] = pt(c.cx, c.cy, c.r0 + h * (t - 0.5 / teeth), spine - half * taper)
+        const [nx, ny] = pt(c.cx, c.cy, c.r0 + h * t, spine - half * taper * 0.55)
+        parts.push(`L ${vx} ${vy} L ${nx} ${ny}`)
+      }
+      const [tx, ty] = pt(c.cx, c.cy, c.r1, spine)
+      const [c1x, c1y] = pt(c.cx, c.cy, c.r0 + h * 0.72, spine + half * 0.6)
+      const [c2x, c2y] = pt(c.cx, c.cy, c.r0 + h * 0.28, spine + half * 0.95)
+      parts.push(`L ${tx} ${ty} C ${c1x} ${c1y} ${c2x} ${c2y} ${bx} ${by} Z`)
+      return stroke(parts.join(' '), c.weight)
+    }),
+  },
+
+  /* Florals */
+  {
+    id: 'flower-daisy', name: 'Daisy', family: 'Florals',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const { rm, arc, thick } = cellMetrics(c, a0, a1)
+      const mid = (a0 + a1) / 2
+      const [fx, fy] = pt(c.cx, c.cy, rm, mid)
+      const size = Math.min(thick, arc) * 0.46
+      const out = []
+      for (let k = 0; k < 8; k++) {
+        out.push(stroke(localPetal(fx, fy, size, size * 0.3, mid + k * 45), c.weight))
+      }
+      out.push({ type: 'circle', cx: fx, cy: fy, r: f(size * 0.22), fill: '#ffffff', stroke: INK, strokeWidth: c.weight })
+      return out
+    }),
+  },
+  {
+    id: 'flower-solid', name: 'Filled bloom', family: 'Florals',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const { rm, arc, thick } = cellMetrics(c, a0, a1)
+      const mid = (a0 + a1) / 2
+      const [fx, fy] = pt(c.cx, c.cy, rm, mid)
+      const size = Math.min(thick, arc) * 0.46
+      const out = []
+      for (let k = 0; k < 6; k++) {
+        out.push(solid(localPetal(fx, fy, size, size * 0.34, mid + k * 60)))
+      }
+      out.push({ type: 'circle', cx: fx, cy: fy, r: f(size * 0.2), fill: '#ffffff', stroke: INK, strokeWidth: c.weight })
+      return out
+    }),
+  },
+  {
+    id: 'flower-lined', name: 'Line-drawn bloom', family: 'Florals',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const { rm, arc, thick } = cellMetrics(c, a0, a1)
+      const mid = (a0 + a1) / 2
+      const [fx, fy] = pt(c.cx, c.cy, rm, mid)
+      const size = Math.min(thick, arc) * 0.46
+      const out = []
+      for (let k = 0; k < 6; k++) {
+        const a = mid + k * 60
+        out.push(stroke(localPetal(fx, fy, size, size * 0.34, a), c.weight))
+        out.push(stroke(localPetal(fx, fy, size * 0.72, size * 0.18, a), c.weight * 0.7))
+      }
+      out.push({ type: 'circle', cx: fx, cy: fy, r: f(size * 0.18), fill: '#ffffff', stroke: INK, strokeWidth: c.weight })
+      return out
+    }),
+  },
+
+  /* Weave & lattice */
+  {
+    id: 'vesica-lattice', name: 'Vesica lattice', family: 'Weave & lattice',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).map(([a0, a1]) => {
+      // pointed ovals meeting tip to tip — the overlapping-circle lattice
+      const mid = (a0 + a1) / 2
+      const [x0, y0] = pt(c.cx, c.cy, c.r0, mid)
+      const [x1, y1] = pt(c.cx, c.cy, c.r1, mid)
+      const span = Math.hypot(x1 - x0, y1 - y0)
+      // fat lens (radius just over half the span) so neighbours interlock
+      const rr = f(span * 0.54)
+      return stroke(`M ${x0} ${y0} A ${rr} ${rr} 0 0 1 ${x1} ${y1} A ${rr} ${rr} 0 0 1 ${x0} ${y0}`, c.weight)
+    }),
+  },
+  {
+    id: 'guilloche-net', name: 'Rosette net', family: 'Weave & lattice',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).map(([a0, a1]) => {
+      const { rm, arc, thick } = cellMetrics(c, a0, a1)
+      const [x, y] = pt(c.cx, c.cy, rm, (a0 + a1) / 2)
+      return {
+        type: 'circle', cx: x, cy: y,
+        r: f(Math.min(thick, arc) * 0.66),
+        fill: 'none', stroke: INK, strokeWidth: c.weight * 0.7,
+      }
+    }),
+  },
+  {
+    id: 'basket-weave', name: 'Basket weave', family: 'Weave & lattice',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const h = c.r1 - c.r0
+      const w = a1 - a0
+      const out = []
+      // radial pair
+      for (const t of [0.3, 0.7]) {
+        const [x1, y1] = pt(c.cx, c.cy, c.r0 + h * 0.1, a0 + w * t)
+        const [x2, y2] = pt(c.cx, c.cy, c.r0 + h * 0.48, a0 + w * t)
+        out.push(stroke(`M ${x1} ${y1} L ${x2} ${y2}`, c.weight))
+      }
+      // tangential pair, offset outward — reads as over-under weaving
+      for (const t of [0.62, 0.86]) {
+        const rr = c.r0 + h * t
+        const [x1, y1] = pt(c.cx, c.cy, rr, a0 + w * 0.12)
+        const [x2, y2] = pt(c.cx, c.cy, rr, a1 - w * 0.12)
+        out.push(stroke(`M ${x1} ${y1} A ${f(rr)} ${f(rr)} 0 0 1 ${x2} ${y2}`, c.weight))
+      }
+      return out
+    }),
+  },
+
+  /* Scallops & arches */
+  {
+    id: 'scale-ribbed', name: 'Ribbed scale', family: 'Scallops & arches',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      // fish-scale fan with inner ribs — the layered bands of the references
+      const w = a1 - a0
+      const rBase = c.r0 + (c.r1 - c.r0) * 0.12
+      return [0, 0.18, 0.36].map((inset, i) => {
+        const [x1, y1] = pt(c.cx, c.cy, rBase, a0 + w * inset)
+        const [x2, y2] = pt(c.cx, c.cy, rBase, a1 - w * inset)
+        const chord = Math.hypot(x2 - x1, y2 - y1)
+        const rr = f(chord / 2)
+        return stroke(`M ${x1} ${y1} A ${rr} ${rr} 0 0 1 ${x2} ${y2}`, c.weight * (i === 0 ? 1 : 0.75))
+      })
+    }),
+  },
+  {
+    id: 'arch-onion', name: 'Onion arch', family: 'Scallops & arches',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).map(([a0, a1]) => {
+      const w = a1 - a0
+      const h = c.r1 - c.r0
+      const mid = (a0 + a1) / 2
+      const [bl, blY] = pt(c.cx, c.cy, c.r0, a0 + w * 0.2)
+      const [br, brY] = pt(c.cx, c.cy, c.r0, a1 - w * 0.2)
+      const [c1x, c1y] = pt(c.cx, c.cy, c.r0 + h * 0.55, a0 + w * 0.02)
+      const [c2x, c2y] = pt(c.cx, c.cy, c.r0 + h * 0.9, a0 + w * 0.34)
+      const [tx, ty] = pt(c.cx, c.cy, c.r1, mid)
+      const [c3x, c3y] = pt(c.cx, c.cy, c.r0 + h * 0.9, a1 - w * 0.34)
+      const [c4x, c4y] = pt(c.cx, c.cy, c.r0 + h * 0.55, a1 - w * 0.02)
+      return stroke(
+        `M ${bl} ${blY} C ${c1x} ${c1y} ${c2x} ${c2y} ${tx} ${ty} C ${c3x} ${c3y} ${c4x} ${c4y} ${br} ${brY}`,
+        c.weight
+      )
+    }),
+  },
+
+  /* Line work */
+  {
+    id: 'feather-rays', name: 'Feather rays', family: 'Line work',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const w = a1 - a0
+      const h = c.r1 - c.r0
+      const out = []
+      for (let i = 1; i <= 4; i++) {
+        const a = a0 + (w * i) / 5
+        const [x1, y1] = pt(c.cx, c.cy, c.r0 + h * 0.08, a)
+        const [x2, y2] = pt(c.cx, c.cy, c.r1 - h * 0.16, a)
+        out.push(stroke(`M ${x1} ${y1} L ${x2} ${y2}`, c.weight * 0.7))
+      }
+      const rTip = c.r1 - h * 0.16
+      const [ax, ay] = pt(c.cx, c.cy, rTip, a0 + w * 0.2)
+      const [bx, by] = pt(c.cx, c.cy, rTip, a1 - w * 0.2)
+      const chord = Math.hypot(bx - ax, by - ay)
+      out.push(stroke(`M ${ax} ${ay} A ${f(chord / 2)} ${f(chord / 2)} 0 0 1 ${bx} ${by}`, c.weight))
+      return out
+    }),
+  },
+  {
+    id: 'coil-cluster', name: 'Coil cluster', family: 'Line work',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const mid = (a0 + a1) / 2
+      const rm = (c.r0 + c.r1) / 2
+      return [
+        stroke(spiralPath(c.cx, c.cy, c.r0, rm, a0, mid), c.weight * 0.8),
+        stroke(spiralPath(c.cx, c.cy, c.r0, rm, mid, a1), c.weight * 0.8),
+        stroke(spiralPath(c.cx, c.cy, rm, c.r1, a0, a1), c.weight * 0.8),
+      ]
+    }),
+  },
+
+  /* Geometry */
+  {
+    id: 'square-nest', name: 'Nested squares', family: 'Geometry',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) =>
+      [0.06, 0.24, 0.42].map((inset) => stroke(cellQuad(c, a0, a1, inset), c.weight))
+    ),
+  },
+  {
+    id: 'triangle-hatch', name: 'Hatched triangle', family: 'Geometry',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const w = a1 - a0
+      const h = c.r1 - c.r0
+      const mid = (a0 + a1) / 2
+      const [x1, y1] = pt(c.cx, c.cy, c.r0, a0 + w * 0.08)
+      const [x2, y2] = pt(c.cx, c.cy, c.r0, a1 - w * 0.08)
+      const [x3, y3] = pt(c.cx, c.cy, c.r1, mid)
+      const out = [stroke(`M ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} Z`, c.weight)]
+      for (const t of [0.25, 0.45, 0.65]) {
+        const half = w * 0.42 * (1 - t)
+        const [hx1, hy1] = pt(c.cx, c.cy, c.r0 + h * t, mid - half)
+        const [hx2, hy2] = pt(c.cx, c.cy, c.r0 + h * t, mid + half)
+        out.push(stroke(`M ${hx1} ${hy1} L ${hx2} ${hy2}`, c.weight * 0.7))
+      }
+      return out
+    }),
+  },
+
+  /* Dots & pebbles */
+  {
+    id: 'bead-chain', name: 'Bead chain', family: 'Dots & pebbles',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).map(([a0, a1]) => {
+      const { rm, arc, thick } = cellMetrics(c, a0, a1)
+      const [x, y] = pt(c.cx, c.cy, rm, (a0 + a1) / 2)
+      return {
+        type: 'circle', cx: x, cy: y,
+        r: f(Math.min(thick, arc) * 0.42),
+        fill: 'none', stroke: INK, strokeWidth: c.weight,
+      }
+    }),
+  },
+  {
+    id: 'cell-stipple', name: 'Stippled cell', family: 'Dots & pebbles',
+    ringPaths: (c) => sectorRanges(c.sectors, c.offset).flatMap(([a0, a1]) => {
+      const { rm, arc, thick } = cellMetrics(c, a0, a1)
+      const mid = (a0 + a1) / 2
+      const [fx, fy] = pt(c.cx, c.cy, rm, mid)
+      const size = Math.min(thick, arc) * 0.44
+      const out = [{
+        type: 'circle', cx: fx, cy: fy, r: f(size),
+        fill: 'none', stroke: INK, strokeWidth: c.weight,
+      }]
+      for (let k = 0; k < 6; k++) {
+        const [dx, dy] = localPoint(fx, fy, mid + k * 60, size * 0.5, 0)
+        out.push(dot(dx, dy, Math.min(0.5, size * 0.12)))
+      }
+      out.push(dot(fx, fy, Math.min(0.5, size * 0.12)))
       return out
     }),
   },

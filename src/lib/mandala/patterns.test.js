@@ -33,9 +33,18 @@ function numbers(prim) {
 }
 
 describe('pattern registry', () => {
-  it('ships at least 12 motifs across all five families', () => {
-    expect(PATTERNS.length).toBeGreaterThanOrEqual(12)
-    expect(new Set(PATTERNS.map((p) => p.family)).size).toBe(5)
+  it('ships a broad library, every motif filed under a family', () => {
+    expect(PATTERNS.length).toBeGreaterThanOrEqual(45)
+    const families = new Set(PATTERNS.map((p) => p.family))
+    for (const core of ['Petals & leaves', 'Line work', 'Geometry', 'Dots & pebbles', 'Scallops & arches']) {
+      expect(families.has(core)).toBe(true)
+    }
+    expect(families.size).toBeGreaterThanOrEqual(5)
+    expect(PATTERNS.every((p) => p.id && p.name && p.family)).toBe(true)
+  })
+
+  it('has no duplicate motif ids', () => {
+    expect(new Set(PATTERNS.map((p) => p.id)).size).toBe(PATTERNS.length)
   })
 
   it('every motif produces one primitive set per sector, symmetric under one-sector rotation', () => {
