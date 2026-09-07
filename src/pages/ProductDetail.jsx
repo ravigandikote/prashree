@@ -124,7 +124,9 @@ function ProductView({ slug }) {
             name: product.name,
             description: product.intent || product.description || undefined,
             image: product.images?.[0]
-              ? `https://www.prashreearts.com${product.images[0]}`
+              ? (/^https?:\/\//.test(product.images[0])
+                  ? product.images[0]
+                  : `https://www.prashreearts.com${product.images[0]}`)
               : undefined,
             url: `https://www.prashreearts.com/products/${slug}`,
             brand: { '@type': 'Brand', name: 'PraShree Arts' },
@@ -178,7 +180,7 @@ function ProductView({ slug }) {
                       src={mainImage}
                       alt={`${product.name} — view ${selectedImage + 1}`}
                       onError={() => markBroken(mainImage)}
-                      className="w-full h-full object-cover treat-grayscale"
+                      className="w-full h-full object-contain treat-grayscale"
                     />
                   </div>
                   {images.length > 1 && (
@@ -196,7 +198,7 @@ function ProductView({ slug }) {
                             src={img}
                             alt=""
                             onError={() => markBroken(img)}
-                            className="w-full h-full object-cover treat-grayscale"
+                            className="w-full h-full object-contain treat-grayscale"
                           />
                         </button>
                       ))}

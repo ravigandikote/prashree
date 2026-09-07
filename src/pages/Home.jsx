@@ -6,6 +6,7 @@ import SEO from '../components/SEO'
 import { SectionHeading } from '../components/UI'
 import Button from '../components/Button'
 import Photo from '../components/Photo'
+import FeaturedArtwork from '../components/FeaturedArtwork'
 import { getPublishedPosts } from '../lib/supabase'
 import { formatDate } from '../lib/format'
 import logo from '../assets/logo.png'
@@ -105,6 +106,9 @@ export default function Home() {
           </motion.p>
         </div>
       </section>
+
+      {/* ── Featured artwork ── */}
+      <FeaturedArtwork />
 
       {/* ── Artworks & Products ── */}
       <section className="bg-white py-20 md:py-28">

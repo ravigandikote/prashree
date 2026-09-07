@@ -22,6 +22,8 @@ export default function SEO({
     ? `${title} | PraShree Arts`
     : 'PraShree Arts — Hand-Drawn Mandala Art, Janur Art & Art Therapy | Bengaluru'
   const kw = [...new Set([...keywords, ...DEFAULT_KEYWORDS])].join(', ')
+  // photos uploaded from /admin are absolute storage URLs already
+  const imageUrl = /^https?:\/\//.test(image) ? image : `${SITE_URL}${image}`
 
   return (
     <Helmet>
@@ -35,11 +37,11 @@ export default function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={`${SITE_URL}${path}`} />
       <meta property="og:type" content={type} />
-      <meta property="og:image" content={`${SITE_URL}${image}`} />
+      <meta property="og:image" content={imageUrl} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${SITE_URL}${image}`} />
+      <meta name="twitter:image" content={imageUrl} />
       {jsonLd && (
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       )}

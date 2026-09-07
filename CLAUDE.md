@@ -53,7 +53,8 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 
 | Route | Page | Data |
 |---|---|---|
-| `/` | `pages/Home.jsx` — **rebuilt Phase 2**: split hero (logo + 2199 portrait), statement band, Artworks/Learn/Décor/Founder/Community sections, enquiry CTA. All static; no Supabase fallbacks. Latest-blog section deferred to Phase 6. CTAs point at `/categories`+`/workshops` until Phases 3/5 rename them | static |
+| `/` | `pages/Home.jsx` — **rebuilt Phase 2**: split hero (logo + 2199 portrait), statement band, **featured-artwork band (2026-09-07)**, Artworks/Learn/Décor/
+Founder/Community sections, enquiry CTA. All static; no Supabase fallbacks. Latest-blog section deferred to Phase 6. CTAs point at `/categories`+`/workshops` until Phases 3/5 rename them | static |
 | `/about` | `pages/About.jsx` — **rebuilt Phase 2**: 1984 hero, why-B&W + 1132 inset, credentials grid, teaching (7546), décor (4718), beyond-the-studio strip (0812/1516/1862), 20 art-form chips, NeeRav band | static |
 | `/products` | `pages/Products.jsx` — **catalogue rebuilt 2026-08-19**: sticky filter bar (art form/series/size/price-band/Vastu direction selects with live `(n)` facet counts + disabled-at-0, 200 ms-debounced search over name+intent+pdf+series+form, sort Name/Price↑↓/Size, reset, "n of total" count), all state in the URL query (`useSearchParams`, replace, no scroll jump), mobile bottom-sheet for filters, load-more at 24. Data: `getProducts` filtered to rows with `form`; falls back to `src/data/artworks.js` (built from `PraShree-Products-Metadata/items.json`) when the DB is unreachable/unseeded. Pure logic in `src/lib/catalog.js` (Vitest-covered: `npm test`) | `getProducts` |
 | `/products/:slug` | `pages/ProductDetail.jsx` — framed image, intent, form/series/direction chips, pricing strip (original+range/USD/prints/size/hours), vastu note, availability-checked catalogue-PDF button+viewer (`usePdfAvailable` HEAD-checks content-type because the SPA rewrite 200s missing files), Express-interest modal, JSON-LD Product, per-artwork OG image, "You may also like" (same series → same form, 4). Fallback to local data by slug | `getProductBySlug`, `createInterest` |
@@ -86,7 +87,12 @@ EmptyState), `Button`, `Photo`, `Form.jsx`, `ProductCard` (plain-treatment photo
 SVG placeholder, formatPrice), `PdfViewer` (object + download fallback), `InterestForm` +
 `InterestModal` (Indian-phone validation `/^(\+91[-\s]?)?[6-9]\d{9}$/`),
 `EnquiryForm` + `EnquiryModal` (kind contact|booking|decor; requires phone OR email),
-`SacredGeometryInfoSection`, `PatternGenerator`, `MandalaCanvas`.
+`SacredGeometryInfoSection`, `PatternGenerator`, `MandalaCanvas`,
+`FeaturedArtwork` (ink spotlight band on Home — shows whichever artwork is
+ticked **Featured** in /admin/products, falling back to the bundled Drishti
+row; bespoke pitch copy per slug in `FEATURE_COPY`, otherwise a line built
+from the piece's own fields so featuring anything else can't invent claims;
+links to /products).
 
 Contexts: `AuthContext` (Supabase session) — CartContext deleted with the shop flow.
 Libs: `lib/supabase.js` (client + query/CRUD helpers incl. interests/enquiries/posts/
