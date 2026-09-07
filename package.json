@@ -13,7 +13,8 @@
     "artworks:sql": "node scripts/generate-artworks-sql.mjs",
     "seo:sitemap": "node scripts/generate-sitemap.mjs",
     "watermark:images": "node scripts/watermark-artworks.mjs",
-    "watermark:pdfs": "node scripts/watermark-pdfs.mjs"
+    "watermark:pdfs": "node scripts/watermark-pdfs.mjs",
+    "logo": "node scripts/build-logo.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.0",

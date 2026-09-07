@@ -151,10 +151,21 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
 
 ## Images & assets
 
-- Logo: hand-drawn B&W mandala with "ಪ್ರಶ್ರೀ" centre. Trimmed (431×431, transparent) at
-  `public/images/logo/prashree-logo.png` (+ -192 variant) and `src/assets/logo.png`
-  (imported in Navbar/Footer/Home/AdminLogin; Footer inverts via CSS filter).
-  Untrimmed original stays at `public/logo.png` (favicon/og references). `public/favicon.svg`.
+- Logo (rebuilt 2026-09): the mark is Monica's **Ananda · Smile of Contentment**
+  mandala with a black disc carrying the Kannada wordmark ಪ್ರಶ್ರೀ. The old asset was a
+  431 px scan (blurry, blue cast); it is now rebuilt from the 3000 px artwork master
+  by `npm run logo` (`scripts/build-logo.mjs`) — square-cropped on the detected
+  mandala circle, paper lifted to white, disc at 0.46 of the mandala radius,
+  wordmark at 0.776 of the disc diameter, circular alpha outside. The wordmark is a
+  potrace vectorisation of the original lettering, kept at
+  `brand/prashree-kannada-wordmark.svg` for creatives. Source master lives at
+  `images-src/logo-source-mandala.jpg` (gitignored; regenerate with `pdfimages` from
+  the original Ananda PDF — see the script header). Outputs, all transparent PNG:
+  `public/images/logo/prashree-logo-print.png` (3000 px, marketing/print),
+  `prashree-logo.png` (1024), `prashree-logo-192.png`, `src/assets/logo.png` (1024,
+  imported by Navbar/Footer/Home/AdminLogin), `public/logo.png` (512, favicon + OG).
+  Footer inverts it with plain `invert` (the old `brightness-200` blew out the new
+  detail). `public/favicon.svg` is a simplified mark echoing the same silhouette.
 - `public/images/artwork-1.jpg … artwork-3.jpg` — used on Home/About/Workshops heroes.
 - **Image pipeline**: camera originals (5–28 MB) live in gitignored `images-src/`;
   `npm run images` (scripts/optimize-images.mjs, sharp) emits `-800/-1600/-2400.jpg`

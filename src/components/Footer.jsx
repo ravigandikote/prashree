@@ -15,7 +15,7 @@ export default function Footer() {
               <img
                 src={logo}
                 alt="PraShree Arts mandala logo"
-                className="h-12 w-12 object-contain invert brightness-200"
+                className="h-12 w-12 object-contain invert"
               />
               <h3 className="font-display text-h3 text-white">PraShree Arts</h3>
             </div>
