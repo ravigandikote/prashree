@@ -26,6 +26,8 @@ function ProductView({ slug }) {
   const [notFound, setNotFound] = useState(false)
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(0)
+  // photos that fail to load (not uploaded yet, or removed from storage)
+  const [brokenImages, setBrokenImages] = useState([])
   const [showInterest, setShowInterest] = useState(false)
 
   useEffect(() => {
@@ -84,7 +86,9 @@ function ProductView({ slug }) {
     )
   }
 
-  const images = product.images?.length ? product.images : []
+  const images = (product.images || []).filter((url) => !brokenImages.includes(url))
+  const mainImage = images[selectedImage] || images[0]
+  const markBroken = (url) => setBrokenImages((broken) => [...broken, url])
 
   return (
     <>
@@ -171,8 +175,9 @@ function ProductView({ slug }) {
                       </span>
                     )}
                     <img
-                      src={images[selectedImage]}
+                      src={mainImage}
                       alt={`${product.name} — view ${selectedImage + 1}`}
+                      onError={() => markBroken(mainImage)}
                       className="w-full h-full object-cover treat-grayscale"
                     />
                   </div>
@@ -187,7 +192,12 @@ function ProductView({ slug }) {
                           }`}
                           aria-label={`Show view ${i + 1}`}
                         >
-                          <img src={img} alt="" className="w-full h-full object-cover treat-grayscale" />
+                          <img
+                            src={img}
+                            alt=""
+                            onError={() => markBroken(img)}
+                            className="w-full h-full object-cover treat-grayscale"
+                          />
                         </button>
                       ))}
                     </div>

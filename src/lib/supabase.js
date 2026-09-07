@@ -42,6 +42,16 @@ export async function getProducts({ categoryId, featured, limit } = {}) {
   return data
 }
 
+/** Admin listing — unlike getProducts() this keeps hidden (unavailable) rows. */
+export async function getAllProducts() {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*, categories(name, slug)')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data
+}
+
 export async function getProductBySlug(slug) {
   const { data, error } = await supabase
     .from('products')
@@ -81,14 +91,21 @@ function safeStoragePath(filePath) {
     .join('/')
 }
 
-export async function uploadImage(bucket, filePath, file) {
+/** Uploads any file (image, PDF, …) and returns its public URL. */
+export async function uploadFile(bucket, filePath, file) {
   const { data, error } = await supabase.storage
     .from(bucket)
-    .upload(safeStoragePath(filePath), file, { cacheControl: '3600', upsert: false })
+    .upload(safeStoragePath(filePath), file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type || undefined,
+    })
   if (error) throw error
   const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(data.path)
   return urlData.publicUrl
 }
+
+export const uploadImage = uploadFile
 
 export async function deleteImage(bucket, filePath) {
   const { error } = await supabase.storage.from(bucket).remove([filePath])

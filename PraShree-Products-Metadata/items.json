@@ -459,5 +459,22 @@
     "intent": "Transition, resilience & finding your path",
     "direction": "East",
     "thumb": "thumbs/pravaha.jpg"
+  },
+  {
+    "id": "drishti",
+    "name": "Drishti · The Awakened Eye",
+    "size": "34 × 26 in · 86 × 66 cm",
+    "size_code": "34×26in",
+    "price": 90000,
+    "price_range": "₹80,000–1,00,000",
+    "usd": "USD 950–1,200",
+    "prints": "₹4,500–9,000",
+    "hours": "150–200 hrs",
+    "series": "Protection & Insight Series",
+    "form": "Mandala Art",
+    "pdf": "Drishti-TheAwakenedEye_34x26in_2page.pdf",
+    "intent": "Protection, awareness & inner vision",
+    "direction": "East",
+    "thumb": "thumbs/drishti.jpg"
   }
 ]

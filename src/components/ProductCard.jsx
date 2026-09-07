@@ -13,6 +13,7 @@ import { formatPrice } from '../lib/format'
  */
 export default function ProductCard({ product }) {
   const [showInterest, setShowInterest] = useState(false)
+  const [imageBroken, setImageBroken] = useState(false)
   const navigate = useNavigate()
 
   const pdfFile = product.pdf_url ? product.pdf_url.split('/').pop() : null
@@ -30,12 +31,20 @@ export default function ProductCard({ product }) {
                 Original sold
               </span>
             )}
-            <img
-              src={product.images?.[0]}
-              alt={product.name}
-              loading="lazy"
-              className="max-h-full max-w-full object-contain treat-grayscale"
-            />
+            {product.images?.[0] && !imageBroken ? (
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                loading="lazy"
+                onError={() => setImageBroken(true)}
+                className="max-h-full max-w-full object-contain treat-grayscale"
+              />
+            ) : (
+              /* no photo uploaded yet (or it 404s) — never show a broken image */
+              <span className="text-ash text-[10px] uppercase tracking-label">
+                Photo coming soon
+              </span>
+            )}
           </div>
 
           <div className="p-5 flex-1 flex flex-col">

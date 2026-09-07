@@ -39,7 +39,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -59,7 +61,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -79,7 +83,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -99,7 +105,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -119,7 +127,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -139,7 +149,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -159,7 +171,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -179,7 +193,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -199,7 +215,9 @@ VALUES
    FALSE, TRUE, TRUE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -219,7 +237,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -239,7 +259,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -259,7 +281,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -279,7 +303,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -299,7 +325,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -319,7 +347,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -339,7 +369,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -359,7 +391,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -379,7 +413,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -399,7 +435,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -419,7 +457,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -439,7 +479,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -459,7 +501,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -479,7 +523,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -499,7 +545,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -519,7 +567,9 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -539,7 +589,9 @@ VALUES
    FALSE, TRUE, TRUE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
@@ -559,7 +611,31 @@ VALUES
    FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
-  images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
+  size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
+  usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
+  series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,
+  direction = EXCLUDED.direction, is_available = TRUE;
+
+INSERT INTO products
+  (name, slug, description, price, images, pdf_url, vastu_note,
+   size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
+   is_featured, is_available, is_sold)
+VALUES
+  ('Drishti · The Awakened Eye', 'drishti', 'Protection, awareness & inner vision', 90000,
+   ARRAY[]::text[],
+   NULL,
+   'Primary Vastu direction: East',
+   '34 × 26 in · 86 × 66 cm', '34×26in', '₹80,000–1,00,000', 'USD 950–1,200', '₹4,500–9,000',
+   '150–200 hrs', 'Protection & Insight Series', 'Mandala Art', 'Protection, awareness & inner vision', 'East',
+   FALSE, TRUE, FALSE)
+ON CONFLICT (slug) DO UPDATE SET
+  name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
+  images = CASE WHEN cardinality(EXCLUDED.images) = 0 THEN products.images ELSE EXCLUDED.images END,
+  pdf_url = COALESCE(EXCLUDED.pdf_url, products.pdf_url),
+  vastu_note = EXCLUDED.vastu_note,
   size = EXCLUDED.size, size_code = EXCLUDED.size_code, price_range = EXCLUDED.price_range,
   usd = EXCLUDED.usd, prints = EXCLUDED.prints, hours = EXCLUDED.hours,
   series = EXCLUDED.series, form = EXCLUDED.form, intent = EXCLUDED.intent,

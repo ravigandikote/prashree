@@ -68,7 +68,14 @@ Public routes wrap in `Layout` (Navbar + Footer + ScrollToTop):
 | `/blog/:slug` | `pages/BlogPost.jsx` — serif reading layout (`.prose-post`), markdown via `marked` + `DOMPurify`, keyed remount per slug | `getPostBySlug` |
 | `/contact` | `pages/Contact.jsx` — **rebuilt Phase 6**: 7387 portrait, tel/mailto/Instagram ([[INSTAGRAM_URL]] placeholder)/location, real `EnquiryForm` (kind=contact) → `enquiries` table | `createEnquiry` |
 | `/admin/login` | Supabase email/password sign-in (monochrome) | Supabase Auth |
-| `/admin/*` | **reworked Phase 4** — `AdminLayout` (auth-guarded, desktop sidebar + mobile top-nav) → index = `AdminInterests` (filters by product/status, tel:/mailto links, status New/Called/Follow-up/Closed, expandable notes), `AdminEnquiries`, `AdminProducts` (+pdf_url/vastu_note fields), `AdminPosts` (markdown body, cover upload, publish toggle), `AdminCategories`, `AdminMedia`. Dashboard & Orders pages deleted. Shared bits in `admin/adminUi.js` + `admin/StatusBadge.jsx` — all badges monochrome | `lib/supabase.js` helpers |
+| `/admin/*` | **reworked Phase 4** — `AdminLayout` (auth-guarded, desktop sidebar + mobile top-nav) → index = `AdminInterests` (filters by product/status, tel:/mailto links, status New/Called/Follow-up/Closed, expandable notes), `AdminEnquiries`, `AdminProducts` (**rebuilt 2026-09-07**: every field the site renders, grouped
+into The piece / Size, time & Vastu / Pricing / Photos & catalogue PDF /
+Visibility, each with a hint saying where it shows; datalists seeded from the
+live catalogue so form/series/size wording keeps matching the filters; Vastu
+note auto-fills from the direction; multi-photo upload with cover/remove;
+**catalogue-PDF upload** to `products/catalogues/`; uploads watermarked in the
+browser via `src/lib/watermark.js` (opt-out checkbox); lists hidden rows too
+via `getAllProducts`), `AdminPosts` (markdown body, cover upload, publish toggle), `AdminCategories`, `AdminMedia`. Dashboard & Orders pages deleted. Shared bits in `admin/adminUi.js` + `admin/StatusBadge.jsx` — all badges monochrome | `lib/supabase.js` helpers |
 
 ## Components (`src/components/`)
 
@@ -87,7 +94,7 @@ connections), `lib/format.js` (`formatPrice`). Razorpay is fully removed.
 
 ## Artworks catalogue (2026-08-19)
 
-`PraShree-Products-Metadata/items.json` is the source of truth for the 27
+`PraShree-Products-Metadata/items.json` is the source of truth for the 28
 artworks (id/name/size/size_code/price/price_range/usd/prints/hours/series/
 form/intent/direction/pdf/thumb). `npm run artworks:sql` regenerates
 `supabase/migrations/20260820_artworks.sql` (ALTER products + idempotent
@@ -96,7 +103,17 @@ at `public/images/products/thumbs/<id>.jpg`. Catalogue PDFs: originals
 (200 MB, gitignored) in `src/assets/artworks/pdf/`; ghostscript-compressed
 copies (`gs -dPDFSETTINGS=/printer`, ~1.5 MB each) are committed in
 `public/catalogues/` under the exact `pdf`-field names — the UI HEAD-checks
-availability, so new PDFs go live by just adding the file. Products table gained: size, size_code, price_range,
+availability, so new PDFs go live by just adding the file. The generator only
+references assets that actually exist (a missing thumb → empty `images`, a
+missing PDF → NULL `pdf_url`) and, on conflict, keeps whatever the admin
+uploaded (`images` only overwritten when the seed has one; `pdf_url` via
+COALESCE) — so re-running the seed never wipes an admin upload. **Since
+2026-09-07 a new artwork needs no code at all: /admin/products carries every
+catalogue field plus photo and catalogue-PDF upload** (see below); items.json
++ the seed remain the way the 28 originals are version-controlled. Newest
+piece: **Drishti · The Awakened Eye** (34 × 26 in, ₹90,000, Protection &
+Insight Series — the first inches-scale work, so `catalog.js` gained the
+`34×26in` size code/label). Products table gained: size, size_code, price_range,
 usd, prints, hours, series, form, intent, direction (+ indexes on form/series/
 size_code/price), and `is_sold` (migration `20260909_artwork_sold.sql`; source
 flag `"sold": true` in items.json, emitted on INSERT only so re-running the
@@ -206,7 +223,7 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
    defaults + an ArtGallery JSON-LD (@id …/#org). Structured data: Person (About),
    ItemList (Products + Learn Courses), Product+BreadcrumbList (detail),
    BlogPosting (posts). `npm run seo:sitemap` regenerates sitemap.xml from
-   items.json (7 routes + 27 artwork URLs). Canonicals/sitemap/JSON-LD all point
+   items.json (7 routes + 28 artwork URLs). Canonicals/sitemap/JSON-LD all point
    at **https://prashreearts.com** — the custom domain must be connected in Vercel
    (or SITE_URL in SEO.jsx + index.html + sitemap script updated).
 10. New photos are unoptimized multi-MB originals; several carry a third-party watermark.
@@ -240,5 +257,8 @@ sans body, generous whitespace, hairline dividers, subtle 200–300ms motion. **
 the site is grayscale at rest and reveals its true colour on hover** (2026-09 house rule —
 applies to product/artwork photos too; the earlier 'product photos untouched' rule and the
 duotone treatment are retired). Artwork images and catalogue PDFs are watermarked at build
-time (`npm run watermark:images`, `npm run watermark:pdfs`). Never invent prices, product names,
+time (`npm run watermark:images`, `npm run watermark:pdfs`) and, for anything
+uploaded from /admin, in the browser by `src/lib/watermark.js` (same treatment;
+pdf-lib is a runtime dep, lazily imported, and the PDF keyword tag makes
+re-stamping a no-op). Never invent prices, product names,
 or biographical facts; wrap placeholder copy in `[[ ]]`.

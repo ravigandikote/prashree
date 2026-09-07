@@ -15,7 +15,7 @@ export const DEFAULT_FILTERS = {
   sort: 'name',
 }
 
-export const SIZE_ORDER = { A5: 1, '17×24': 2, '24×17': 2, B5: 3, A3: 4 }
+export const SIZE_ORDER = { A5: 1, '17×24': 2, '24×17': 2, B5: 3, A3: 4, '34×26in': 5 }
 
 export const SIZE_LABELS = {
   A3: 'A3 (29.7 × 42 cm)',
@@ -23,6 +23,7 @@ export const SIZE_LABELS = {
   B5: 'B5 (17.6 × 25 cm)',
   '24×17': '24 × 17 cm',
   '17×24': '17 × 24 cm',
+  '34×26in': '34 × 26 in (86 × 66 cm)',
 }
 
 export const PRICE_BANDS = [
