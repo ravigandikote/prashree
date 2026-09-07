@@ -98,7 +98,13 @@ copies (`gs -dPDFSETTINGS=/printer`, ~1.5 MB each) are committed in
 `public/catalogues/` under the exact `pdf`-field names — the UI HEAD-checks
 availability, so new PDFs go live by just adding the file. Products table gained: size, size_code, price_range,
 usd, prints, hours, series, form, intent, direction (+ indexes on form/series/
-size_code/price). Filter reference behaviour ported from
+size_code/price), and `is_sold` (migration `20260909_artwork_sold.sql`; source
+flag `"sold": true` in items.json, emitted on INSERT only so re-running the
+seed never clobbers a status set in the admin). A sold artwork stays listed:
+card + detail show an "Original sold" badge with the price struck through,
+prints are highlighted, the CTA becomes "Enquire about a print" (interest
+message prefixed `[Print — original sold]`), and JSON-LD reports SoldOut.
+Toggle per artwork at /admin/products. Filter reference behaviour ported from
 `PraShree-Products-Metadata/prashree-products-catalog.html`; decisions
 (2026-08-19): monochrome (no plum/gold), keep Vite+Supabase, keep site's own
 interest forms (no WhatsApp/Google Form).

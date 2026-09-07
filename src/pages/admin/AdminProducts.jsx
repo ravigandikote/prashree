@@ -22,7 +22,7 @@ export default function AdminProducts() {
   const [form, setForm] = useState({
     name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '',
     size: '', size_code: '', price_range: '', usd: '', prints: '', hours: '', series: '', form: '', intent: '', direction: '',
-    is_featured: false, is_available: true,
+    is_featured: false, is_available: true, is_sold: false,
   })
   const [imageFile, setImageFile] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -42,7 +42,7 @@ export default function AdminProducts() {
     setForm({
       name: '', slug: '', description: '', price: '', sale_price: '', category_id: '', pdf_url: '', vastu_note: '',
       size: '', size_code: '', price_range: '', usd: '', prints: '', hours: '', series: '', form: '', intent: '', direction: '',
-      is_featured: false, is_available: true,
+      is_featured: false, is_available: true, is_sold: false,
     })
     setImageFile(null)
     setEditing(null)
@@ -72,6 +72,7 @@ export default function AdminProducts() {
       direction: product.direction || '',
       is_featured: product.is_featured,
       is_available: product.is_available,
+      is_sold: product.is_sold || false,
     })
     setShowForm(true)
   }
@@ -110,6 +111,7 @@ export default function AdminProducts() {
         direction: form.direction || null,
         is_featured: form.is_featured,
         is_available: form.is_available,
+        is_sold: form.is_sold,
         images,
       }
 
@@ -245,6 +247,10 @@ export default function AdminProducts() {
                   <input type="checkbox" checked={form.is_available} onChange={(e) => setForm({ ...form, is_available: e.target.checked })} />
                   Available
                 </label>
+                <label className="flex items-center gap-2 text-sm cursor-pointer" title="Original sold — the piece stays listed and visitors can enquire about prints">
+                  <input type="checkbox" checked={form.is_sold} onChange={(e) => setForm({ ...form, is_sold: e.target.checked })} />
+                  Original sold
+                </label>
               </div>
 
               <div className="flex gap-3 pt-2">
@@ -300,6 +306,7 @@ export default function AdminProducts() {
                       {p.is_available ? 'Available' : 'Hidden'}
                     </span>
                     {p.is_featured && <span className="ml-2 px-2 py-0.5 text-xs uppercase tracking-wider border border-graphite text-charcoal">Featured</span>}
+                    {p.is_sold && <span className="ml-2 px-2 py-0.5 text-xs uppercase tracking-wider bg-ink text-white border border-ink">Sold</span>}
                   </td>
                   <td className="p-3 text-right">
                     <button onClick={() => openEdit(p)} className="p-1.5 text-graphite hover:text-ink cursor-pointer bg-transparent border-0" aria-label="Edit">

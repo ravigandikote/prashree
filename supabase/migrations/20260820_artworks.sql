@@ -14,6 +14,7 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS series      TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS form        TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS intent      TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS direction   TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS is_sold     BOOLEAN NOT NULL DEFAULT FALSE;
 
 CREATE INDEX IF NOT EXISTS idx_products_form      ON products(form);
 CREATE INDEX IF NOT EXISTS idx_products_series    ON products(series);
@@ -27,7 +28,7 @@ DELETE FROM products WHERE slug LIKE 'sample-%';
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Aditya · Sunflower of Joy', 'aditya', 'Joy, positivity & new beginnings', 8500,
    ARRAY['/images/products/thumbs/aditya.jpg'],
@@ -35,7 +36,7 @@ VALUES
    'Primary Vastu direction: East',
    '24 × 17 cm', '24×17', '₹7,000–10,000', 'USD 84–120', '₹800–1,600',
    '28–40 hrs', 'Joy & Positivity Series', 'Mandala Art', 'Joy, positivity & new beginnings', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -47,7 +48,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Anahata · Flower of Life', 'anahata', 'Love, connection & harmony', 8500,
    ARRAY['/images/products/thumbs/anahata.jpg'],
@@ -55,7 +56,7 @@ VALUES
    'Primary Vastu direction: South-West',
    '24 × 17 cm', '24×17', '₹7,000–10,000', 'USD 84–120', '₹800–1,600',
    '28–40 hrs', 'Love & Connection Series', 'Mandala Art', 'Love, connection & harmony', 'South-West',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -67,7 +68,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Chakra · Wheel of Change', 'chakra', 'Transformation, flow & positive change', 8500,
    ARRAY['/images/products/thumbs/chakra.jpg'],
@@ -75,7 +76,7 @@ VALUES
    'Primary Vastu direction: North-West',
    '24 × 17 cm', '24×17', '₹7,000–10,000', 'USD 84–120', '₹800–1,600',
    '28–40 hrs', 'Transformation & Flow Series', 'Mandala Art', 'Transformation, flow & positive change', 'North-West',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -87,7 +88,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Kavach · Shield of Focus', 'kavach', 'Focus, protection & grounding', 8500,
    ARRAY['/images/products/thumbs/kavach.jpg'],
@@ -95,7 +96,7 @@ VALUES
    'Primary Vastu direction: North',
    '24 × 17 cm', '24×17', '₹7,000–10,000', 'USD 84–120', '₹800–1,600',
    '28–40 hrs', 'Focus & Protection Series', 'Mandala Art', 'Focus, protection & grounding', 'North',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -107,7 +108,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Lakshmi Bloom', 'lakshmi', 'Abundance & prosperity', 7000,
    ARRAY['/images/products/thumbs/lakshmi.jpg'],
@@ -115,7 +116,7 @@ VALUES
    'Primary Vastu direction: North',
    '17 × 24 cm', '17×24', '₹6,000–8,500', 'USD 72–102', '₹700–1,500',
    '22–30 hrs', 'Money Manifestation Series', 'Mandala Art', 'Abundance & prosperity', 'North',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -127,7 +128,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Sarasvati · Lotus of Wisdom', 'sarasvati', 'Creativity, wisdom & learning', 8500,
    ARRAY['/images/products/thumbs/sarasvati.jpg'],
@@ -135,7 +136,7 @@ VALUES
    'Primary Vastu direction: North-East',
    '24 × 17 cm', '24×17', '₹7,000–10,000', 'USD 84–120', '₹800–1,600',
    '28–40 hrs', 'Wisdom & Creativity Series', 'Mandala Art', 'Creativity, wisdom & learning', 'North-East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -147,7 +148,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Shanti · Bloom of Peace', 'shanti', 'Peace, harmony & healing', 8500,
    ARRAY['/images/products/thumbs/shanti.jpg'],
@@ -155,7 +156,7 @@ VALUES
    'Primary Vastu direction: North-East',
    '24 × 17 cm', '24×17', '₹7,000–10,000', 'USD 84–120', '₹800–1,600',
    '28–40 hrs', 'Peace & Harmony Series', 'Mandala Art', 'Peace, harmony & healing', 'North-East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -167,7 +168,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Tejas · Radiant Star', 'tejas', 'Spiritual energy & vitality', 8500,
    ARRAY['/images/products/thumbs/tejas.jpg'],
@@ -175,7 +176,7 @@ VALUES
    'Primary Vastu direction: East',
    '24 × 17 cm', '24×17', '₹7,000–10,000', 'USD 84–120', '₹800–1,600',
    '28–40 hrs', 'Spiritual Energy Series', 'Mandala Art', 'Spiritual energy & vitality', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -187,7 +188,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Manipura · Spiral of Energy', 'manipura', 'Energy, momentum & personal power', 15000,
    ARRAY['/images/products/thumbs/manipura.jpg'],
@@ -195,7 +196,7 @@ VALUES
    'Primary Vastu direction: South-East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Energy & Momentum Series', 'Geometric & Op Art', 'Energy, momentum & personal power', 'South-East',
-   FALSE, TRUE)
+   FALSE, TRUE, TRUE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -207,7 +208,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Sahasrara · Lotus of Bliss', 'sahasrara', 'Joy, wisdom & inner peace', 15000,
    ARRAY['/images/products/thumbs/sahasrara.jpg'],
@@ -215,7 +216,7 @@ VALUES
    'Primary Vastu direction: North-East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Peace & Wisdom Series', 'Mandala Art', 'Joy, wisdom & inner peace', 'North-East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -227,7 +228,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Padma · Bloom of Abundance', 'padma', 'Abundance, growth & good fortune', 15000,
    ARRAY['/images/products/thumbs/padma.jpg'],
@@ -235,7 +236,7 @@ VALUES
    'Primary Vastu direction: North',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Prosperity & Growth Series', 'Mandala Art', 'Abundance, growth & good fortune', 'North',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -247,7 +248,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Svadhisthana · Lotus of Flow', 'svadhisthana', 'Creativity, flow & emotional balance', 15000,
    ARRAY['/images/products/thumbs/svadhisthana.jpg'],
@@ -255,7 +256,7 @@ VALUES
    'Primary Vastu direction: East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Creativity & Flow Series', 'Mandala Art', 'Creativity, flow & emotional balance', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -267,7 +268,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Muladhara · Woven Shield', 'muladhara', 'Stability, protection & grounding', 15000,
    ARRAY['/images/products/thumbs/muladhara.jpg'],
@@ -275,7 +276,7 @@ VALUES
    'Primary Vastu direction: South-West',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Grounding & Protection Series', 'Mandala Art', 'Stability, protection & grounding', 'South-West',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -287,7 +288,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Ajna · Lotus of Clarity', 'ajna', 'Clarity, focus & balanced judgement', 15000,
    ARRAY['/images/products/thumbs/ajna.jpg'],
@@ -295,7 +296,7 @@ VALUES
    'Primary Vastu direction: North-East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Clarity & Focus Series', 'Mandala Art', 'Clarity, focus & balanced judgement', 'North-East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -307,7 +308,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Vishuddha · Radiant Voice', 'vishuddha', 'Expression, confidence & clear communication', 15000,
    ARRAY['/images/products/thumbs/vishuddha.jpg'],
@@ -315,7 +316,7 @@ VALUES
    'Primary Vastu direction: North-West',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Expression & Confidence Series', 'Abstract Line Art', 'Expression, confidence & clear communication', 'North-West',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -327,7 +328,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Mahadeva · Crescent of Stillness', 'mahadeva', 'Inner strength, protection & transformation', 15000,
    ARRAY['/images/products/thumbs/mahadeva.jpg'],
@@ -335,7 +336,7 @@ VALUES
    'Primary Vastu direction: North-East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Devotion & Strength Series', 'Figurative & Devotional Art', 'Inner strength, protection & transformation', 'North-East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -347,7 +348,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Pushpa · Garden of Joy', 'pushpa', 'Joy, positivity & fresh beginnings', 15000,
    ARRAY['/images/products/thumbs/pushpa.jpg'],
@@ -355,7 +356,7 @@ VALUES
    'Primary Vastu direction: East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Joy & Blossom Series', 'Botanical & Floral Art', 'Joy, positivity & fresh beginnings', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -367,7 +368,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Tarang · Waves of Courage', 'tarang', 'Courage, momentum & bold change', 15000,
    ARRAY['/images/products/thumbs/tarang.jpg'],
@@ -375,7 +376,7 @@ VALUES
    'Primary Vastu direction: South',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Courage & Movement Series', 'Abstract Line Art', 'Courage, momentum & bold change', 'South',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -387,7 +388,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Patra · The Monstera Leaf', 'patra', 'Growth, calm & natural balance', 15000,
    ARRAY['/images/products/thumbs/patra.jpg'],
@@ -395,7 +396,7 @@ VALUES
    'Primary Vastu direction: East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Nature & Growth Series', 'Botanical & Floral Art', 'Growth, calm & natural balance', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -407,7 +408,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Kubera · Rivers of Wealth', 'kubera', 'Wealth, abundance & financial flow', 15000,
    ARRAY['/images/products/thumbs/kubera.jpg'],
@@ -415,7 +416,7 @@ VALUES
    'Primary Vastu direction: North',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Wealth & Manifestation Series', 'Money Manifestation Art', 'Wealth, abundance & financial flow', 'North',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -427,7 +428,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Dhyana · Seat of Balance', 'dhyana', 'Balance, meditation & inner harmony', 15000,
    ARRAY['/images/products/thumbs/dhyana.jpg'],
@@ -435,7 +436,7 @@ VALUES
    'Primary Vastu direction: North-East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Balance & Harmony Series', 'Figurative & Devotional Art', 'Balance, meditation & inner harmony', 'North-East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -447,7 +448,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Jaala · Web of Connection', 'jaala', 'Connection, community & belonging', 15000,
    ARRAY['/images/products/thumbs/jaala.jpg'],
@@ -455,7 +456,7 @@ VALUES
    'Primary Vastu direction: North-West',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Connection & Unity Series', 'Abstract Line Art', 'Connection, community & belonging', 'North-West',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -467,7 +468,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Vana · Canopy of Leaves', 'vana', 'Renewal, freshness & quiet abundance', 15000,
    ARRAY['/images/products/thumbs/vana.jpg'],
@@ -475,7 +476,7 @@ VALUES
    'Primary Vastu direction: North',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Nature & Renewal Series', 'Botanical & Floral Art', 'Renewal, freshness & quiet abundance', 'North',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -487,7 +488,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Sevanti · Field of Daisies', 'sevanti', 'Cheer, gratitude & simple abundance', 15000,
    ARRAY['/images/products/thumbs/sevanti.jpg'],
@@ -495,7 +496,7 @@ VALUES
    'Primary Vastu direction: East',
    'A3 · 29.7 × 42 cm', 'A3', '₹12,000–18,000', 'USD 145–215', '₹1,500–3,000',
    '30–45 hrs', 'Joy & Blossom Series', 'Botanical & Floral Art', 'Cheer, gratitude & simple abundance', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -507,7 +508,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Surya · Sun of Vitality', 'surya', 'Vitality, warmth & good health', 4500,
    ARRAY['/images/products/thumbs/surya.jpg'],
@@ -515,7 +516,7 @@ VALUES
    'Primary Vastu direction: East',
    'A5 · 14.8 × 21 cm', 'A5', '₹3,500–6,000', 'USD 42–72', '₹500–1,000',
    '12–18 hrs', 'Vitality & Light Series', 'Mandala Art', 'Vitality, warmth & good health', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -527,7 +528,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Ananda · Smile of Contentment', 'ananda', 'Happiness, contentment & a warm home', 6500,
    ARRAY['/images/products/thumbs/ananda.jpg'],
@@ -535,7 +536,7 @@ VALUES
    'Primary Vastu direction: East',
    'B5 · 17.6 × 25 cm', 'B5', '₹5,000–8,000', 'USD 60–95', '₹700–1,400',
    '16–24 hrs', 'Joy & Wisdom Series', 'Mandala Art', 'Happiness, contentment & a warm home', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, TRUE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,
@@ -547,7 +548,7 @@ ON CONFLICT (slug) DO UPDATE SET
 INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   ('Pravaha · The Crossing', 'pravaha', 'Transition, resilience & finding your path', 6500,
    ARRAY['/images/products/thumbs/pravaha.jpg'],
@@ -555,7 +556,7 @@ VALUES
    'Primary Vastu direction: East',
    'B5 · 17.6 × 25 cm', 'B5', '₹5,000–8,000', 'USD 60–95', '₹700–1,400',
    '16–24 hrs', 'Journey & Transformation Series', 'Abstract Line Art', 'Transition, resilience & finding your path', 'East',
-   FALSE, TRUE)
+   FALSE, TRUE, FALSE)
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,

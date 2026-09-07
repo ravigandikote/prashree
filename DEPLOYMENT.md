@@ -27,6 +27,8 @@ In the SQL Editor, run in order:
    (announced on /workshops, managed at /admin/workshops)
 6. `supabase/migrations/20260825_event_enquiries.sql` — event enquiry kind +
    fields for /events; gallery photos go in the artworks bucket under events/
+7. `supabase/migrations/20260909_artwork_sold.sql` — `products.is_sold` so a
+   sold original stays listed while visitors enquire about prints
 
 Existing databases only need the migrations they haven't run yet — every
 file is idempotent.

@@ -24,7 +24,12 @@ export default function ProductCard({ product }) {
           to={`/products/${product.slug}`}
           className="no-underline flex-1 flex flex-col"
         >
-          <div className="h-[270px] bg-paper flex items-center justify-center p-4">
+          <div className="relative h-[270px] bg-paper flex items-center justify-center p-4">
+            {product.is_sold && (
+              <span className="absolute top-3 left-3 z-10 bg-ink text-white px-2.5 py-1 text-[10px] uppercase tracking-label">
+                Original sold
+              </span>
+            )}
             <img
               src={product.images?.[0]}
               alt={product.name}
@@ -70,9 +75,14 @@ export default function ProductCard({ product }) {
               )}
               <dt className="uppercase tracking-label text-[10px] text-graphite pt-1.5">Price</dt>
               <dd className="text-charcoal">
-                <span className="font-display text-h3 text-ink">
+                <span className={`font-display text-h3 ${product.is_sold ? 'text-ash line-through' : 'text-ink'}`}>
                   {formatPrice(product.sale_price || product.price)}
                 </span>
+                {product.is_sold && (
+                  <span className="block text-[11px] text-graphite">
+                    Original sold · prints available
+                  </span>
+                )}
                 {product.price_range && (
                   <span className="block text-[11px] text-graphite">
                     ({product.price_range}{product.usd ? ` · ${product.usd}` : ''})
@@ -106,9 +116,10 @@ export default function ProductCard({ product }) {
           <button
             onClick={() => setShowInterest(true)}
             className="inline-flex items-center gap-1.5 text-small text-ink bg-transparent border-0 cursor-pointer p-0 underline decoration-transparent hover:decoration-ink underline-offset-4 transition-all"
-            aria-label={`Express interest in ${product.name}`}
+            aria-label={`Express interest in ${product.name}${product.is_sold ? ' (print)' : ''}`}
           >
-            <MessageCircle size={14} aria-hidden="true" /> Enquire
+            <MessageCircle size={14} aria-hidden="true" />
+            {product.is_sold ? 'Enquire about a print' : 'Enquire'}
           </button>
           <button
             onClick={() => navigate(`/products/${product.slug}`)}
@@ -123,6 +134,7 @@ export default function ProductCard({ product }) {
         open={showInterest}
         onClose={() => setShowInterest(false)}
         product={product}
+        context={product.is_sold ? 'print' : 'original'}
       />
     </>
   )

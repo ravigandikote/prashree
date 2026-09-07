@@ -128,9 +128,11 @@ function ProductView({ slug }) {
               '@type': 'Offer',
               priceCurrency: 'INR',
               price: Number(product.sale_price || product.price) || undefined,
-              availability: product.is_available
-                ? 'https://schema.org/InStock'
-                : 'https://schema.org/OutOfStock',
+              availability: product.is_sold
+                ? 'https://schema.org/SoldOut'
+                : product.is_available
+                  ? 'https://schema.org/InStock'
+                  : 'https://schema.org/OutOfStock',
             },
           })}
         </script>
@@ -162,7 +164,12 @@ function ProductView({ slug }) {
             >
               {images.length > 0 ? (
                 <>
-                  <div className="aspect-square overflow-hidden bg-paper">
+                  <div className="relative aspect-square overflow-hidden bg-paper">
+                    {product.is_sold && (
+                      <span className="absolute top-4 left-4 z-10 bg-ink text-white px-3 py-1.5 text-small uppercase tracking-label">
+                        Original sold
+                      </span>
+                    )}
                     <img
                       src={images[selectedImage]}
                       alt={`${product.name} — view ${selectedImage + 1}`}
@@ -239,8 +246,10 @@ function ProductView({ slug }) {
               {/* Pricing strip (mirrors the catalogue PDF) */}
               <dl className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-mist border border-mist mt-6 text-center">
                 <div className="bg-white px-3 py-4 col-span-2 sm:col-span-1">
-                  <dt className="text-[10px] uppercase tracking-label text-graphite">Original</dt>
-                  <dd className="font-display text-h2 text-ink mt-1">
+                  <dt className="text-[10px] uppercase tracking-label text-graphite">
+                    {product.is_sold ? 'Original · sold' : 'Original'}
+                  </dt>
+                  <dd className={`font-display text-h2 mt-1 ${product.is_sold ? 'text-ash line-through' : 'text-ink'}`}>
                     {formatPrice(product.sale_price || product.price)}
                   </dd>
                   {product.price_range && (
@@ -254,8 +263,10 @@ function ProductView({ slug }) {
                   </div>
                 )}
                 {product.prints && (
-                  <div className="bg-white px-3 py-4">
-                    <dt className="text-[10px] uppercase tracking-label text-graphite">Fine-art prints</dt>
+                  <div className={`px-3 py-4 ${product.is_sold ? 'bg-paper' : 'bg-white'}`}>
+                    <dt className="text-[10px] uppercase tracking-label text-graphite">
+                      Fine-art prints{product.is_sold ? ' · available' : ''}
+                    </dt>
                     <dd className="text-charcoal text-small mt-1">{product.prints}</dd>
                     <dd className="text-[11px] text-ash">per print</dd>
                   </div>
@@ -289,9 +300,17 @@ function ProductView({ slug }) {
 
               <hr className="hairline my-8" />
 
+              {product.is_sold && (
+                <p className="text-graphite mb-5 border-l-2 border-ink pl-4">
+                  <strong className="text-ink font-normal">This original has been sold.</strong>{' '}
+                  Monica can make a fine-art print of it in the size you need — or
+                  draw you something new in the same spirit.
+                </p>
+              )}
+
               <div className="flex flex-wrap gap-3">
                 <Button onClick={() => setShowInterest(true)}>
-                  Express interest
+                  {product.is_sold ? 'Enquire about a print' : 'Express interest'}
                 </Button>
                 {pdfAvailable && (
                   <Button variant="outline" href={product.pdf_url} download>
@@ -300,8 +319,9 @@ function ProductView({ slug }) {
                 )}
               </div>
               <p className="text-small text-ash mt-3">
-                No online payment — Monica will call you to discuss the piece,
-                customisation, and delivery.
+                {product.is_sold
+                  ? 'No online payment — Monica will call you to discuss print sizes, framing, and delivery.'
+                  : 'No online payment — Monica will call you to discuss the piece, customisation, and delivery.'}
               </p>
 
               <div className="mt-8 space-y-2 text-small text-graphite">
@@ -336,6 +356,7 @@ function ProductView({ slug }) {
         open={showInterest}
         onClose={() => setShowInterest(false)}
         product={product}
+        context={product.is_sold ? 'print' : 'original'}
       />
     </>
   )

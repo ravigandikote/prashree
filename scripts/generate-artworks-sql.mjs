@@ -25,6 +25,7 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS series      TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS form        TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS intent      TEXT;
 ALTER TABLE products ADD COLUMN IF NOT EXISTS direction   TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS is_sold     BOOLEAN NOT NULL DEFAULT FALSE;
 
 CREATE INDEX IF NOT EXISTS idx_products_form      ON products(form);
 CREATE INDEX IF NOT EXISTS idx_products_series    ON products(series);
@@ -40,7 +41,7 @@ DELETE FROM products WHERE slug LIKE 'sample-%';
 const rows = items.map((i) => `INSERT INTO products
   (name, slug, description, price, images, pdf_url, vastu_note,
    size, size_code, price_range, usd, prints, hours, series, form, intent, direction,
-   is_featured, is_available)
+   is_featured, is_available, is_sold)
 VALUES
   (${q(i.name)}, ${q(i.id)}, ${q(i.intent)}, ${i.price},
    ARRAY['/images/products/thumbs/${i.id}.jpg'],
@@ -48,7 +49,7 @@ VALUES
    ${q('Primary Vastu direction: ' + i.direction)},
    ${q(i.size)}, ${q(i.size_code)}, ${q(i.price_range)}, ${q(i.usd)}, ${q(i.prints)},
    ${q(i.hours)}, ${q(i.series)}, ${q(i.form)}, ${q(i.intent)}, ${q(i.direction)},
-   FALSE, TRUE)
+   FALSE, TRUE, ${i.sold ? 'TRUE' : 'FALSE'})
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name, description = EXCLUDED.description, price = EXCLUDED.price,
   images = EXCLUDED.images, pdf_url = EXCLUDED.pdf_url, vastu_note = EXCLUDED.vastu_note,

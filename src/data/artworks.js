@@ -28,4 +28,5 @@ export const fallbackArtworks = items.map((i) => ({
   direction: i.direction,
   is_featured: false,
   is_available: true,
+  is_sold: Boolean(i.sold),
 }))

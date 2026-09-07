@@ -13,7 +13,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
  * Express-interest form for a product. Creates an `interests` record;
  * Monica follows up personally — no online payment.
  */
-export default function InterestForm({ product, onDone }) {
+export default function InterestForm({ product, onDone, context = 'original' }) {
   const [form, setForm] = useState({ name: '', phone: '', email: '', city: '', message: '' })
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
@@ -41,7 +41,8 @@ export default function InterestForm({ product, onDone }) {
       // product.id is only a DB uuid once the catalogue is seeded; in
       // fallback mode it's the slug — record the name in the message instead.
       const linked = UUID.test(product?.id || '')
-      const note = form.message.trim()
+      const printPrefix = context === 'print' ? '[Print — original sold] ' : ''
+      const note = `${printPrefix}${form.message.trim()}`.trim()
       await createInterest({
         product_id: linked ? product.id : null,
         name: form.name.trim(),
@@ -72,7 +73,9 @@ export default function InterestForm({ product, onDone }) {
           <Check size={18} aria-hidden="true" /> Thank you
         </h3>
         <p className="text-graphite mt-2 max-w-sm mx-auto">
-          Your interest has been noted. Monica will reach out to you personally.
+          {context === 'print'
+            ? 'Your print enquiry has been noted. Monica will reach out with sizes and pricing.'
+            : 'Your interest has been noted. Monica will reach out to you personally.'}
         </p>
         {onDone && (
           <Button variant="link" className="mt-6" onClick={onDone}>
@@ -123,21 +126,25 @@ export default function InterestForm({ product, onDone }) {
         <Textarea
           id="int-message" name="message" rows={4}
           value={form.message} onChange={handleChange}
-          placeholder="Anything you'd like Monica to know — size, occasion, customisation…"
+          placeholder={
+            context === 'print'
+              ? 'Print size you have in mind, framing, where it will hang…'
+              : "Anything you'd like Monica to know — size, occasion, customisation…"
+          }
         />
       </Field>
 
       {errors.submit && <p className="text-small text-charcoal">{errors.submit}</p>}
 
       <Button type="submit" disabled={submitting}>
-        {submitting ? 'Sending…' : 'Express interest'}
+        {submitting ? 'Sending…' : context === 'print' ? 'Enquire about a print' : 'Express interest'}
       </Button>
     </form>
   )
 }
 
 /** Modal wrapper around the form */
-export function InterestModal({ open, onClose, product }) {
+export function InterestModal({ open, onClose, product, context = 'original' }) {
   return (
     <AnimatePresence>
       {open && (
@@ -149,7 +156,7 @@ export function InterestModal({ open, onClose, product }) {
           onClick={onClose}
           role="dialog"
           aria-modal="true"
-          aria-label={`Express interest in ${product?.name || 'this artwork'}`}
+          aria-label={`${context === 'print' ? 'Enquire about a print of' : 'Express interest in'} ${product?.name || 'this artwork'}`}
         >
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -161,13 +168,20 @@ export function InterestModal({ open, onClose, product }) {
           >
             <div className="mb-6">
               <p className="text-small uppercase tracking-label text-graphite">
-                Express interest
+                {context === 'print' ? 'Enquire about a print' : 'Express interest'}
               </p>
               {product?.name && (
                 <h3 className="font-display text-h3 text-ink mt-1">{product.name}</h3>
               )}
+              {context === 'print' && (
+                <p className="text-small text-graphite mt-3">
+                  The original of this piece has found its home. Fine-art prints
+                  can still be made to order — tell Monica the size you have in
+                  mind and she&apos;ll come back with options.
+                </p>
+              )}
             </div>
-            <InterestForm product={product} onDone={onClose} />
+            <InterestForm product={product} onDone={onClose} context={context} />
           </motion.div>
         </motion.div>
       )}
