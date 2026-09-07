@@ -45,7 +45,7 @@ export default function Contact() {
               <Photo
                 base="/images/monica/portraits/20251227-IMG_7387"
                 alt="Monica Prakash seated before a wall with a faint mandala mural"
-                treatment="duotone"
+                treatment="grayscale"
                 aspect="aspect-[4/5]"
                 position="center top"
                 sizes="(min-width: 768px) 40vw, 100vw"

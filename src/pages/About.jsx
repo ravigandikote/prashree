@@ -69,7 +69,7 @@ export default function About() {
               <Photo
                 base="/images/monica/portraits/20250620-IMG_1984"
                 alt="Monica Prakash in a black-and-white Warli-print saree beside a vintage lantern"
-                treatment="duotone"
+                treatment="grayscale"
                 aspect="aspect-[4/5]"
                 position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
@@ -224,7 +224,7 @@ export default function About() {
             <Photo
               base="/images/monica/decor/20250828-IMG_4718"
               alt="An anniversary décor installation by Monica — dried palm-leaf backdrop, dressed table, and marquee letters"
-              treatment="duotone"
+              treatment="grayscale"
               aspect="aspect-[2/1]"
               position="center 20%"
               sizes="(min-width: 1200px) 1200px, 100vw"

@@ -174,7 +174,7 @@ export default function Studio() {
                       src={`/images/products/thumbs/${slug}.jpg`}
                       alt={`Finished mandala artwork “${slug}” by Monica Prakash`}
                       loading="lazy"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover treat-grayscale"
                     />
                   </Link>
                 ))}

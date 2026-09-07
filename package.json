@@ -11,7 +11,9 @@
     "images": "node scripts/optimize-images.mjs",
     "test": "vitest run",
     "artworks:sql": "node scripts/generate-artworks-sql.mjs",
-    "seo:sitemap": "node scripts/generate-sitemap.mjs"
+    "seo:sitemap": "node scripts/generate-sitemap.mjs",
+    "watermark:images": "node scripts/watermark-artworks.mjs",
+    "watermark:pdfs": "node scripts/watermark-pdfs.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.103.0",
@@ -38,6 +40,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "pdf-lib": "^1.17.1",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.4",

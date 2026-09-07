@@ -1,8 +1,9 @@
 /**
- * Site-wide photo wrapper enforcing one consistent image treatment:
- *  - "grayscale": grayscale at rest, colour on hover (portfolio/About grids)
- *  - "duotone":   soft warm-grey duotone (hero and décor imagery)
- *  - "plain":     untouched (product photos — customers see true colours)
+ * Site-wide photo wrapper. The house rule (2026-09): every image on the
+ * site sits in black and white and reveals its true colour on hover.
+ *  - "grayscale": grayscale at rest, colour on hover — the default everywhere
+ *  - "duotone":   soft warm-grey duotone (kept for future use; not currently used)
+ *  - "plain":     untouched — only for images that must never shift
  *
  * `base` builds a srcset from the optimize-images.mjs derivatives
  * (`${base}-800.jpg` … `-2400.jpg`); plain `src` also works.

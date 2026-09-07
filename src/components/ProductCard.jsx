@@ -6,9 +6,10 @@ import { formatPrice } from '../lib/format'
 
 /**
  * Artwork card for the catalogue grid. Thumbs come pre-framed with a black
- * border — shown object-contain on paper, no extra border. Product imagery
- * stays untouched (true colours). The whole card links to the detail page;
- * the Enquire button opens the interest modal without following the link.
+ * border — shown object-contain on paper, no extra border — and follow the
+ * house rule: black and white at rest, true colours on hover. The whole card
+ * links to the detail page; the Enquire button opens the interest modal
+ * without following the link.
  */
 export default function ProductCard({ product }) {
   const [showInterest, setShowInterest] = useState(false)
@@ -28,7 +29,7 @@ export default function ProductCard({ product }) {
               src={product.images?.[0]}
               alt={product.name}
               loading="lazy"
-              className="max-h-full max-w-full object-contain"
+              className="max-h-full max-w-full object-contain treat-grayscale"
             />
           </div>
 

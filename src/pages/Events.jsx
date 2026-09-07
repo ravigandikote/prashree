@@ -72,7 +72,7 @@ export default function Events() {
           sizes="100vw"
           alt="PraShree Events — natural, sustainable event décor. Stories told in leaf and jute: birthdays, anniversaries, mehandi, housewarming, baby showers, weddings — janur, gunny, bamboo, flowers, clay — Bengaluru."
           fetchPriority="high"
-          className="hidden md:block w-full h-auto"
+          className="hidden md:block w-full h-auto treat-grayscale"
         />
         {/* Mobile: same composition, rendered as text for legibility */}
         <div className="md:hidden px-6 py-16 text-center">

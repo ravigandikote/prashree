@@ -77,6 +77,11 @@ run `npm install --no-save @rolldown/binding-linux-x64-gnu` (npm optional-deps b
 - **Products**: add via `/admin/products` (photos upload to the `products`
   bucket). Catalogue PDFs go in `public/pdfs/` (reference as `/pdfs/name.pdf`)
   or any public URL in the product's "Catalogue PDF URL" field.
+- **Watermarks**: artwork images and catalogue PDFs carry Monica's watermark.
+  After adding either, re-run `npm run watermark:images` (rebuilds
+  `public/images/products/thumbs/` from the clean masters in
+  `PraShree-Products-Metadata/thumbs/`) and `npm run watermark:pdfs` (stamps
+  `public/catalogues/`; already-stamped files are skipped).
 - **Blog**: write via `/admin/posts` (Markdown body, cover uploads to `artworks`).
 - **Connections**: rows in the `connections` table (SQL editor) — the page
   falls back to `src/data/connections.js` when the table is empty.

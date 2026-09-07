@@ -121,7 +121,9 @@
     border: 0;
   }
 
-  /* ── Photo treatments (used by <Photo>) ── */
+  /* ── Photo treatments ──
+     House rule: every image sits in black and white and reveals its true
+     colour on hover (also when its link or .group parent is hovered). ── */
   .treat-grayscale {
     filter: grayscale(100%);
     transition: filter 0.3s ease;

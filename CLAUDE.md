@@ -219,6 +219,9 @@ warnings in Auth/CartContext, setState-in-effect in CategoryDetail/ProductDetail
 ## Brand rules (apply to all future work)
 
 Strictly monochrome (no accent colors — including status badges), serif display + humanist
-sans body, generous whitespace, hairline dividers, subtle 200–300ms motion, grayscale-at-rest /
-color-on-hover photo treatment, product photos untouched. Never invent prices, product names,
+sans body, generous whitespace, hairline dividers, subtle 200–300ms motion. **Every image on
+the site is grayscale at rest and reveals its true colour on hover** (2026-09 house rule —
+applies to product/artwork photos too; the earlier 'product photos untouched' rule and the
+duotone treatment are retired). Artwork images and catalogue PDFs are watermarked at build
+time (`npm run watermark:images`, `npm run watermark:pdfs`). Never invent prices, product names,
 or biographical facts; wrap placeholder copy in `[[ ]]`.

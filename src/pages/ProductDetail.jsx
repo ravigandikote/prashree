@@ -154,7 +154,7 @@ function ProductView({ slug }) {
           </nav>
 
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-            {/* Gallery — product photos untouched so customers see true colours */}
+            {/* Gallery — black and white at rest, true colours on hover */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -166,7 +166,7 @@ function ProductView({ slug }) {
                     <img
                       src={images[selectedImage]}
                       alt={`${product.name} — view ${selectedImage + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover treat-grayscale"
                     />
                   </div>
                   {images.length > 1 && (
@@ -180,7 +180,7 @@ function ProductView({ slug }) {
                           }`}
                           aria-label={`Show view ${i + 1}`}
                         >
-                          <img src={img} alt="" className="w-full h-full object-cover" />
+                          <img src={img} alt="" className="w-full h-full object-cover treat-grayscale" />
                         </button>
                       ))}
                     </div>

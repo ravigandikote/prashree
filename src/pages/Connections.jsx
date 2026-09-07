@@ -55,7 +55,7 @@ export default function Connections() {
                     <img
                       src={c.logo_url}
                       alt={`${c.name} logo`}
-                      className="w-20 h-20 object-contain grayscale"
+                      className="w-20 h-20 object-contain treat-grayscale"
                       loading="lazy"
                     />
                   ) : (

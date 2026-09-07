@@ -83,7 +83,7 @@ export default function Home() {
               <Photo
                 base="/images/monica/portraits/20250620-IMG_2199"
                 alt="Monica Prakash smiling, holding a hand-drawn black-and-white mandala on white card"
-                treatment="duotone"
+                treatment="grayscale"
                 aspect="aspect-[4/5]"
                 position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
@@ -114,7 +114,7 @@ export default function Home() {
               <Photo
                 base="/images/monica/portraits/IMG20260819191222"
                 alt="Monica seated in her studio in front of a wall of framed black-and-white mandala artworks"
-                treatment="duotone"
+                treatment="grayscale"
                 aspect="aspect-[3/4]"
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
@@ -144,7 +144,7 @@ export default function Home() {
       <Photo
         base="/images/monica/portraits/20250620-IMG_1958"
         alt="Monica seated by a railing amid greenery, looking into the distance"
-        treatment="duotone"
+        treatment="grayscale"
         aspect="aspect-[2/1] md:aspect-[3/1]"
         position="center 20%"
         sizes="100vw"
@@ -159,7 +159,7 @@ export default function Home() {
               <Photo
                 base="/images/monica/teaching/20251227-IMG_7529"
                 alt="Monica demonstrating a mandala sketch to a seated workshop group outdoors under fairy lights, singing bowls on the table"
-                treatment="duotone"
+                treatment="grayscale"
                 aspect="aspect-[3/4]"
                 position="center top"
                 sizes="(min-width: 768px) 50vw, 100vw"
@@ -216,7 +216,7 @@ export default function Home() {
             <Photo
               base="/images/monica/decor/20250828-IMG_4718"
               alt="Monica behind a dressed anniversary table with a dramatic dried palm-leaf backdrop, cake stand, and marquee letters"
-              treatment="duotone"
+              treatment="grayscale"
               aspect="aspect-[2/1]"
               position="center 20%"
               sizes="(min-width: 1200px) 1200px, 100vw"

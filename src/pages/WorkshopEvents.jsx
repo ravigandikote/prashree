@@ -96,7 +96,7 @@ export default function WorkshopEvents() {
                         src={w.flyer_url}
                         alt={`${w.title} flyer — ${w.schedule}, ${w.venue}`}
                         loading="lazy"
-                        className="w-full max-w-md mx-auto border border-mist shadow-[0_2px_24px_rgba(10,10,10,0.10)]"
+                        className="w-full max-w-md mx-auto border border-mist shadow-[0_2px_24px_rgba(10,10,10,0.10)] treat-grayscale"
                       />
                     ) : (
                       <div className="w-full max-w-md mx-auto aspect-[3/4] bg-paper border border-mist flex flex-col items-center justify-center gap-3">

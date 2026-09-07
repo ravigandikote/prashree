@@ -92,7 +92,7 @@ function PostView({ slug }) {
 
           {post.cover_image && (
             <div className="mt-10 overflow-hidden bg-paper">
-              <img src={post.cover_image} alt="" className="w-full object-cover" />
+              <img src={post.cover_image} alt="" className="w-full object-cover treat-grayscale" />
             </div>
           )}
 
