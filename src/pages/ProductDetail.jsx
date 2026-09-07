@@ -13,6 +13,7 @@ import { InterestModal } from '../components/InterestForm'
 import { getProductBySlug, getProducts } from '../lib/supabase'
 import { fallbackArtworks } from '../data/artworks'
 import { formatPrice } from '../lib/format'
+import { trackEvent } from '../lib/analytics'
 
 export default function ProductDetail() {
   const { slug } = useParams()
@@ -325,7 +326,12 @@ function ProductView({ slug }) {
                   {product.is_sold ? 'Enquire about a print' : 'Express interest'}
                 </Button>
                 {pdfAvailable && (
-                  <Button variant="outline" href={product.pdf_url} download>
+                  <Button
+                    variant="outline"
+                    href={product.pdf_url}
+                    download
+                    onClick={() => trackEvent('catalogue_download', { artwork: product.name })}
+                  >
                     <Download size={14} aria-hidden="true" /> Catalogue PDF
                   </Button>
                 )}

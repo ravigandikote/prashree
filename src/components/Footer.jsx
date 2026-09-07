@@ -37,6 +37,7 @@ export default function Footer() {
                 { to: '/products', label: 'Artworks & Products' },
                 { to: '/learn', label: 'Learn with Monica' },
                 { to: '/blog', label: 'Blog' },
+                { to: '/faq', label: 'FAQ' },
                 { to: '/contact', label: 'Contact' },
               ].map((link) => (
                 <li key={link.to}>
@@ -121,12 +122,29 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-white/40 text-small">
-            &copy; {new Date().getFullYear()} PraShree Arts. All rights reserved.
-          </p>
-          <p className="text-white/40 text-small">
-            Creative Director at NeeRav Arts Village
-          </p>
+          <div className="text-center sm:text-left">
+            <p className="text-white/40 text-small">
+              &copy; {new Date().getFullYear()} PraShree Arts. All rights reserved.
+            </p>
+            <p className="text-white/40 text-small mt-1">
+              Creative Director at NeeRav Arts Village
+            </p>
+          </div>
+          <nav className="flex items-center gap-5" aria-label="Legal">
+            {[
+              { to: '/privacy', label: 'Privacy' },
+              { to: '/terms', label: 'Terms' },
+              { to: '/faq', label: 'FAQ' },
+            ].map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-white/40 hover:text-white text-small transition-colors no-underline"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

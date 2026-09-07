@@ -4,6 +4,7 @@ import { Check } from 'lucide-react'
 import { Field, Input, Textarea } from './Form'
 import Button from './Button'
 import { createInterest } from '../lib/supabase'
+import { trackEvent } from '../lib/analytics'
 import { MandalaOrnament } from './UI'
 
 const INDIAN_PHONE = /^(\+91[-\s]?)?[6-9]\d{9}$/
@@ -52,6 +53,10 @@ export default function InterestForm({ product, onDone, context = 'original' }) 
         message: !linked && product?.name
           ? `[${product.name}] ${note}`.trim()
           : note || null,
+      })
+      trackEvent('interest_submitted', {
+        artwork: product?.name || 'unknown',
+        interest_type: context,
       })
       setDone(true)
     } catch {

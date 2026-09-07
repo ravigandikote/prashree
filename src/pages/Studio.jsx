@@ -75,6 +75,8 @@ export default function Studio() {
       />
 
       <div className="flex flex-col h-[calc(100vh-5rem)] min-h-[480px]">
+        {/* the tool has no title bar of its own — give the page one heading */}
+        <h1 className="sr-only">Mandala Studio — draw a mandala step by step</h1>
         <div className="flex items-center border-b border-mist bg-white">
           <div className="flex-1 min-w-0 [&>nav]:border-b-0">
             <Stepper active={step} onSelect={setStep} />
@@ -114,9 +116,9 @@ export default function Studio() {
           {/* Controls */}
           <aside className="md:w-80 shrink-0 border-b md:border-b-0 md:border-r border-mist bg-white overflow-y-auto p-5 space-y-6 max-h-[45vh] md:max-h-none">
             <div>
-              <h1 className="font-display text-h3 text-ink">
+              <h2 className="font-display text-h3 text-ink">
                 {STEPS.find((s) => s.id === step)?.label}
-              </h1>
+              </h2>
               <p className="text-small text-ash mt-0.5">
                 {stepHint(step)}
               </p>

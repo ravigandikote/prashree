@@ -142,6 +142,7 @@ export default function Products() {
       <section className="bg-white pt-16 md:pt-20 pb-8">
         <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
+            as="h1"
             align="left"
             eyebrow="Artworks & Products"
             title="The collection"

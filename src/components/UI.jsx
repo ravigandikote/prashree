@@ -4,7 +4,10 @@ import { motion } from 'framer-motion'
  * Section heading with an uppercase eyebrow label above a serif title.
  * `align="left"` for editorial layouts, default centered.
  */
-export function SectionHeading({ eyebrow, title, subtitle, align = 'center', className = '' }) {
+export function SectionHeading({
+  eyebrow, title, subtitle, align = 'center', className = '',
+  as: Heading = 'h2', // page titles pass as="h1" — one per page, for SEO and screen readers
+}) {
   const alignCls = align === 'left' ? 'text-left' : 'text-center'
   return (
     <motion.div
@@ -19,9 +22,9 @@ export function SectionHeading({ eyebrow, title, subtitle, align = 'center', cla
           {eyebrow}
         </p>
       )}
-      <h2 className="font-display text-display-sm md:text-display text-ink">
+      <Heading className="font-display text-display-sm md:text-display text-ink">
         {title}
-      </h2>
+      </Heading>
       {subtitle && (
         <p className={`mt-4 text-graphite ${align === 'left' ? 'max-w-2xl' : 'max-w-2xl mx-auto'}`}>
           {subtitle}

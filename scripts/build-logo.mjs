@@ -32,7 +32,9 @@ const TEXT_RATIO = 0.776 // wordmark width ÷ disc diameter
 const OUTPUTS = [
   { file: 'public/images/logo/prashree-logo-print.png', size: 3000 }, // marketing / print
   { file: 'public/images/logo/prashree-logo.png', size: 1024 }, // web master
-  { file: 'src/assets/logo.png', size: 1024 }, // bundled (navbar, footer, home, admin)
+  // bundled into the app: the largest on-screen use is the 80px home hero, so
+  // 512 is already 3x — the old 1024 cost ~180 kB on every page load
+  { file: 'src/assets/logo.png', size: 512 },
   { file: 'public/logo.png', size: 512 }, // favicon + OG fallback
   { file: 'public/images/logo/prashree-logo-192.png', size: 192 }, // small UI
 ]

@@ -4,6 +4,7 @@ import { Check } from 'lucide-react'
 import { Field, Input, Textarea } from './Form'
 import Button from './Button'
 import { createEnquiry } from '../lib/supabase'
+import { trackEvent } from '../lib/analytics'
 import { MandalaOrnament } from './UI'
 
 const INDIAN_PHONE = /^(\+91[-\s]?)?[6-9]\d{9}$/
@@ -49,6 +50,7 @@ export default function EnquiryForm({ kind = 'contact', subject, onDone, submitL
         subject: form.subject.trim() || null,
         message: form.message.trim(),
       })
+      trackEvent('enquiry_submitted', { enquiry_kind: kind, subject: subject || kind })
       setDone(true)
     } catch {
       setErrors({ submit: 'Something went wrong — please try again, or call us directly.' })

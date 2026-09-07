@@ -67,6 +67,10 @@ Founder/Community sections, enquiry CTA. All static; no Supabase fallbacks. Late
 | `/studio` | **Mandala Studio (2026-08-21)** — teaching-first drafting tool built in six phases. mm-true SVG stage (viewBox = paper), stepper mirroring the taught order (paper → centre → circles → radial lines → patterns → download). Pure logic in `src/lib/mandala/` (geometry, state+50-step undo/redo history with tweak coalescing, templates, exporter, patterns) — 37 Vitest tests incl. per-motif rotation-symmetry proofs and mm→pt scaling. 49 tileable motifs in 7 families (Petals & leaves, Line work, Geometry, Dots & pebbles, Scallops & arches, **Florals**, **Weave & lattice** — the last two added 2026-09 from a second batch of Monica's reference mandalas: swept/pinwheel lotus, contour petals, serrated fronds, daisies and blooms, vesica lattice, rosette net, basket weave, ribbed scales, onion arches, feather rays, coil clusters, nested squares, hatched triangles, bead chains, stippled cells); A/B sector alternation; per-ring weights fine/medium/bold; **density-aware tiling** (repeatsForCell keeps motif cells ~square, so outer rings carry more repeats — always a multiple of the sector count — instead of stretching). Export: vector PDF (jsPDF+svg2pdf, exact paper MediaBox), PNG 300 DPI, SVG; guides-only "print and fill by hand" is first-class. Templates: localStorage + JSON file import/export + autosave/resume + **PraShree starters** from `mandala_templates` (migration `20260821_mandala_templates.sql`, curated in `/admin/templates`). Examples strip links the 10 reference artworks. UI in `src/components/studio/` (canvas w/ zoom-pan + draggable centre + annulus ring hit areas, panels, pattern bottom-sheet on mobile) | `getStarterTemplates` |
 | `/blog` | `pages/Blog.jsx` — **new Phase 6**: editorial list of published posts (cover, date, tags, excerpt); EmptyState until posts exist | `getPublishedPosts` |
 | `/blog/:slug` | `pages/BlogPost.jsx` — serif reading layout (`.prose-post`), markdown via `marked` + `DOMPurify`, keyed remount per slug | `getPostBySlug` |
+| `/faq` | `pages/FAQ.jsx` — **new 2026-09-07**: accordion of 15 questions in 3 groups (data `src/data/faq.js`, [[ ]] for delivery), FAQPage JSON-LD | static |
+| `/privacy` | `pages/Privacy.jsx` — describes what the forms actually collect, where it is stored, and the consent-gated analytics | static |
+| `/terms` | `pages/Terms.jsx` — enquiry-not-checkout basis, copyright, Studio licence; [[ ]] for delivery/cancellation/GST | static |
+| `*` | `pages/NotFound.jsx` — custom 404 inside the site chrome, `noindex` (the SPA rewrite 200s every URL) | static |
 | `/contact` | `pages/Contact.jsx` — **rebuilt Phase 6**: 7387 portrait, tel/mailto/Instagram ([[INSTAGRAM_URL]] placeholder)/location, real `EnquiryForm` (kind=contact) → `enquiries` table | `createEnquiry` |
 | `/admin/login` | Supabase email/password sign-in (monochrome) | Supabase Auth |
 | `/admin/*` | **reworked Phase 4** — `AdminLayout` (auth-guarded, desktop sidebar + mobile top-nav) → index = `AdminInterests` (filters by product/status, tel:/mailto links, status New/Called/Follow-up/Closed, expandable notes), `AdminEnquiries`, `AdminProducts` (**rebuilt 2026-09-07**: every field the site renders, grouped
@@ -203,6 +207,18 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
   The brief references files **not yet supplied**:
   `DSC07336.jpeg`, `IMG_5730.JPG` (connections), `public/images/products/*` shadow-box photos.
 
+## Analytics & consent (2026-09-07)
+
+`src/lib/analytics.js` wraps GA4: the measurement ID comes from
+**`VITE_GA_MEASUREMENT_ID`** (Vercel env var, baked in at build — unset means
+every call is a no-op, so dev and previews never pollute the property).
+`ConsentProvider` (`src/context/ConsentContext.jsx`) stores granted/denied in
+localStorage; `<CookieConsent />` shows the banner only while the choice is
+null **and** an ID is configured; `<Analytics />` injects gtag after consent and
+fires a `page_view` per react-router navigation (`send_page_view: false`,
+/admin excluded). Conversion events: `interest_submitted`, `enquiry_submitted`,
+`catalogue_download`.
+
 ## Existing integrations
 
 - **Razorpay**: client-side modal only. No server endpoint, no signature verification.
@@ -233,6 +249,11 @@ Label/Input/Textarea/Select/Field), `UI.jsx` SectionHeading (eyebrow + serif tit
    at **https://prashreearts.com** — the custom domain must be connected in Vercel
    (or SITE_URL in SEO.jsx + index.html + sitemap script updated).
 10. New photos are unoptimized multi-MB originals; several carry a third-party watermark.
+    Launch checklist audited 2026-09-07: privacy/terms/FAQ/404 added, GA + cookie
+    consent added, one `<h1>` per page (SectionHeading takes `as`), skip-link in
+    Layout, bundled logo dropped 1024→512 px (home 648→476 kB). Open: [[ ]] in
+    Terms/FAQ (delivery, cancellation, GST), no social share buttons (OG/Twitter
+    cards are in place), 404 returns HTTP 200 by design of the SPA rewrite.
 11. npm optional-deps bug can break fresh builds (rolldown binding — fix above).
 
 ## Refactor decisions (approved 2026-08-19)

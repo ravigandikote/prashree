@@ -3,7 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext'
+import { ConsentProvider } from './context/ConsentContext'
 import Layout from './components/Layout'
+import Analytics from './components/Analytics'
+import CookieConsent from './components/CookieConsent'
 import { LoadingSpinner } from './components/UI'
 
 /* ── Lazy-loaded pages for code splitting ── */
@@ -19,6 +22,10 @@ const SacredGeometry = lazy(() => import('./pages/SacredGeometry'))
 const WorkshopEvents = lazy(() => import('./pages/WorkshopEvents'))
 const Events = lazy(() => import('./pages/Events'))
 const Studio = lazy(() => import('./pages/Studio'))
+const FAQ = lazy(() => import('./pages/FAQ'))
+const Privacy = lazy(() => import('./pages/Privacy'))
+const Terms = lazy(() => import('./pages/Terms'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
@@ -35,58 +42,68 @@ export default function App() {
   return (
     <HelmetProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              style: {
-                background: '#1f1f1f',
-                color: '#fff',
-                fontSize: '14px',
-              },
-            }}
-          />
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              {/* Public routes */}
-              <Route element={<Layout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:slug" element={<ProductDetail />} />
-                <Route path="/learn" element={<Learn />} />
-                <Route path="/sacred-geometry" element={<SacredGeometry />} />
-                <Route path="/studio" element={<Studio />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/contact" element={<Contact />} />
+        <ConsentProvider>
+          <BrowserRouter>
+            <Analytics />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                style: {
+                  background: '#1f1f1f',
+                  color: '#fff',
+                  fontSize: '14px',
+                },
+              }}
+            />
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                {/* Public routes */}
+                <Route element={<Layout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:slug" element={<ProductDetail />} />
+                  <Route path="/learn" element={<Learn />} />
+                  <Route path="/sacred-geometry" element={<SacredGeometry />} />
+                  <Route path="/studio" element={<Studio />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
 
-                <Route path="/workshops" element={<WorkshopEvents />} />
-                <Route path="/events" element={<Events />} />
-                {/* Connections is parked for now (page kept in src/pages) */}
-                <Route path="/connections" element={<Navigate to="/about" replace />} />
+                  <Route path="/workshops" element={<WorkshopEvents />} />
+                  <Route path="/events" element={<Events />} />
+                  {/* Connections is parked for now (page kept in src/pages) */}
+                  <Route path="/connections" element={<Navigate to="/about" replace />} />
 
-                {/* Legacy routes from the shop era */}
-                <Route path="/categories" element={<Navigate to="/products" replace />} />
-                <Route path="/categories/:slug" element={<Navigate to="/products" replace />} />
-                <Route path="/cart" element={<Navigate to="/products" replace />} />
-              </Route>
+                  {/* Legacy routes from the shop era */}
+                  <Route path="/categories" element={<Navigate to="/products" replace />} />
+                  <Route path="/categories/:slug" element={<Navigate to="/products" replace />} />
+                  <Route path="/cart" element={<Navigate to="/products" replace />} />
 
-              {/* Admin routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminInterests />} />
-                <Route path="enquiries" element={<AdminEnquiries />} />
-                <Route path="products" element={<AdminProducts />} />
-                <Route path="posts" element={<AdminPosts />} />
-                <Route path="categories" element={<AdminCategories />} />
-                <Route path="media" element={<AdminMedia />} />
-                <Route path="templates" element={<AdminTemplates />} />
-                <Route path="workshops" element={<AdminWorkshops />} />
-              </Route>
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+                  {/* Anything else — custom 404, inside the site chrome */}
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+
+                {/* Admin routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminInterests />} />
+                  <Route path="enquiries" element={<AdminEnquiries />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="posts" element={<AdminPosts />} />
+                  <Route path="categories" element={<AdminCategories />} />
+                  <Route path="media" element={<AdminMedia />} />
+                  <Route path="templates" element={<AdminTemplates />} />
+                  <Route path="workshops" element={<AdminWorkshops />} />
+                </Route>
+              </Routes>
+            </Suspense>
+            <CookieConsent />
+          </BrowserRouter>
+        </ConsentProvider>
       </AuthProvider>
     </HelmetProvider>
   )

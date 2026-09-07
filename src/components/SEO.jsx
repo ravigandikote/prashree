@@ -17,6 +17,7 @@ export default function SEO({
   keywords = [],
   type = 'website',
   jsonLd,
+  noindex = false,
 }) {
   const fullTitle = title
     ? `${title} | PraShree Arts`
@@ -29,6 +30,7 @@ export default function SEO({
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
+      {noindex && <meta name="robots" content="noindex, follow" />}
       <meta name="keywords" content={kw} />
       <link rel="canonical" href={`${SITE_URL}${path}`} />
       <meta property="og:site_name" content="PraShree Arts" />

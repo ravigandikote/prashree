@@ -20,7 +20,10 @@ const staticRoutes = [
   { path: '/contact', priority: '0.7' },
   { path: '/studio', priority: '0.7' },
   { path: '/blog', priority: '0.6' },
+  { path: '/faq', priority: '0.6' },
   { path: '/sacred-geometry', priority: '0.5' },
+  { path: '/privacy', priority: '0.3' },
+  { path: '/terms', priority: '0.3' },
 ]
 
 const today = new Date().toISOString().slice(0, 10)

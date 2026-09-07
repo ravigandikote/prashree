@@ -28,6 +28,7 @@ export default function Blog() {
       <section className="bg-white pt-16 md:pt-24 pb-12">
         <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
+            as="h1"
             align="left"
             eyebrow="Blog"
             title="Notes from the studio"
