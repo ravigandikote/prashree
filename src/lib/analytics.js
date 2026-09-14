@@ -17,9 +17,12 @@ export const analyticsConfigured = Boolean(GA_ID)
 
 let loaded = false
 
-function gtag(...args) {
+// Must push the `arguments` object itself, exactly as Google's snippet does:
+// gtag.js only processes [object Arguments] entries and silently ignores plain
+// arrays — a spread-and-push version loads the script but never sends a hit.
+function gtag() {
   if (!window.dataLayer) return
-  window.dataLayer.push(args)
+  window.dataLayer.push(arguments)
 }
 
 /** Injects the gtag script once. Safe to call repeatedly. */
