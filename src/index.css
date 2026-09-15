@@ -18,6 +18,7 @@
   /* ── Typography ── */
   --font-display: "Cormorant Garamond", "Georgia", serif;
   --font-body: "Karla", "Segoe UI", system-ui, sans-serif;
+  --font-script: "Great Vibes", "Brush Script MT", cursive; /* Sanskrit direction names only */
 
   /* Type scale (display / headings in Cormorant, light-to-regular weight) */
   --text-display-xl: 4rem;            /* 64 */
@@ -134,6 +135,20 @@
     filter: grayscale(0%);
   }
 
+  /* ── Vastu compass: the wheel turns beneath a fixed marker; labels
+     counter-rotate to stay upright. Reduced motion cuts straight to the
+     selected state. ── */
+  .compass-rotor,
+  .compass-label {
+    transition: transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .compass-rotor,
+    .compass-label {
+      transition: none;
+    }
+  }
+
   /* Soft warm-grey duotone for hero / décor imagery */
   .treat-duotone {
     filter: grayscale(100%) sepia(14%) contrast(0.96) brightness(1.02);
@@ -159,4 +174,10 @@
 :focus-visible {
   outline: 2px solid var(--color-ink);
   outline-offset: 2px;
+}
+/* The compass draws its own 2px cursor ring on the active sector (see
+   VastuCompass) — the rectangular outline around the whole SVG would be noise. */
+.compass-wheel:focus,
+.compass-wheel:focus-visible {
+  outline: none;
 }

@@ -13,6 +13,7 @@ import { InterestModal } from '../components/InterestForm'
 import { getProductBySlug, getProducts } from '../lib/supabase'
 import { fallbackArtworks } from '../data/artworks'
 import { formatPrice } from '../lib/format'
+import { directionToSlug } from '../data/vastu'
 import { trackEvent } from '../lib/analytics'
 
 export default function ProductDetail() {
@@ -304,10 +305,33 @@ function ProductView({ slug }) {
                 <p className="mt-6 text-graphite">{product.description}</p>
               )}
 
-              {product.vastu_note && (
+              {/* Placement: part of the piece's description, not a badge. The
+                  detail (admin-written) wins over the auto Vastu note. */}
+              {(product.direction || product.vastu_note) && (
                 <div className="mt-6 border-l-2 border-mist pl-4 flex gap-3">
                   <Compass size={18} className="text-graphite shrink-0 mt-1" aria-hidden="true" />
-                  <p className="text-small text-graphite">{product.vastu_note}</p>
+                  <div className="text-small text-graphite">
+                    {product.placement_detail ? (
+                      <p className="text-charcoal">{product.placement_detail}</p>
+                    ) : product.vastu_note ? (
+                      <p>{product.vastu_note}</p>
+                    ) : null}
+                    {product.direction && (
+                      <p className="mt-1.5">
+                        <Link to={`/placement?direction=${directionToSlug(product.direction)}`} className="text-ink underline-offset-4">
+                          See what else belongs on a {product.direction.toLowerCase()} wall →
+                        </Link>
+                        {product.secondary_direction && (
+                          <>
+                            {' '}<span className="text-ash">·</span>{' '}
+                            <Link to={`/placement?direction=${directionToSlug(product.secondary_direction)}`} className="text-ink underline-offset-4">
+                              also suits {product.secondary_direction.toLowerCase()}
+                            </Link>
+                          </>
+                        )}
+                      </p>
+                    )}
+                  </div>
                 </div>
               )}
 

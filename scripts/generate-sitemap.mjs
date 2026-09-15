@@ -13,6 +13,7 @@ const items = JSON.parse(readFileSync('PraShree-Products-Metadata/items.json', '
 const staticRoutes = [
   { path: '/', priority: '1.0' },
   { path: '/products', priority: '0.9' },
+  { path: '/placement', priority: '0.8' },
   { path: '/about', priority: '0.8' },
   { path: '/learn', priority: '0.8' },
   { path: '/workshops', priority: '0.8' },

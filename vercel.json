@@ -2,6 +2,10 @@
   "installCommand": "npm install",
   "rewrites": [
     {
+      "source": "/placement",
+      "destination": "/placement.html"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

@@ -1,11 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
-  DEFAULT_FILTERS,
-  filterArtworks,
-  sortArtworks,
-  facetCounts,
-  filtersToParams,
-  paramsToFilters,
+  DEFAULT_FILTERS, filterArtworks, sortArtworks, facetCounts, filtersToParams, paramsToFilters, facetValues,
 } from './catalog'
 
 const A = (over) => ({
@@ -91,5 +86,22 @@ describe('URL state round-trip', () => {
     // reset
     expect(filtersToParams(DEFAULT_FILTERS).toString()).toBe('')
     expect(paramsToFilters(new URLSearchParams())).toEqual(DEFAULT_FILTERS)
+  })
+})
+
+describe('direction filter includes secondary homes', () => {
+  const items = [
+    { name: 'A', slug: 'a', form: 'Mandala Art', direction: 'North', secondary_direction: 'West', price: 1, size_code: 'A3' },
+    { name: 'B', slug: 'b', form: 'Mandala Art', direction: 'West', secondary_direction: null, price: 1, size_code: 'A3' },
+    { name: 'C', slug: 'c', form: 'Mandala Art', direction: 'East', price: 1, size_code: 'A3' },
+  ]
+  it('matches a piece on its primary or secondary direction', () => {
+    const west = filterArtworks(items, { ...DEFAULT_FILTERS, dir: 'West' }).map((i) => i.slug)
+    expect(west).toEqual(['a', 'b'])
+    expect(filterArtworks(items, { ...DEFAULT_FILTERS, dir: 'North' }).map((i) => i.slug)).toEqual(['a'])
+  })
+  it('counts and lists secondary directions in the facet', () => {
+    expect(facetCounts(items, DEFAULT_FILTERS, 'dir')).toEqual({ North: 1, West: 2, East: 1 })
+    expect(facetValues(items, 'dir')).toEqual(['East', 'North', 'West'])
   })
 })

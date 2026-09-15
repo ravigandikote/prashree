@@ -62,6 +62,54 @@ export async function getProductBySlug(slug) {
   return data
 }
 
+/* ── Vastu placement compass ── */
+/** The nine direction profiles, clockwise from North (Centre last). */
+export async function getDirectionProfiles() {
+  const { data, error } = await supabase
+    .from('vastu_direction_profiles')
+    .select('*')
+    .order('sort_order', { ascending: true })
+  if (error) throw error
+  return data
+}
+
+export async function createDirectionProfile(profile) {
+  const { data, error } = await supabase
+    .from('vastu_direction_profiles')
+    .insert([{ ...profile, edited_at: new Date().toISOString() }])
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function updateDirectionProfile(id, updates) {
+  const { data, error } = await supabase
+    .from('vastu_direction_profiles')
+    .update({ ...updates, edited_at: new Date().toISOString() }) // seed leaves edited rows alone
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+/**
+ * Listed, catalogued artworks for the compass in one query (~30 KB for the
+ * whole catalogue). Money-line exclusion and direction grouping happen in
+ * lib/placement.js so the fallback data goes through the same rules.
+ */
+export async function getPlacementProducts() {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('is_available', true)
+    .not('form', 'is', null)
+    .order('name', { ascending: true })
+  if (error) throw error
+  return data
+}
+
 /* ── Gallery helpers ── */
 export async function getGalleryByCategory(categoryId) {
   const { data, error } = await supabase

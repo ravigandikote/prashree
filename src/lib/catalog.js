@@ -55,7 +55,7 @@ function passes(item, key, value) {
     case 'form': return item.form === value
     case 'series': return item.series === value
     case 'size': return item.size_code === value
-    case 'dir': return item.direction === value
+    case 'dir': return item.direction === value || item.secondary_direction === value
     case 'price': {
       const [lo, hi] = value.split('-').map(Number)
       return Number(item.price) >= lo && Number(item.price) < hi
@@ -109,6 +109,13 @@ export function facetCounts(items, filters, facetKey) {
       if (!band.value) continue
       counts[band.value] = others.filter((i) => passes(i, 'price', band.value)).length
     }
+  } else if (facetKey === 'dir') {
+    // a piece counts once under each direction it belongs to (primary + secondary)
+    for (const item of others) {
+      for (const v of new Set([item.direction, item.secondary_direction].filter(Boolean))) {
+        counts[v] = (counts[v] || 0) + 1
+      }
+    }
   } else {
     for (const item of others) {
       const v = item[field]
@@ -122,7 +129,11 @@ export function facetCounts(items, filters, facetKey) {
 export function facetValues(items, facetKey) {
   const field =
     facetKey === 'size' ? 'size_code' : facetKey === 'dir' ? 'direction' : facetKey
-  const vals = [...new Set(items.map((i) => i[field]).filter(Boolean))]
+  const vals = [...new Set(
+    facetKey === 'dir'
+      ? items.flatMap((i) => [i.direction, i.secondary_direction]).filter(Boolean)
+      : items.map((i) => i[field]).filter(Boolean)
+  )]
   if (facetKey === 'size') {
     return vals.sort((a, b) => (SIZE_ORDER[a] || 99) - (SIZE_ORDER[b] || 99) || a.localeCompare(b))
   }

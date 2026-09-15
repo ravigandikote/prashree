@@ -23,6 +23,7 @@ const WorkshopEvents = lazy(() => import('./pages/WorkshopEvents'))
 const Events = lazy(() => import('./pages/Events'))
 const Studio = lazy(() => import('./pages/Studio'))
 const FAQ = lazy(() => import('./pages/FAQ'))
+const Placement = lazy(() => import('./pages/Placement'))
 const Privacy = lazy(() => import('./pages/Privacy'))
 const Terms = lazy(() => import('./pages/Terms'))
 const NotFound = lazy(() => import('./pages/NotFound'))
@@ -37,6 +38,7 @@ const AdminCategories = lazy(() => import('./pages/admin/AdminCategories'))
 const AdminMedia = lazy(() => import('./pages/admin/AdminMedia'))
 const AdminTemplates = lazy(() => import('./pages/admin/AdminTemplates'))
 const AdminWorkshops = lazy(() => import('./pages/admin/AdminWorkshops'))
+const AdminPlacement = lazy(() => import('./pages/admin/AdminPlacement'))
 
 export default function App() {
   return (
@@ -70,6 +72,7 @@ export default function App() {
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/faq" element={<FAQ />} />
+                  <Route path="/placement" element={<Placement />} />
                   <Route path="/privacy" element={<Privacy />} />
                   <Route path="/terms" element={<Terms />} />
 
@@ -98,6 +101,7 @@ export default function App() {
                   <Route path="media" element={<AdminMedia />} />
                   <Route path="templates" element={<AdminTemplates />} />
                   <Route path="workshops" element={<AdminWorkshops />} />
+                  <Route path="placement" element={<AdminPlacement />} />
                 </Route>
               </Routes>
             </Suspense>
