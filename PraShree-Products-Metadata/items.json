@@ -65,7 +65,9 @@
     "pdf": "Kavach-ShieldOfFocus_2page.pdf",
     "intent": "Focus, protection & grounding",
     "direction": "North",
-    "thumb": "thumbs/kavach.jpg"
+    "thumb": "thumbs/kavach.jpg",
+    "secondary_direction": "South-West",
+    "placement_note": "The heaviest corner of a home, traditionally the one that holds."
   },
   {
     "id": "lakshmi",
@@ -99,7 +101,9 @@
     "pdf": "Sarasvati-LotusOfWisdom_2page.pdf",
     "intent": "Creativity, wisdom & learning",
     "direction": "North-East",
-    "thumb": "thumbs/sarasvati.jpg"
+    "thumb": "thumbs/sarasvati.jpg",
+    "secondary_direction": "East",
+    "placement_note": "For a study or desk wall that catches the morning."
   },
   {
     "id": "shanti",
@@ -202,7 +206,9 @@
     "pdf": "Svadhisthana-LotusOfFlow_2page.pdf",
     "intent": "Creativity, flow & emotional balance",
     "direction": "East",
-    "thumb": "thumbs/svadhisthana.jpg"
+    "thumb": "thumbs/svadhisthana.jpg",
+    "secondary_direction": "West",
+    "placement_note": "For the wall a room settles into at the end of the day."
   },
   {
     "id": "muladhara",
@@ -270,7 +276,9 @@
     "pdf": "Mahadeva-CrescentOfStillness_2page.pdf",
     "intent": "Inner strength, protection & transformation",
     "direction": "North-East",
-    "thumb": "thumbs/mahadeva.jpg"
+    "thumb": "thumbs/mahadeva.jpg",
+    "secondary_direction": "North",
+    "placement_note": "Sits well in a prayer space or above a home shrine."
   },
   {
     "id": "pushpa",
@@ -355,7 +363,8 @@
     "pdf": "Dhyana-SeatOfBalance_2page.pdf",
     "intent": "Balance, meditation & inner harmony",
     "direction": "North-East",
-    "thumb": "thumbs/dhyana.jpg"
+    "thumb": "thumbs/dhyana.jpg",
+    "placement_note": "Made for the corner of a home that stays quiet."
   },
   {
     "id": "jaala",
@@ -441,7 +450,9 @@
     "intent": "Happiness, contentment & a warm home",
     "direction": "East",
     "thumb": "thumbs/ananda.jpg",
-    "sold": true
+    "sold": true,
+    "secondary_direction": "North-West",
+    "placement_note": "Entrance halls and guest rooms — the directions of arrival."
   },
   {
     "id": "pravaha",

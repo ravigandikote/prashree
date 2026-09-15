@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
       <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-4">
@@ -35,6 +35,7 @@ export default function Footer() {
                 { to: '/', label: 'Home' },
                 { to: '/about', label: 'About Monica' },
                 { to: '/products', label: 'Artworks & Products' },
+                { to: '/placement', label: 'Find your direction' },
                 { to: '/learn', label: 'Learn with Monica' },
                 { to: '/blog', label: 'Blog' },
                 { to: '/faq', label: 'FAQ' },

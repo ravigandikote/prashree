@@ -8,6 +8,7 @@ const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
   { to: '/products', label: 'Artworks' },
+  { to: '/placement', label: 'Placement' },
   { to: '/events', label: 'Events' },
   { to: '/learn', label: 'Learn' },
   { to: '/workshops', label: 'Workshops' },
@@ -37,7 +38,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop navigation */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-9">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-8">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -56,10 +57,10 @@ export default function Navbar() {
           </div>
 
           {/* Mobile menu */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-charcoal hover:text-ink bg-transparent border-0 cursor-pointer"
+              className="lg:hidden p-2 text-charcoal hover:text-ink bg-transparent border-0 cursor-pointer"
               aria-label="Toggle menu"
               aria-expanded={isOpen}
             >
@@ -77,7 +78,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="md:hidden overflow-hidden border-t border-mist bg-white"
+            className="lg:hidden overflow-hidden border-t border-mist bg-white"
           >
             <div className="px-4 py-4 space-y-1">
               {navLinks.map((link) => (

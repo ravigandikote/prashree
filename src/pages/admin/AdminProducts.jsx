@@ -10,6 +10,7 @@ import {
 } from '../../lib/supabase'
 import { watermarkImage, watermarkPdf } from '../../lib/watermark'
 import { fallbackArtworks } from '../../data/artworks'
+import { DIRECTIONS } from '../../data/vastu'
 import { inputClasses } from './adminUi'
 import toast from 'react-hot-toast'
 
@@ -19,16 +20,14 @@ import toast from 'react-hot-toast'
    watermarked in the browser on the way up. */
 
 const BUCKET = 'products'
+const PLACEMENT_NOTE_MAX = 140 // mirrors VARCHAR(140) on products.placement_note
 
-const DIRECTIONS = [
-  'East', 'West', 'North', 'South',
-  'North-East', 'North-West', 'South-East', 'South-West', 'Centre',
-]
 
 const EMPTY = {
   name: '', slug: '', description: '', price: '', sale_price: '', category_id: '',
   pdf_url: '', vastu_note: '', size: '', size_code: '', price_range: '', usd: '',
   prints: '', hours: '', series: '', form: '', intent: '', direction: '',
+  secondary_direction: '', placement_note: '', placement_detail: '',
   is_featured: false, is_available: true, is_sold: false,
 }
 
@@ -131,6 +130,9 @@ export default function AdminProducts() {
       form: product.form || '',
       intent: product.intent || '',
       direction: product.direction || '',
+      secondary_direction: product.secondary_direction || '',
+      placement_note: product.placement_note || '',
+      placement_detail: product.placement_detail || '',
       is_featured: product.is_featured,
       is_available: product.is_available,
       is_sold: product.is_sold || false,
@@ -200,6 +202,9 @@ export default function AdminProducts() {
         form: form.form || null,
         intent: form.intent || null,
         direction: form.direction || null,
+        secondary_direction: form.secondary_direction || null,
+        placement_note: form.placement_note.trim().slice(0, PLACEMENT_NOTE_MAX) || null,
+        placement_detail: form.placement_detail.trim() || null,
         is_featured: form.is_featured,
         is_available: form.is_available,
         is_sold: form.is_sold,
@@ -371,6 +376,37 @@ export default function AdminProducts() {
                     />
                   </Row>
                 </div>
+
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <Row label="Second direction" hint="Optional second home; the compass lists it after the primary matches.">
+                    <select value={form.secondary_direction} onChange={(e) => set({ secondary_direction: e.target.value })} className={inputClasses}>
+                      <option value="">None</option>
+                      {DIRECTIONS.filter((d) => d !== form.direction).map((d) => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </Row>
+                  <Row
+                    label={`Placement note · ${form.placement_note.length}/${PLACEMENT_NOTE_MAX}`}
+                    hint="One line under the card on /placement — the reason this piece belongs on that wall."
+                    className="sm:col-span-2"
+                  >
+                    <input
+                      maxLength={PLACEMENT_NOTE_MAX} value={form.placement_note}
+                      onChange={(e) => set({ placement_note: e.target.value })}
+                      placeholder="For a study or desk wall that catches the morning."
+                      className={inputClasses}
+                    />
+                  </Row>
+                </div>
+                <Row
+                  label={`Placement detail · ${form.placement_detail.length} characters`}
+                  hint="Two or three sentences on the artwork page, in place of the Vastu note, with a link back to the compass."
+                >
+                  <textarea
+                    rows={3} value={form.placement_detail}
+                    onChange={(e) => set({ placement_detail: e.target.value })}
+                    className={`${inputClasses} resize-none`}
+                  />
+                </Row>
               </Section>
 
               <Section title="Pricing" note="Exactly the strip shown on the detail page.">

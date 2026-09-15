@@ -1,0 +1,101 @@
+[
+  {
+    "direction": "North",
+    "label": "North",
+    "sanskrit_name": "Uttara",
+    "guardian": "Kubera",
+    "element": "Water",
+    "essence": "Flow and prosperity",
+    "description": "In Vastu tradition the north is Kubera's quarter, associated with flow and the keeping of what one has. A north wall suits a piece that feels open and moving rather than heavy. Living rooms and entrances often turn this way.",
+    "sort_order": 1,
+    "shows_artworks": true
+  },
+  {
+    "direction": "North-East",
+    "label": "North-East",
+    "sanskrit_name": "Ishanya",
+    "guardian": "Shiva",
+    "element": "Water",
+    "essence": "Stillness and prayer",
+    "description": "Ishanya is held to be the most sacred corner of a home, kept light, clean and quiet. Tradition places prayer and meditation here. Choose work that asks for stillness and rewards a long look.",
+    "sort_order": 2,
+    "shows_artworks": true
+  },
+  {
+    "direction": "East",
+    "label": "East",
+    "sanskrit_name": "Purva",
+    "guardian": "Indra / Surya",
+    "element": "Air",
+    "essence": "Clarity and beginnings",
+    "description": "The east receives the first light, and tradition reads it as the direction of beginnings and clear thinking. It suits a study, a desk wall, or wherever the day starts. Pieces with a bright, open centre sit naturally here.",
+    "sort_order": 3,
+    "shows_artworks": true
+  },
+  {
+    "direction": "South-East",
+    "label": "South-East",
+    "sanskrit_name": "Agneya",
+    "guardian": "Agni",
+    "element": "Fire",
+    "essence": "Warmth and transformation",
+    "description": "Agneya is the fire corner, traditionally the kitchen's place. It carries warmth, appetite and change. Work with movement and energy belongs here, in a spot that catches attention rather than one that invites rest.",
+    "sort_order": 4,
+    "shows_artworks": true
+  },
+  {
+    "direction": "South",
+    "label": "South",
+    "sanskrit_name": "Dakshina",
+    "guardian": "Yama",
+    "element": "Earth",
+    "essence": "Structure and resolve",
+    "description": "The south is read as steady and disciplined in Vastu tradition, a direction of resolve. It suits pieces with strong structure and a firm outline. A south wall can carry visual weight that would crowd a lighter room.",
+    "sort_order": 5,
+    "shows_artworks": true
+  },
+  {
+    "direction": "South-West",
+    "label": "South-West",
+    "sanskrit_name": "Nairutya",
+    "guardian": "Nairuti",
+    "element": "Earth",
+    "essence": "Weight and steadiness",
+    "description": "Nairutya is traditionally the heaviest corner of a home, the one that anchors the rest. Bedrooms and stores are often placed here. Grounded, protective compositions feel at home on a south-west wall.",
+    "sort_order": 6,
+    "shows_artworks": true
+  },
+  {
+    "direction": "West",
+    "label": "West",
+    "sanskrit_name": "Paschima",
+    "guardian": "Varuna",
+    "element": "Water",
+    "essence": "Rest and completion",
+    "description": "The west holds the setting sun and, in tradition, the sense of a day drawing to a close. It suits the rooms a household settles into in the evening. Calm, flowing work belongs here more than anything restless.",
+    "sort_order": 7,
+    "shows_artworks": true
+  },
+  {
+    "direction": "North-West",
+    "label": "North-West",
+    "sanskrit_name": "Vayavya",
+    "guardian": "Vayu",
+    "element": "Air",
+    "essence": "Movement and welcome",
+    "description": "Vayavya is the corner of wind and movement, traditionally given to guests and to things that come and go. Entrance halls and guest rooms often face this way. Choose pieces that feel welcoming and light.",
+    "sort_order": 8,
+    "shows_artworks": true
+  },
+  {
+    "direction": "Centre",
+    "label": "Centre",
+    "sanskrit_name": "Brahmasthana",
+    "guardian": "Brahma",
+    "element": "Space",
+    "essence": "Openness, kept clear",
+    "description": "The Brahmasthana is the open heart of a home, and tradition holds that it should stay uncrowded. Nothing is recommended for hanging here. Let the walls around it carry the work and keep the centre clear.",
+    "sort_order": 9,
+    "shows_artworks": false
+  }
+]
