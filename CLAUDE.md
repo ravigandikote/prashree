@@ -138,6 +138,107 @@ Toggle per artwork at /admin/products. Filter reference behaviour ported from
 (2026-08-19): monochrome (no plum/gold), keep Vite+Supabase, keep site's own
 interest forms (no WhatsApp/Google Form).
 
+## Sound layer (2026-09-16, Phase 1 of 5)
+
+Two features in progress: a paired tone per artwork (fades in on the detail
+page once the visitor has switched sound on) and "Two minutes of stillness"
+(a 4-7-8 breathing overlay with a gong). Autoplay rule: sound is **off by
+default on every device**, the header toggle is the first gesture, nothing
+downloads before it, every rejected play() is swallowed, the toggle reports
+intent not output (iOS silent switch is left alone). Decisions: Supabase
+Storage instead of Cloudinary — one AAC `.m4a` per tone under
+`products/audio/` (64 kbps mono tones, 96 kbps gong) made by
+`npm run audio:compress` (`scripts/compress-audio.mjs`, needs system ffmpeg;
+no WASM ffmpeg dependency added); monochrome ring (paper on ink, no gold);
+stillness button bottom-right lifting above the cookie bar, hidden on
+/studio, admin and behind modals (there is no WhatsApp button to collide
+with). Phase 1: migration `20260916_sound_layer.sql` (products.audio_url/
+audio_title/audio_credit/audio_loop_seconds; `site_audio` table keyed by slug
+with three pre-seeded empty rows gong-open/gong-close/fallback-tone, public
+read, authenticated write), `src/lib/audio/urls.js` (resolveAudioUrl,
+storagePublicUrl, isPlayableAudioUrl, audioStoragePath, TONE_BUDGET_BYTES —
+Vitest), supabase `getSiteAudio`/`updateSiteAudio`, fallback artworks carry
+null audio fields (tones are never bundled), README "Sound layer" section,
+`docs/audio-spec-for-monica.md`. **Phase 2 (engine, 2026-09-16):** `src/lib/audio/engine.js` —
+`createSoundEngine({ createContext, fetchBytes, createElement, options })`
+with unlock (creates ctx + 0.6 master bus, resume() inside a gesture, blocked =
+quiet false), playTone/crossfadeTo (URL or AudioBuffer; fetch+decode cached per
+URL; AudioBufferSourceNode loop; old tone ramps out 1.5 s while new ramps in
+2.5 s), stopTone({ fadeOut, delay }) (delay = route-change grace, cancelled by a
+new tone), playOnce (gong, self-releasing), duck/unduck (master to 15 % over 0.6 s
+/ back over 0.9 s), dispose; files > 1.5 MB use an <audio> element and are listed
+in `state.largeFiles` (none exist yet). All ramps are cancel/set/linearRamp on
+ctx.currentTime. 15 Vitest tests against a fake AudioContext.
+`src/context/SoundContext.jsx` (`SoundProvider` inside BrowserRouter, `useSound`)
+persists `enabled` under `prashree-sound`, re-unlocks on the first gesture after a
+reload when enabled, schedules `stopTone({ delay: 800 })` on every route change,
+disposes on unmount; play/crossfade/playOnce are no-ops while `enabled` is false.
+`/dev/sound` (`src/pages/dev/SoundLab.jsx`, registered only under `vite dev`,
+absent from dist) synthesises tones in the browser to exercise every method.
+**Phase 3 (artwork pages, 2026-09-16):** `src/components/SoundToggle.jsx` in the
+Navbar (desktop row + beside the hamburger): 44 px, icon + "Sound on/off" (15 px),
+`aria-pressed`, label "Turn sound on/off"; "on" only when `enabled && unlocked`
+(after a reload it shows off until a gesture — honest, not lying); a static filled
+dot + sr-only "A tone is playing." when the engine is playing (no equaliser); one-
+time hint "Some artworks carry a tone from Monica's sound sessions." after the
+first switch-on, dismissed by ✕ or 12 s, `prashree-sound-hint`.
+`src/components/ArtworkTone.jsx` under the gallery on ProductDetail: renders
+nothing without `audio_url`; else title + credit + 44 px local play/pause; on
+mount calls `holdTone()` (cancels the route-change stop so the previous artwork's
+tone crossfades instead of cutting), then `crossfadeTo(url)` 1 s after the page
+settles when enabled+unlocked+visible+not paused; local pause = `stopTone` and
+stays paused; when sound is off the local button reads "Turn sound on to listen"
+and switches the site-wide preference on (explicit gesture). Provider: `visible`
+state, hides → `stopTone({fadeOut:0.5})`, pages resume on visible; play wrappers
+gate on an `enabledRef` so a gesture can play in the same tick. Engine:
+`holdTone()` + "longest pending grace wins". Admin: Sound fieldset on
+/admin/products (tone upload to `products/audio/<slug>.<ext>`, budget warning
+over 300 KB, loop length read from the file's metadata unless typed, title,
+credit, Remove tone). Verified in headless Chrome with a local WAV server +
+intercepted Supabase REST: no audio request with sound off on any route, fade-in
+after settle, pause/play, crossfade between artworks, stop on leaving, no sound on
+/, /products, /placement, tab-hide stop + resume, reload → off until gesture.
+**Phase 4 (Two minutes of stillness, 2026-09-17):** `src/lib/stillness.js`
+(pure: PHASES 4/7/8, CYCLE 19 s, 6 cycles = 114 s, `phaseAt`, `schedule`; 5 tests).
+`src/components/stillness/StillnessButton.jsx` mounted in Layout: fixed bottom-
+right z-40, `bottom: calc(var(--floating-bottom,0px) + 1rem)` — CookieConsent
+publishes its height as `--floating-bottom` while visible; hidden on /studio and
+/admin; full label on first load, collapses to the ring glyph below `sm` after 4 s
+(aria-label constant); open state is "opened on this pathname" so a route change
+closes it without an effect. `StillnessOverlay.jsx` (portal to body, z-70, ink,
+800 ms in / 600 ms out, `#root` gets `inert`, body scroll locked + scrollY
+restored, focus trapped, focus returns to the button): card with the 4-7-8
+caution → Begin / Not now; practice = `StillnessRing.jsx` (concentric paper
+hairlines + 72 ticks, group `transform: scale` with per-phase easings — inhale
+4 s cubic-bezier(0.16,0.84,0.3,1) to 1, hold 7 s linear to 1.004 drift, exhale
+8 s cubic-bezier(0.42,0.02,0.36,1) to 0.74; reduced motion: no scale, stroke
+weight 1.35/1.1/0.8 per phase), phase words crossfade 700 ms, progress arc =
+stroke-dashoffset over 114 s linear, sr-only polite live "Breathe in. Breath n of
+6."; gong `playOnce` at begin (gong-open) and end (gong-close || gong-open) —
+`site_audio` rows fetched only on open and only when sound is enabled; opening
+ducks the master to 10 % and stops the artwork tone, closing unducks; exits:
+Escape / ✕ (44 px) / tap outside / Not now, 600 ms fade, no confirm; completion:
+hold 1.8 s → "Two minutes." → auto-close after 12 s. `/admin/sounds`
+(`AdminSounds.jsx`, sidebar "Sounds") fills the three `site_audio` rows (upload to
+products/audio/<slug>, duration from metadata, title, credit). Verified in
+headless Chrome: full 114 s session with faked gong rows, tab trap, silence path
+fetches nothing, reduced motion, lift above a 96 px bar. **Phase 5 (finish, 2026-09-17) ✅:** Chromium — zero audio requests and zero
+AudioContexts created on /, /products, /products/:slug, /placement, /about,
+/studio before any gesture, with the preference off AND on; keyboard-only: 12
+Tabs to the toggle (Enter → "Turn sound off"), 37 to the stillness button, Enter
+opens with focus on Begin and #root inert, Escape closes and focus returns; overlay
+at 390/768/1280: all controls 44 px, smallest text 17 px, ring 304/416/416 px.
+WebKit 26 (Safari engine; desktop + emulated iPhone 14): first visit blocked and
+honest, toggle unlocks (resume resolves async — the label flips when it does),
+tone fetched once after settle, tab-hide stops / return resumes, reload → "off"
+until a gesture, stillness runs and exits. Lighthouse mobile on /products/aditya,
+before vs after (both `vite preview`): perf 77→84 (noise), a11y 96/96, best
+practices 96/96, script transfer 207→216 KB (+9 KB for the sound layer), media
+requests 0/0. Not testable here: the iOS hardware silent switch and shipped-
+browser autoplay policies — `docs/sound-layer-device-checklist.md` is the manual
+pass for Ravi/Monica. Not built: no `<audio preload>` anywhere (the engine fetches
+only after unlock), no fallback tone use.
+
 ## Data model (Supabase — `supabase/schema.sql`)
 
 Fresh installs run `schema.sql` **then** `supabase/migrations/20260819_refactor.sql`
@@ -177,8 +278,9 @@ ProductDetail's Vastu block now shows `placement_detail` (falling back to
 `vastu_note`) plus "See what else belongs on a <dir> wall →" links to
 `/placement?direction=<slug>` for primary and secondary. Catalogue `dir` filter
 matches primary OR secondary (`catalog.js` passes/facetCounts/facetValues, tested).
-Nav: "Placement" after Artworks; desktop nav now from **lg** (it overflowed at md)
-with `gap-5 xl:gap-8`; footer Explore gained "Find your direction" and its grid is
+Nav: "Placement" after Artworks; desktop nav now from **xl** (nine links + the
+sound toggle need 1280; Home is dropped from the desktop row, the logo is Home)
+with `gap-5` (the 1200 px content cap leaves no room for more), hamburger below xl; footer Explore gained "Find your direction" and its grid is
 `sm:2 lg:4` (the md:4 grid pushed the email link past 768 px). Admin:
 `/admin/placement` (`AdminPlacement.jsx`, sidebar "Placement") edits the nine
 profiles (no add/delete — directions are fixed; a missing row can be created from

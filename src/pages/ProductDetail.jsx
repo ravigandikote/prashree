@@ -8,6 +8,7 @@ import { LoadingSpinner, EmptyState } from '../components/UI'
 import Button from '../components/Button'
 import ProductCard from '../components/ProductCard'
 import PdfViewer from '../components/PdfViewer'
+import ArtworkTone from '../components/ArtworkTone'
 import { usePdfAvailable } from '../lib/usePdfAvailable'
 import { InterestModal } from '../components/InterestForm'
 import { getProductBySlug, getProducts } from '../lib/supabase'
@@ -214,6 +215,7 @@ function ProductView({ slug }) {
                   </p>
                 </div>
               )}
+              <ArtworkTone product={product} />
             </motion.div>
 
             {/* Details */}
@@ -319,7 +321,7 @@ function ProductView({ slug }) {
                     {product.direction && (
                       <p className="mt-1.5">
                         <Link to={`/placement?direction=${directionToSlug(product.direction)}`} className="text-ink underline-offset-4">
-                          See what else belongs on a {product.direction.toLowerCase()} wall →
+                          See what else belongs on {/^[aeiou]/i.test(product.direction) ? 'an' : 'a'} {product.direction.toLowerCase()} wall →
                         </Link>
                         {product.secondary_direction && (
                           <>

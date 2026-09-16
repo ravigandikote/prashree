@@ -58,3 +58,42 @@ one-line reason. Money-manifestation pieces never appear there.
 
 The compass's OG image is `public/images/og-placement.jpg`; regenerate it if the
 wheel's look changes.
+
+## Sound layer
+
+Each artwork can carry one paired tone (a singing bowl note from Monica's
+sound sessions); the site also keeps a few shared sounds (the gong strikes
+for "Two minutes of stillness"). Sound is off by default everywhere and
+nothing downloads until a visitor switches it on in the header.
+
+**Adding a tone to an artwork**
+
+1. Get the recording from Monica as WAV (what to ask for is in
+   [docs/audio-spec-for-monica.md](docs/audio-spec-for-monica.md)).
+2. Compress it: `npm run audio:compress -- path/to/Aditya.wav` (needs ffmpeg,
+   `brew install ffmpeg`). This writes `aditya.m4a` next to it — mono AAC,
+   under 300 KB for a 30 s tone — and prints the loop length in seconds.
+   Use `--gong` for the gong strikes (fuller bitrate).
+3. In `/admin/products`, open the artwork and use the **Sound** fieldset:
+   choose the `.m4a` (it uploads to `products/audio/<slug>.m4a` on save and
+   warns if over 300 KB), add the tone title and credit. The loop length is
+   read from the file; type it only if you want to override.
+4. Visitors see the title and credit under the picture with a play/pause
+   control; the tone fades in a second after the page settles once sound is on.
+5. Shared sounds (the gong that opens and closes "Two minutes of stillness")
+   are filled in at `/admin/sounds`: upload the compressed file (use
+   `--gong` when compressing) and add a title and credit. Without a file the
+   practice simply runs in silence.
+
+Audio files are never committed to the repo. Schema:
+`supabase/migrations/20260916_sound_layer.sql`.
+
+## Two minutes of stillness
+
+The persistent button bottom-right opens a full-screen 4-7-8 breathing
+practice: six cycles (114 s), a breathing ring, one word per phase, a gong at
+the start and end when sound is on and a gong is uploaded at `/admin/sounds`.
+It works in silence and under reduced motion. Timing lives in
+`src/lib/stillness.js`; the overlay in `src/components/stillness/`. The device
+checklist for the sound layer is in
+[docs/sound-layer-device-checklist.md](docs/sound-layer-device-checklist.md).

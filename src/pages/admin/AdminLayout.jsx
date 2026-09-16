@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, Navigate } from 'react-router-dom'
-import { Inbox, MessageSquare, Package, Grid3X3, Image, FileText, Compass, CalendarDays, LogOut, Navigation } from 'lucide-react'
+import { Inbox, MessageSquare, Package, Grid3X3, Image, FileText, Compass, CalendarDays, LogOut, Navigation, Volume2 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { LoadingSpinner } from '../../components/UI'
 
@@ -9,6 +9,7 @@ const sidebarLinks = [
   { to: '/admin/products', label: 'Products', icon: Package },
   { to: '/admin/workshops', label: 'Workshops', icon: CalendarDays },
   { to: '/admin/placement', label: 'Placement', icon: Navigation },
+  { to: '/admin/sounds', label: 'Sounds', icon: Volume2 },
   { to: '/admin/posts', label: 'Blog', icon: FileText },
   { to: '/admin/categories', label: 'Categories', icon: Grid3X3 },
   { to: '/admin/media', label: 'Media', icon: Image },

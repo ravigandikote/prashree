@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext'
 import { ConsentProvider } from './context/ConsentContext'
+import { SoundProvider } from './context/SoundContext'
 import Layout from './components/Layout'
 import Analytics from './components/Analytics'
 import CookieConsent from './components/CookieConsent'
@@ -39,6 +40,9 @@ const AdminMedia = lazy(() => import('./pages/admin/AdminMedia'))
 const AdminTemplates = lazy(() => import('./pages/admin/AdminTemplates'))
 const AdminWorkshops = lazy(() => import('./pages/admin/AdminWorkshops'))
 const AdminPlacement = lazy(() => import('./pages/admin/AdminPlacement'))
+const AdminSounds = lazy(() => import('./pages/admin/AdminSounds'))
+// dev-only lab for the sound engine — the route is registered only under `vite dev`
+const SoundLab = import.meta.env.DEV ? lazy(() => import('./pages/dev/SoundLab')) : null
 
 export default function App() {
   return (
@@ -46,6 +50,7 @@ export default function App() {
       <AuthProvider>
         <ConsentProvider>
           <BrowserRouter>
+            <SoundProvider>
             <Analytics />
             <Toaster
               position="top-right"
@@ -73,6 +78,7 @@ export default function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/placement" element={<Placement />} />
+                  {SoundLab && <Route path="/dev/sound" element={<SoundLab />} />}
                   <Route path="/privacy" element={<Privacy />} />
                   <Route path="/terms" element={<Terms />} />
 
@@ -102,10 +108,12 @@ export default function App() {
                   <Route path="templates" element={<AdminTemplates />} />
                   <Route path="workshops" element={<AdminWorkshops />} />
                   <Route path="placement" element={<AdminPlacement />} />
+                  <Route path="sounds" element={<AdminSounds />} />
                 </Route>
               </Routes>
             </Suspense>
             <CookieConsent />
+            </SoundProvider>
           </BrowserRouter>
         </ConsentProvider>
       </AuthProvider>

@@ -110,6 +110,27 @@ export async function getPlacementProducts() {
   return data
 }
 
+/* ── Sound layer: shared site audio (gong strikes, fallback tone) ── */
+export async function getSiteAudio() {
+  const { data, error } = await supabase
+    .from('site_audio')
+    .select('*')
+    .order('slug', { ascending: true })
+  if (error) throw error
+  return data
+}
+
+export async function updateSiteAudio(id, updates) {
+  const { data, error } = await supabase
+    .from('site_audio')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
 /* ── Gallery helpers ── */
 export async function getGalleryByCategory(categoryId) {
   const { data, error } = await supabase
