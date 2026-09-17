@@ -20,6 +20,8 @@ const staticRoutes = [
   { path: '/events', priority: '0.8' },
   { path: '/contact', priority: '0.7' },
   { path: '/studio', priority: '0.7' },
+  { path: '/studio/mandala', priority: '0.7' },
+  { path: '/studio/sound-healing', priority: '0.7' },
   { path: '/blog', priority: '0.6' },
   { path: '/faq', priority: '0.6' },
   { path: '/sacred-geometry', priority: '0.5' },

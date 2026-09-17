@@ -26,7 +26,8 @@ export default function StillnessButton() {
     return () => clearTimeout(t)
   }, [])
 
-  if (pathname.startsWith('/studio') || pathname.startsWith('/admin')) return null
+  // not over the drawing tool (its own bottom bar) or the sound session (two audio experiences would collide)
+  if (pathname.startsWith('/studio/') || pathname.startsWith('/admin')) return null
 
   return (
     <>

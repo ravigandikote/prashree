@@ -23,6 +23,8 @@ const SacredGeometry = lazy(() => import('./pages/SacredGeometry'))
 const WorkshopEvents = lazy(() => import('./pages/WorkshopEvents'))
 const Events = lazy(() => import('./pages/Events'))
 const Studio = lazy(() => import('./pages/Studio'))
+const StudioHub = lazy(() => import('./pages/StudioHub'))
+const SoundHealing = lazy(() => import('./pages/SoundHealing'))
 const FAQ = lazy(() => import('./pages/FAQ'))
 const Placement = lazy(() => import('./pages/Placement'))
 const Privacy = lazy(() => import('./pages/Privacy'))
@@ -72,7 +74,9 @@ export default function App() {
                   <Route path="/products/:slug" element={<ProductDetail />} />
                   <Route path="/learn" element={<Learn />} />
                   <Route path="/sacred-geometry" element={<SacredGeometry />} />
-                  <Route path="/studio" element={<Studio />} />
+                  <Route path="/studio" element={<StudioHub />} />
+                  <Route path="/studio/mandala" element={<Studio />} />
+                  <Route path="/studio/sound-healing" element={<SoundHealing />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/contact" element={<Contact />} />

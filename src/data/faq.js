@@ -85,7 +85,7 @@ export const faqGroups = [
       {
         q: 'Is the Mandala Studio free to use?',
         a: 'Yes. The drawing tool is free, runs entirely in your browser, and needs no sign-up. You can export your mandala as a print-ready PDF, a 300 DPI image, or a guides-only sheet to print and fill in by hand.',
-        link: { to: '/studio', label: 'Open the studio' },
+        link: { to: '/studio/mandala', label: 'Open the Mandala Studio' },
       },
       {
         q: 'How do I reach the studio?',

@@ -59,7 +59,7 @@ export default function SacredGeometry() {
                     </p>
                     <div className="mt-8">
                         <a
-                            href="/studio"
+                            href="/studio/mandala"
                             className="inline-flex items-center gap-2 px-8 py-3 text-small font-medium uppercase tracking-label border border-white text-white hover:bg-white hover:text-ink transition-colors no-underline"
                         >
                             Open the Studio

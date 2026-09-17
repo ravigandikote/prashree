@@ -67,7 +67,7 @@ export default function Studio() {
       <SEO
         title="Mandala Studio — Draw a Mandala Step by Step"
         description="Construct a mandala the way it's taught on paper: centre, concentric circles, radial guide lines, then patterns — free in your browser, with true-size printable PDF downloads. By PraShree Arts, Bengaluru."
-        path="/studio"
+        path="/studio/mandala"
         keywords={[
           'mandala maker online', 'mandala generator', 'draw a mandala step by step',
           'mandala grid template printable', 'mandala practice sheets', 'learn mandala art',

@@ -26,7 +26,7 @@ export const DEFAULTS = Object.freeze({
   duckLevel: 0.15,      // fraction of masterGain
   duckMs: 600,
   unduckMs: 900,
-  bufferMaxBytes: 1.5 * 1024 * 1024,
+  bufferMaxBytes: 4 * 1024 * 1024,   // WAV decodes instantly; compressed files are far smaller anyway
 })
 
 const defaultCreateContext = () => {
@@ -53,7 +53,9 @@ export function createSoundEngine({
   let pendingStopAt = 0     // when the pending stop is due (so a longer grace can extend, a shorter never shortens)
   const cache = new Map()     // url → Promise<AudioBuffer | { element: true }>
   const listeners = new Set()
-  const state = { unlocked: false, playing: null, ducked: false, largeFiles: [] }
+  const layers = new Map()    // id → { src, gain, source, element? } — independent looping beds (Sound Healing)
+  const fading = new Set()    // nodes ramping to silence, awaiting teardown — dispose() must catch these too
+  const state = { unlocked: false, playing: null, ducked: false, largeFiles: [], layers: [] }
 
   const emit = () => { for (const fn of listeners) fn({ ...state }) }
   const now = () => (ctx ? ctx.currentTime : 0)
@@ -111,10 +113,12 @@ export function createSoundEngine({
     current = null
     state.playing = null
     ramp(tone.gain.gain, 0, seconds)
+    fading.add(tone)
     tone.stopTimer = setTimeout(() => teardown(tone), seconds * 1000 + 50)
   }
 
   function teardown(tone) {
+    fading.delete(tone)
     if (tone.stopTimer) clearTimeout(tone.stopTimer)
     try { tone.source.stop?.() } catch { /* already stopped */ }
     try { tone.source.disconnect() } catch { /* never connected */ }
@@ -212,6 +216,54 @@ export function createSoundEngine({
     return decoded.duration || 0
   }
 
+  /* ── Layers: several independent looping beds at once (Sound Healing).
+        Each has its own gain into the master bus; the single artwork tone
+        (`current`) is untouched by these. ── */
+  async function playLayer(id, src, { fadeIn = 3, level = 1, loop = true } = {}) {
+    if (!state.unlocked || !ctx) return false
+    if (layers.has(id)) { setLayerLevel(id, level, fadeIn); return true }
+    let decoded
+    try { decoded = typeof src === 'string' ? await load(src) : src } catch { return false }
+    if (!state.unlocked || layers.has(id)) return layers.has(id)
+    const gain = ctx.createGain()
+    gain.gain.value = 0
+    gain.connect(master)
+    let source, element
+    if (decoded && decoded.element) {
+      element = createElement(src)
+      element.loop = loop
+      source = ctx.createMediaElementSource(element)
+      source.connect(gain)
+      try { await element.play() } catch { teardown({ source, gain, element }); return false }
+    } else {
+      source = ctx.createBufferSource()
+      source.buffer = decoded
+      source.loop = loop
+      source.connect(gain)
+      source.start()
+    }
+    layers.set(id, { src, gain, source, element })
+    ramp(gain.gain, level, fadeIn)
+    state.layers = [...layers.keys()]
+    emit()
+    return true
+  }
+  function setLayerLevel(id, level, seconds = 1) {
+    const layer = layers.get(id)
+    if (layer) ramp(layer.gain.gain, level, seconds)
+  }
+  function stopLayer(id, { fadeOut = 2 } = {}) {
+    const layer = layers.get(id)
+    if (!layer) return
+    layers.delete(id)
+    ramp(layer.gain.gain, 0, fadeOut)
+    fading.add(layer)
+    layer.stopTimer = setTimeout(() => teardown(layer), fadeOut * 1000 + 50)
+    state.layers = [...layers.keys()]
+    emit()
+  }
+  function stopAllLayers(o) { for (const id of [...layers.keys()]) stopLayer(id, o) }
+
   /** Pull the master bus down (stillness mode) / back up. */
   function duck(level = opts.duckLevel, ms = opts.duckMs) {
     if (!master) return
@@ -230,6 +282,10 @@ export function createSoundEngine({
   function dispose() {
     cancelPendingStop()
     if (current) { teardown(current); current = null }
+    for (const layer of layers.values()) teardown(layer)
+    for (const node of [...fading]) teardown(node)
+    layers.clear()
+    state.layers = []
     state.playing = null
     state.unlocked = false
     if (ctx) { try { ctx.close?.()?.catch?.(() => {}) } catch { /* ignore */ } }
@@ -242,6 +298,7 @@ export function createSoundEngine({
 
   return {
     unlock, playTone, crossfadeTo, stopTone, holdTone, playOnce, duck, unduck, dispose,
+    playLayer, setLayerLevel, stopLayer, stopAllLayers,
     subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn) },
     getState: () => ({ ...state }),
     /** The live context — only for building test buffers (dev lab) after unlock. */

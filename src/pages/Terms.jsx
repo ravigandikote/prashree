@@ -93,7 +93,7 @@ export default function Terms() {
 
           <h2>The Mandala Studio</h2>
           <p>
-            The drawing tool at <a href="/studio">/studio</a> is offered free for
+            The drawing tool at <a href="/studio/mandala">/studio/mandala</a> is offered free for
             personal and teaching use. Mandalas you create with it are yours,
             including anything you print or export. It is provided as it is, with
             no guarantee it will suit a particular purpose.
