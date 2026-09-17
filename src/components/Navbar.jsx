@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import logo from '../assets/logo.png'
+import SoundToggle from './SoundToggle'
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -25,7 +26,7 @@ export default function Navbar() {
       <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 no-underline">
+          <Link to="/" className="flex items-center gap-3 no-underline shrink-0">
             <img src={logo} alt="PraShree Arts mandala logo" className="h-11 w-11 object-contain" />
             <div className="flex flex-col leading-tight">
               <span className="font-display text-2xl text-ink tracking-tight">
@@ -38,8 +39,8 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop navigation */}
-          <div className="hidden lg:flex items-center gap-5 xl:gap-8">
-            {navLinks.map((link) => (
+          <div className="hidden xl:flex items-center gap-5">
+            {navLinks.filter((link) => link.to !== '/').map((link) => ( /* the logo is the Home link on desktop */
               <NavLink
                 key={link.to}
                 to={link.to}
@@ -56,11 +57,15 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* Sound: the visitor's first gesture lives here, on every page */}
+          <SoundToggle className="hidden xl:block ml-1" />
+
           {/* Mobile menu */}
-          <div className="flex items-center lg:hidden">
+          <div className="flex items-center gap-1 xl:hidden">
+            <SoundToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 text-charcoal hover:text-ink bg-transparent border-0 cursor-pointer"
+              className="xl:hidden p-2 text-charcoal hover:text-ink bg-transparent border-0 cursor-pointer"
               aria-label="Toggle menu"
               aria-expanded={isOpen}
             >
@@ -78,10 +83,10 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="lg:hidden overflow-hidden border-t border-mist bg-white"
+            className="xl:hidden overflow-hidden border-t border-mist bg-white"
           >
             <div className="px-4 py-4 space-y-1">
-              {navLinks.map((link) => (
+              {navLinks.filter((link) => link.to !== '/').map((link) => ( /* the logo is the Home link on desktop */
                 <NavLink
                   key={link.to}
                   to={link.to}

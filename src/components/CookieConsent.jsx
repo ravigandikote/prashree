@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useConsent } from '../context/ConsentContext'
 import { analyticsConfigured } from '../lib/analytics'
@@ -12,7 +13,18 @@ import { analyticsConfigured } from '../lib/analytics'
 export default function CookieConsent() {
   const { consent, accept, decline } = useConsent()
 
-  if (!analyticsConfigured || consent !== null) return null
+  const barRef = useRef(null)
+  const showing = analyticsConfigured && consent === null
+  // publish the bar's height so floating controls (the stillness button) can sit above it
+  useEffect(() => {
+    const root = document.documentElement
+    if (!showing || !barRef.current) { root.style.removeProperty('--floating-bottom'); return undefined }
+    const ro = new ResizeObserver(() => root.style.setProperty('--floating-bottom', `${barRef.current?.offsetHeight || 0}px`))
+    ro.observe(barRef.current)
+    return () => { ro.disconnect(); root.style.removeProperty('--floating-bottom') }
+  }, [showing])
+
+  if (!showing) return null
 
   return (
     <AnimatePresence>
@@ -21,6 +33,7 @@ export default function CookieConsent() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 24 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
+        ref={barRef}
         role="dialog"
         aria-label="Cookie preferences"
         className="fixed bottom-0 inset-x-0 z-50 bg-ink text-white border-t border-white/15"

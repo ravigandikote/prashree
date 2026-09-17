@@ -11,6 +11,7 @@ import {
 import { watermarkImage, watermarkPdf } from '../../lib/watermark'
 import { fallbackArtworks } from '../../data/artworks'
 import { DIRECTIONS } from '../../data/vastu'
+import { audioStoragePath, isPlayableAudioUrl, TONE_BUDGET_BYTES } from '../../lib/audio/urls'
 import { inputClasses } from './adminUi'
 import toast from 'react-hot-toast'
 
@@ -28,6 +29,7 @@ const EMPTY = {
   pdf_url: '', vastu_note: '', size: '', size_code: '', price_range: '', usd: '',
   prints: '', hours: '', series: '', form: '', intent: '', direction: '',
   secondary_direction: '', placement_note: '', placement_detail: '',
+  audio_url: '', audio_title: '', audio_credit: '', audio_loop_seconds: '',
   is_featured: false, is_available: true, is_sold: false,
 }
 
@@ -74,6 +76,8 @@ export default function AdminProducts() {
   const [images, setImages] = useState([])        // URLs already saved on the row
   const [imageFiles, setImageFiles] = useState([]) // picked, not yet uploaded
   const [pdfFile, setPdfFile] = useState(null)
+  const [audioFile, setAudioFile] = useState(null)
+  const [audioSeconds, setAudioSeconds] = useState(null) // read from the file's metadata in the browser
   const [watermarkUploads, setWatermarkUploads] = useState(true)
   const [saving, setSaving] = useState(false)
   const [progress, setProgress] = useState('')
@@ -101,6 +105,8 @@ export default function AdminProducts() {
     setImages([])
     setImageFiles([])
     setPdfFile(null)
+    setAudioFile(null)
+    setAudioSeconds(null)
     setWatermarkUploads(true)
     setEditing(null)
     setShowForm(false)
@@ -133,6 +139,10 @@ export default function AdminProducts() {
       secondary_direction: product.secondary_direction || '',
       placement_note: product.placement_note || '',
       placement_detail: product.placement_detail || '',
+      audio_url: product.audio_url || '',
+      audio_title: product.audio_title || '',
+      audio_credit: product.audio_credit || '',
+      audio_loop_seconds: product.audio_loop_seconds != null ? String(product.audio_loop_seconds) : '',
       is_featured: product.is_featured,
       is_available: product.is_available,
       is_sold: product.is_sold || false,
@@ -140,6 +150,8 @@ export default function AdminProducts() {
     setImages(product.images || [])
     setImageFiles([])
     setPdfFile(null)
+    setAudioFile(null)
+    setAudioSeconds(null)
     setWatermarkUploads(true)
     setShowForm(true)
   }
@@ -182,6 +194,13 @@ export default function AdminProducts() {
         )
       }
 
+      let audioUrl = form.audio_url || null
+      if (audioFile) {
+        setProgress('Uploading tone…')
+        // fixed key per artwork, so replacing a tone overwrites rather than failing
+        audioUrl = await uploadFile(BUCKET, audioStoragePath(slug, audioFile.name), audioFile, { upsert: true })
+      }
+
       setProgress('Saving…')
       const productData = {
         name: form.name,
@@ -205,6 +224,10 @@ export default function AdminProducts() {
         secondary_direction: form.secondary_direction || null,
         placement_note: form.placement_note.trim().slice(0, PLACEMENT_NOTE_MAX) || null,
         placement_detail: form.placement_detail.trim() || null,
+        audio_url: audioUrl,
+        audio_title: form.audio_title.trim() || null,
+        audio_credit: form.audio_credit.trim() || null,
+        audio_loop_seconds: form.audio_loop_seconds !== '' ? parseFloat(form.audio_loop_seconds) : (audioSeconds ?? null),
         is_featured: form.is_featured,
         is_available: form.is_available,
         is_sold: form.is_sold,
@@ -517,6 +540,48 @@ export default function AdminProducts() {
                   />
                   Watermark uploads with the PraShree Arts mark
                 </label>
+              </Section>
+
+              <Section title="Sound" note="Optional paired tone (a singing bowl note from Monica's sessions). Plays quietly on this artwork's page once a visitor switches sound on in the header. Leave empty and the page shows nothing.">
+                <Row label="Tone file (.m4a, under 300 KB)" hint="Compress the WAV first: npm run audio:compress — see README ‘Sound layer’. Uploads to products/audio/<slug>.">
+                  <input
+                    type="file" accept=".m4a,.mp4,.aac,.mp3,audio/*"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0] || null
+                      setAudioFile(f); setAudioSeconds(null)
+                      if (!f) return
+                      if (f.size > TONE_BUDGET_BYTES) toast(`${(f.size / 1024).toFixed(0)} KB is over the 300 KB tone budget`, { icon: '⚠️' })
+                      const probe = document.createElement('audio')
+                      probe.preload = 'metadata'
+                      probe.onloadedmetadata = () => { setAudioSeconds(Number(probe.duration.toFixed(2))); URL.revokeObjectURL(probe.src) }
+                      probe.src = URL.createObjectURL(f)
+                    }}
+                    className="block text-small"
+                  />
+                  {audioFile && (
+                    <p className="text-[11px] text-graphite mt-1">
+                      {audioFile.name} · {(audioFile.size / 1024).toFixed(0)} KB{audioSeconds != null ? ` · ${audioSeconds} s` : ''}
+                    </p>
+                  )}
+                  {!audioFile && form.audio_url && (
+                    <p className="text-[11px] text-graphite mt-1 flex items-center gap-3">
+                      <span className="truncate">{form.audio_url.split('/').pop()}</span>
+                      {!isPlayableAudioUrl(form.audio_url) && <span className="text-ink">⚠ unusual file type</span>}
+                      <button type="button" onClick={() => set({ audio_url: '' })} className="text-ink underline bg-transparent border-0 cursor-pointer p-0">Remove tone</button>
+                    </p>
+                  )}
+                </Row>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <Row label="Tone title" hint="e.g. Singing bowl in C, Monica Prakash">
+                    <input value={form.audio_title} onChange={(e) => set({ audio_title: e.target.value })} className={inputClasses} />
+                  </Row>
+                  <Row label="Credit" hint="Instrument, where and when it was recorded.">
+                    <input value={form.audio_credit} onChange={(e) => set({ audio_credit: e.target.value })} className={inputClasses} />
+                  </Row>
+                  <Row label="Loop length (s)" hint={audioSeconds != null ? `Read from the file: ${audioSeconds} s (leave blank to use it).` : 'Blank = read from the uploaded file.'}>
+                    <input type="number" step="0.01" min="0" value={form.audio_loop_seconds} onChange={(e) => set({ audio_loop_seconds: e.target.value })} className={inputClasses} />
+                  </Row>
+                </div>
               </Section>
 
               <Section title="Visibility">

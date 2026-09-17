@@ -29,6 +29,10 @@ export const fallbackArtworks = items.map((i) => ({
   secondary_direction: i.secondary_direction || null,
   placement_note: i.placement_note || null,
   placement_detail: i.placement_detail || null,
+  audio_url: null,        // tones are never bundled — they only ever stream from Storage
+  audio_title: null,
+  audio_credit: null,
+  audio_loop_seconds: null,
   is_featured: false,
   is_available: true,
   is_sold: Boolean(i.sold),
