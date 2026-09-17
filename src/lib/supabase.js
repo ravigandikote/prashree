@@ -161,12 +161,12 @@ function safeStoragePath(filePath) {
 }
 
 /** Uploads any file (image, PDF, …) and returns its public URL. */
-export async function uploadFile(bucket, filePath, file) {
+export async function uploadFile(bucket, filePath, file, { upsert = false } = {}) {
   const { data, error } = await supabase.storage
     .from(bucket)
     .upload(safeStoragePath(filePath), file, {
       cacheControl: '3600',
-      upsert: false,
+      upsert,
       contentType: file.type || undefined,
     })
   if (error) throw error

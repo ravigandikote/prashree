@@ -197,7 +197,8 @@ export default function AdminProducts() {
       let audioUrl = form.audio_url || null
       if (audioFile) {
         setProgress('Uploading tone…')
-        audioUrl = await uploadFile(BUCKET, audioStoragePath(slug, audioFile.name), audioFile)
+        // fixed key per artwork, so replacing a tone overwrites rather than failing
+        audioUrl = await uploadFile(BUCKET, audioStoragePath(slug, audioFile.name), audioFile, { upsert: true })
       }
 
       setProgress('Saving…')

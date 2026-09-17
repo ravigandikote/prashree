@@ -34,7 +34,7 @@ export default function AdminSounds() {
     if (!file) return
     setBusy(row.id)
     try {
-      const url = await uploadFile('products', audioStoragePath(row.slug, file.name), file)
+      const url = await uploadFile('products', audioStoragePath(row.slug, file.name), file, { upsert: true })
       const probe = document.createElement('audio')
       probe.preload = 'metadata'
       const seconds = await new Promise((resolve) => {
