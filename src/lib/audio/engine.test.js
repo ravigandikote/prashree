@@ -38,7 +38,7 @@ const make = (ctxOpts = {}, engineOpts = {}) => {
   const fetched = []
   const engine = createSoundEngine({
     createContext: () => ctx,
-    fetchBytes: async (url) => { fetched.push(url); return bytes(url.includes('big') ? 2 * 1024 * 1024 : 2500) },
+    fetchBytes: async (url) => { fetched.push(url); return bytes(url.includes('big') ? 5 * 1024 * 1024 : 2500) },
     createElement: () => ({ play: async () => {}, pause() {}, loop: false, duration: 7 }),
     ...engineOpts,
   })
@@ -216,6 +216,52 @@ describe('large files', () => {
     await engine.unlock()
     expect(await engine.playTone('https://a/big.m4a')).toBe(false)
     expect(engine.getState().playing).toBeNull()
+  })
+})
+
+describe('layers (Sound Healing beds)', () => {
+  it('runs several loops at once, each with its own level, without touching the artwork tone', async () => {
+    const { ctx, engine } = make()
+    await engine.unlock()
+    await engine.playTone('https://a/tone.m4a')
+    expect(await engine.playLayer('bowl', 'https://a/bowl.wav', { level: 0.8, fadeIn: 4 })).toBe(true)
+    expect(await engine.playLayer('rain', 'https://a/rain.wav', { level: 0.5 })).toBe(true)
+    expect(engine.getState().layers).toEqual(['bowl', 'rain'])
+    expect(engine.getState().playing).toBe('https://a/tone.m4a')
+    expect(ctx.sources).toHaveLength(3)
+    expect(ctx.sources[1].loop).toBe(true)
+    expect(ctx.gains[2].gain.calls.at(-1)).toEqual(['ramp', 0.8, 14])   // 10 + 4 s
+    expect(ctx.gains[3].gain.calls.at(-1)).toEqual(['ramp', 0.5, 13])   // default 3 s
+  })
+
+  it('re-playing an existing layer only re-levels it; stopLayer fades and releases', async () => {
+    const { ctx, engine } = make()
+    await engine.unlock()
+    await engine.playLayer('bowl', 'https://a/bowl.wav')
+    await engine.playLayer('bowl', 'https://a/bowl.wav', { level: 0.3, fadeIn: 2 })
+    expect(ctx.sources).toHaveLength(1)
+    expect(ctx.gains[1].gain.calls.at(-1)).toEqual(['ramp', 0.3, 12])
+    engine.setLayerLevel('bowl', 0.9, 5)
+    expect(ctx.gains[1].gain.calls.at(-1)).toEqual(['ramp', 0.9, 15])
+    engine.stopLayer('bowl', { fadeOut: 2 })
+    expect(engine.getState().layers).toEqual([])
+    expect(ctx.gains[1].gain.calls.at(-1)).toEqual(['ramp', 0, 12])
+    vi.advanceTimersByTime(2100)
+    expect(ctx.sources[0].stopped).toBe(true)
+  })
+
+  it('stopAllLayers fades every bed; dispose tears them down; locked = false', async () => {
+    const { ctx, engine } = make()
+    expect(await engine.playLayer('x', 'https://a/x.wav')).toBe(false)
+    await engine.unlock()
+    await engine.playLayer('a', 'https://a/a.wav')
+    await engine.playLayer('b', 'https://a/b.wav')
+    engine.stopAllLayers({ fadeOut: 1 })
+    expect(engine.getState().layers).toEqual([])
+    await engine.playLayer('c', 'https://a/c.wav')
+    engine.dispose()
+    expect(ctx.sources.every((s) => s.stopped)).toBe(true)
+    expect(engine.getState().layers).toEqual([])
   })
 })
 

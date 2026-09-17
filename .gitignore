@@ -33,3 +33,6 @@ images-src/
 
 # PDF originals (200MB+ camera-quality; compressed copies live in public/catalogues)
 src/assets/artworks/
+
+# Synthesised Sound Healing library (scripts/generate-healing-sounds.mjs) — generated on dev/build, never committed
+public/sounds/

@@ -60,6 +60,8 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 list-none p-0">
               {[
+                { to: '/studio/sound-healing', label: 'Sound Healing' },
+                { to: '/studio/mandala', label: 'Mandala Studio' },
                 { to: '/products', label: 'The Collection' },
                 { to: '/sacred-geometry', label: 'Sacred Geometry' },
                 { to: '/workshops', label: 'Upcoming Workshops' },

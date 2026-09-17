@@ -8,7 +8,7 @@ const SUGGESTIONS = [
   { to: '/products', label: 'The collection', note: 'Every original, filterable by form, size and Vastu direction' },
   { to: '/learn', label: 'Learn with Monica', note: 'Mandala, meditation and Janur sessions' },
   { to: '/workshops', label: 'Upcoming workshops', note: 'What is running this month' },
-  { to: '/studio', label: 'Mandala Studio', note: 'Draw a mandala in your browser' },
+  { to: '/studio', label: 'The Studio', note: 'Sound healing and a mandala drawing tool' },
   { to: '/contact', label: 'Contact', note: 'Write to the studio' },
 ]
 

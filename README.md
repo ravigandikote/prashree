@@ -97,3 +97,26 @@ It works in silence and under reduced motion. Timing lives in
 `src/lib/stillness.js`; the overlay in `src/components/stillness/`. The device
 checklist for the sound layer is in
 [docs/sound-layer-device-checklist.md](docs/sound-layer-device-checklist.md).
+
+## The Studio and Sound Healing
+
+`/studio` lists the studio activities (`src/data/studio.js`): Sound Healing and
+the Mandala Studio today. Add an entry there to add an activity.
+
+Sound Healing plays a timed session on the shared sound engine: the chosen
+chakra bowl(s), then rain stick, ocean drum, a gong, and a raga alaap fading
+in last. The sounds it ships with are **synthesised stand-ins**, generated
+into `public/sounds/` by `npm run sounds:generate` (this also runs before
+`dev` and `build`; the folder is gitignored). Each bowl is tuned to its
+chakra's note (root C 256 Hz up to crown B 480 Hz).
+
+To replace a stand-in with a real recording: compress it
+(`npm run audio:compress -- file.wav`), then upload it against the matching
+row at `/admin/sounds` (`bowl-root` … `bowl-crown`, `rain-stick`,
+`ocean-drum`, `gong-healing`, `raga-alaap`; rows come from
+`supabase/migrations/20260918_healing_sounds.sql`). The site prefers the
+uploaded file and falls back to the stand-in.
+
+The copy on that screen describes practice, never treatment: intentions are
+"what you'd like to sit with", and chakra notes are given as tradition holds
+them. Keep it that way when editing.
